@@ -1,6 +1,6 @@
 # inventario-objetos
 
-![badge](https://img.shields.io/badge/scaffold-v0.0.1-blue)
+![badge](https://img.shields.io/badge/inventario-v0.0.1-blue)
 
 Aplicación móvil y web enfocada a gestionar un inventario de objetos que poseen
 y comparten los miembros de una familia.
