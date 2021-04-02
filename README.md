@@ -26,7 +26,7 @@ El proyecto cumple con las siguientes características:
 6. Visualizar en un mapa la ubicación de estos objetos.
 
 Para mayor información sobre la toma de desiciones en la elaboración de estos producto
-consultar la carpeta [/docs](https://github.com/EdgarPozas/inventario-objetos/blob/master/docs/SYSTEM_DESING.md)
+consultar el [diseño del sistema](https://github.com/EdgarPozas/inventario-objetos/blob/master/docs/SYSTEM_DESING.md)
 
 ## Requerimientos
 

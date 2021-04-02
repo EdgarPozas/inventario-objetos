@@ -131,7 +131,7 @@ ASP.NET | C# | Orientado a objetos, veloz, cuenta con soporte de Microsoft | Con
 [Node js pros and cons](https://www.voidcanvas.com/describing-node-js/)
 
 #### Conclusión
-Tomando en cuenta el tiempo disponible de desarrollo, la necesidad de generar APIs REST para conectar servicios y el uso de paquetes para elementos especificos se decide usar [Node JS](https://nodejs.org/es/) y dentro de este el paquete para manejar el direccionamiento de rutas será [Express JS] (https://expressjs.com/es/).
+Tomando en cuenta el tiempo disponible de desarrollo, la necesidad de generar APIs REST para conectar servicios y el uso de paquetes para elementos especificos se decide usar [Node JS](https://nodejs.org/es/) y dentro de este el paquete para manejar el direccionamiento de rutas será [Express JS](https://expressjs.com/es/).
 
 #### Página web
 
