@@ -10,6 +10,7 @@ y comparten los miembros de una familia.
 El proyecto cumple con las siguientes características:
 
 ### Aplicación móvil
+
 1. Manejo de múltiples usuarios y grupos (familias).
 2. Manejo de las sesiones de los usuarios.
 3. CRUD de los espacios de la casa y sus funciones.
@@ -17,7 +18,9 @@ El proyecto cumple con las siguientes características:
 5. Visualización de los objetos de la casa por filtros.
 6. Visualización de las últimas ubicaciones de los objetos en un mapa.
 7. Funcionalidad de encontrar y listar el subconjunto de objetos tal que la suma de sus valores económicos se aproxime más a un valor introducido.
+
 ### Aplicación web
+
 1. Gestión de usuarios y grupos (familias).
 2. Visualización de los objetos que tiene cada usuario.
 3. Visualización de información de cada objeto además de sus estadisticas.
@@ -28,9 +31,25 @@ El proyecto cumple con las siguientes características:
 Para mayor información sobre la toma de desiciones en la elaboración de estos producto
 consultar el [diseño del sistema](https://github.com/EdgarPozas/inventario-objetos/blob/master/docs/SYSTEM_DESING.md)
 
-## Requerimientos
+## Arquitectura
 
-## Instalación
+La siguiente imagen muestra la arquitectura planteada
+
+![Arquitectura planteada](../extras/DIAGRAMA_ARQUITECTURA.png)
+
+## Tecnologías utilizadas
+
+Lugar |Tecnologías
+-----|------
+Aplicación móvil | Android con Kotlin
+Servidor web | Node JS con express JS
+Página web | Pug JS con SASS, Boostrap, Vue JS, JQuery, axios y Chart JS
+Base de datos online | MongoDB através del servicio MongoDB Atlas
+Base de datos offline | SQLite
+Base de datos de archivos | Servicio S3 de AWS
+Gestor de correos | Nodemailer
+Algoritmo subconjuntos | Android con Kotlin
+Búsqueda de objeto | Node JS
 
 ## Estructura de las carpetas
 
