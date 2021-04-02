@@ -73,7 +73,7 @@ AWRNF-001 | La aplicación web debe ser fácil, intuitiva y agradable a la vista
 El sistema debe cumplir con las siguientes condiciones:
 
 * Web Back-end
-* Web Front-End
+* Web Front-end
 * Programación
 * Aplicaciones móviles
 * Base de datos estructuradas
@@ -93,11 +93,11 @@ El sistema debe cumplir con las siguientes condiciones:
 
 ### Aplicación móviles
 
-### Servidor web (back - end)
+### Servidor web (Back-end)
 
-### Base de datos
+### Bases de datos
 
-### Aplicación web (front - end)
+### Aplicación web (Front-end)
 
 
 
