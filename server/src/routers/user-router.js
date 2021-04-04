@@ -209,8 +209,10 @@ router.put("/:id",async (req,res)=>{
             msg="Información actualizada correctamente, hemos detectado que cambiaste tu correo se te envío un correo para verificarlo, si no lo haces la próxima vez que quieras iniciar sesión no podrás ingresar";
         }
 
+        req.session.user=values.user;
+
         res.render("profile",{
-            user:req.session.user,
+            user:values.user,
             msg:{
                 content:msg,
                 type:"info"
@@ -221,6 +223,36 @@ router.put("/:id",async (req,res)=>{
         res.render("profile",{
             msg:{
                 content:"Error al actualizar el usuario, revisa los datos ",
+                type:"error"
+            }
+        });
+    }
+});
+
+/// Route DELETE /user/:id
+router.delete("/:id",async (req,res)=>{
+    try{
+        let {
+            email,
+            password
+        }=req.body;
+
+        let valuesLogin=await userFunctions.login(email,password);
+        if(valuesLogin.status!=200)
+            throw Error(valuesLogin.msg);
+
+        let values=await userFunctions.delete(req.params.id);
+        if(values.status!=200)
+            throw Error(values.msg);
+
+        req.session.destroy();
+        res.redirect("/");
+    }catch(ex){
+        console.log(ex);
+        res.render("profile",{
+            user:req.session.user,
+            msg:{
+                content:"Error al borrar el usuario, revisa los datos ",
                 type:"error"
             }
         });

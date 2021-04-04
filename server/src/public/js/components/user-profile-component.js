@@ -1,12 +1,12 @@
 let updateConfirmed=false;
 const appProfile = new Vue({
-    el: '#profileForm',
+    el: '#profile',
     data: {
         firstName:"",
         lastName:"",
         email:"",
         password:"*******************",
-        confirmPassword:"*******************"
+        confirmPassword:"*******************",
     },
     mounted(){
         this.firstName=$("[name='firstName']").attr("data");

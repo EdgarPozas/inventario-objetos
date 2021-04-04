@@ -146,7 +146,7 @@ module.exports={
             user.firstName=firstName;
             user.lastName=lastName;
             user.email=email;
-            if(password!="*********")
+            if(password!="*******************")
                 user.password=await bcrypt.hash(password, 10);
 
             await user.save();
@@ -229,14 +229,12 @@ module.exports={
             });
             return {
                 status:200,
-                user:user,
                 msg:`User ${id} deleted`
             };
         }catch(ex){
             console.log(ex);
             return {
                 status:400,
-                user:undefined,
                 msg:"Error deleting user"
             };
         }

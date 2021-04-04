@@ -26,10 +26,10 @@ app.set("views",path.join(__dirname,"src/views"));
 app.use(express.static(path.join(__dirname,"./src/public")));
 app.use(methodOverride('_method'));
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'inventario-objetos',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false }
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
