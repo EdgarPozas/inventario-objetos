@@ -70,7 +70,9 @@ module.exports={
 
             let user=await User.findOne({
                 email:email
-            }).exec();
+            })
+            .populate("groups")
+            .exec();
 
             if(!user)
                 throw Error("User not found");
@@ -136,14 +138,19 @@ module.exports={
         }=obj;
 
         try{
-            await User.updateOne({
-                firstName:firstName,
-                lastName:lastName,
-                email:email,
-                password:password,
-            },{
-                _id:id
-            });
+
+            let user=await User.findById(id).exec();
+            if(!user)
+                throw Error("User not found");
+            user.verified=email==user.email;
+            user.firstName=firstName;
+            user.lastName=lastName;
+            user.email=email;
+            if(password!="*********")
+                user.password=await bcrypt.hash(password, 10);
+
+            await user.save();
+
             return {
                 status:200,
                 user:user,

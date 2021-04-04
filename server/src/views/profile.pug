@@ -1,0 +1,45 @@
+include ./shared/constants
+include ./shared/header
+include ./shared/nav-bar
+include ./shared/scripts
+include ./shared/modal
+include ./shared/modal-login
+include ./shared/modal-register
+include ./shared/modal-recovery
+include ./shared/footer
+
+doctype html
+html
+    head
+        +header("Perfil")
+    body
+        +nav-bar()
+        if msg
+            if msg.type=="error"
+                div(role="alert").alert.alert-danger #{msg.content}
+            else if msg.type=="info"
+                div(role="alert").alert.alert-info #{msg.content}
+        div.w-100.p-5.text-center
+            div.bg-light.p-5.shadow-sm.b-radius.d-inline-block.w-60
+                h1 Actualizar perfil
+                div.text-start
+                    form(action=server+"/user/"+user._id+"?_method=PUT" method="post" @submit="sendForm($event)")#profileForm
+                        label Nombre
+                        input(type="text" required name="firstName" placeholder="Edgar" data=user.firstName v-model="firstName").form-control
+                        label.mt-3 Apellido
+                        input(type="text" required name="lastName" placeholder="Pozas" data=user.lastName v-model="lastName").form-control
+                        label.mt-3 Correo
+                        input(type="email" required name="email" placeholder="ejemplo@correo.com" data=user.email v-model="email").form-control
+                        label.mt-3 Contraseña
+                        input(type="password" required name="password" placeholder="*********" v-model="password").form-control
+                        label.mt-3 Confirmar contraseña
+                        input(type="password" required placeholder="*********" v-model="confirmPassword").form-control
+                        div.text-center
+                            div(v-if="password!=confirmPassword").alert.alert-warning.mt-3 Revisa las contraseñas
+                            input(type="submit" value="Actualizar perfil").btn.btn-outline-primary.mt-3
+                
+        +footer()
+        +modal("Verificar","¿Estás seguro de querer actualizar el usuario?","modal-update-profile",[{type:"close-secondary",title:"No"},{type:"primary",title:"Si",id:"btn-profile-yes"}])
+        +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])
+        +scripts()
+        script(src=server+"/js/components/user-profile-component.js")

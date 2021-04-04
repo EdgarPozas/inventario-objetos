@@ -1,0 +1,13 @@
+mixin modal-add-group()
+	div(tabindex="-1" aria-hidden="true").modal.fade#addGroupModal
+		.modal-dialog.modal-dialog-scrollable
+			.modal-content
+				.modal-header
+					h5.modal-title Crear grupo
+					button(type="button" data-bs-dismiss="modal" aria-label="Close").btn-close
+				.modal-body
+					input(type="hidden" v-model="id" data=user._id name="id")
+					label Nombre del grupo
+					input(type="text" required name="name" placeholder="Familia" v-model="name").form-control
+				.modal-footer
+					input(type="submit" value="Crear grupo" @click="sendForm" data-bs-dismiss="modal").btn.btn-outline-primary

@@ -35,7 +35,7 @@ consultar el [diseño del sistema](https://github.com/EdgarPozas/inventario-obje
 
 La siguiente imagen muestra la arquitectura planteada
 
-![Arquitectura planteada](../extras/DIAGRAMA_ARQUITECTURA.png)
+![Arquitectura planteada](./extras/DIAGRAMA_ARQUITECTURA.png)
 
 ## Tecnologías utilizadas
 
@@ -47,7 +47,7 @@ Página web | Pug JS con SASS, Boostrap, Vue JS, JQuery, axios y Chart JS
 Base de datos online | MongoDB através del servicio MongoDB Atlas
 Base de datos offline | SQLite
 Base de datos de archivos | Servicio S3 de AWS
-Gestor de correos | Nodemailer
+Gestor de correos | Servicio de SendGrid
 Algoritmo subconjuntos | Android con Kotlin
 Búsqueda de objeto | Node JS
 

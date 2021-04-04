@@ -172,7 +172,7 @@ Dada una petición del sistema y si el usuario se encuentra conectado a internet
 
 #### Gestor de correos
 
-El sistema implementará un módulo para enviar correos a los usuarios basados en acciones realizadas en el mismo sistema.
+El sistema implementará un módulo para enviar correos a los usuarios basados en acciones realizadas en el mismo sistema. Este estará gestionado a través de [SendGrid](https://sendgrid.com/).
 
 #### Algoritmo subconjuntos
 

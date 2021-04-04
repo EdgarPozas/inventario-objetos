@@ -6,12 +6,54 @@ include ./shared/modal
 include ./shared/modal-login
 include ./shared/modal-register
 include ./shared/modal-recovery
+include ./shared/footer
+
+-const functionalities=[{title:"Objetos",content:"Registra, consulta, actualiza y elimina objetos de la vida cotidiana"},{title:"Grupos",content:"Administra objetos compartidos por grupo"},{title:"Página web",content:"Gestión de la aplicación móvil"},{title:"Estadísticas",content:"Conoce el movimiento de los objetos"},{title:"Búsqueda",content:"Filtra y busca objetos por sus carácteristicas"}]
+
+-const tecnologies=[{title:"Aplicación móvil",content:"Android con Kotlin"},{title:"Servidor web",content:"Node JS con express JS"},{title:"Página web",content:"Pug JS con SASS, Boostrap, Vue JS, JQuery, axios y Chart JS"},{title:"Base de datos online",content:"MongoDB através del servicio MongoDB Atlas"},{title:"Base de datos offline",content:"SQLite"},{title:"Base de datos de archivos",content:"Servicio S3 de AWS"},{title:"Gestor de correos",content:"Nodemailer"},{title:"Algoritmo subconjuntos",content:"Android con Kotlin"},{title:"Búsqueda de objeto",content:"Node JS"}]
+
 doctype html
 html
     head
         +header("Inicio")
     body
         +nav-bar()
+        if msg
+            if msg.type=="error"
+                div(role="alert").alert.alert-danger #{msg.content}
+            else if msg.type=="info"
+                div(role="alert").alert.alert-info #{msg.content}
+            
+        div.bg-dark.p-5.shadow
+            div.d-flex.p-5.align-items-center
+                div.w-100
+                    h2.text-light Aplicación móvil
+                    p.text-light.mt-5 Puedes descargar la aplicación móvil para complementar la experiencia
+                    a(href=server+"").text-light.mt-5 Aplicación android
+                div.w-100.text-center
+                    img(src="" height="300" width="200" alt="Imágen de la aplicación móvil")
+                    
+        div.justify-content-center.m-5.text-center
+            h1 Funcionalidades
+            each functionality in functionalities
+                div.bg-light.p-5.shadow-sm.m-3.w-30.b-radius.d-inline-block
+                    div.text-center
+                        h3 #{functionality.title}
+                    p.mt-3 #{functionality.content}
+                    
+        div.justify-content-center.m-5.text-center
+            h1 Arquitectura
+            div.p-5.text-center
+                img(src="https://github.com/EdgarPozas/inventario-objetos/blob/master/extras/DIAGRAMA_ARQUITECTURA.png?raw=true" alt="Imágen de la arquitectura del sistema").w-100
+        hr
+        div.justify-content-center.m-5.text-center
+            h1 Tecnologías
+            each option in tecnologies
+                div.bg-light.p-5.shadow-sm.m-3.w-30.b-radius.d-inline-block
+                    div.text-center
+                        h3 #{option.title}
+                    p.mt-3 #{option.content}
+        +footer()
         +modal-login()
         +modal-register()
         +modal-recovery()

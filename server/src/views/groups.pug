@@ -1,0 +1,42 @@
+include ./shared/constants
+include ./shared/header
+include ./shared/nav-bar
+include ./shared/scripts
+include ./shared/modal
+include ./shared/footer
+include ./shared/modal-add-group
+doctype html
+html
+    head
+        +header("Mis grupos")
+    body
+        +nav-bar()
+        
+        div.justify-content-center.m-5#allGroups
+            input(type="hidden" name="user" data=user)
+            div.d-flex
+                h3.w-100 Mis grupos
+                div
+                    input(type="submit" value="Agregar grupo" data-bs-toggle="modal" data-bs-target="#addGroupModal").btn.btn-outline-primary.ms-5
+            hr
+            div(v-for="group in groups").card.shadow-sm.mt-2
+                div.card-body
+                    div.d-flex.align-content-center
+                        p.m-ud-auto.w-100 Grupo: {{group.name}}
+                        a(:href="'http://localhost:3000/group/'+group._id").m-2.btn.btn-outline-primary.w-30 Ver grupo
+                        div(v-if="user._id==group.owner").d-flex
+                            input(type="submit" value="Editar grupo" data-bs-toggle="modal" data-bs-target="#updateGroupModal" @click="auxGroup=group").m-2.btn.btn-outline-secondary
+                            input(type="submit" value="Eliminar grupo" data-bs-toggle="modal" data-bs-target="#modal-group-delete" @click="auxGroup=group").m-2.btn.btn-outline-danger
+                    
+                    
+        +footer()
+        +modal-add-group()
+        +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])
+        +modal("Atención","Grupo creado exitosamente","modal-group-created",[{type:"close-secondary",title:"Cerrar"}])
+        +modal("Atención","Error al crear el grupo","modal-group-error",[{type:"close-secondary",title:"Cerrar"}])
+        +modal("Atención","Error al borrar el grupo","modal-group-delete-error",[{type:"close-secondary",title:"Cerrar"}])
+        +modal("Atención","¿Estás seguro de querer borrar el grupo?, si lo borras´se perderá toda la información","modal-group-delete",[{type:"close-secondary",title:"No"},{type:"primary",title:"Si",id:"btn-confirm-delete-group"}])
+        +scripts()
+        script(src=server+"/js/components/group-all-component.js")
+        script(src=server+"/js/components/group-add-component.js")
+        

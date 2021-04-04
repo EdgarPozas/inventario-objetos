@@ -7,9 +7,9 @@ const path=require("path");
 const methodOverride = require('method-override')
 
 /// Import routers
-const homeRouter=require("./src/router/home-router");
-const userRouter=require("./src/router/user-router");
-const groupRouter=require("./src/router/group-router");
+const homeRouter=require("./src/routers/home-router");
+const userRouter=require("./src/routers/user-router");
+const groupRouter=require("./src/routers/group-router");
 
 /// Import API
 const userApi=require("./src/api/user-api");

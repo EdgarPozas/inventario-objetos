@@ -1,73 +1,81 @@
 /// Initialize dependencies
 const express=require("express");
 const bcrypt=require("bcrypt");
-/// Import model
+/// Import models
+const Group=require("../models/group");
 const User=require("../models/user");
 
 module.exports={
     /// Get all
-    all:async function(){
+    all:async function(id){
         try{
-            let users=await User.find({});
+            let groups=await Group.find({});
             return {
                 status:200,
-                users:users,
+                groups:groups,
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
-                users:[],
-                msg:"Error finding users"
+                groups:[],
+                msg:"Error finding groups"
             };
         }
     },
 
     /// Get by Id
-    get:async function(id){
+    getById:async function(id){
         try{
-            let user=await User.findById(id).exec();
+            let group=await Group.findById(id).exec();
             return {
                 status:200,
-                user:user,
+                group:group,
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
-                user:undefined,
-                msg:"Error finding user"
+                group:undefined,
+                msg:"Error finding group"
             };
         }
     },
 
     /// Create
-    create:async function(obj){
+    create:async function(id,obj){
         let {
-            firstName,
-            lastName,
-            email,
-            password,
+            name,
         }=obj;
 
-        let user=new User();
-        user.firstName=firstName;
-        user.lastName=lastName;
-        user.email=email;
-        user.password=await bcrypt.hash(password, 10);
+        let group=new Group();
+        group.name=name;
+        group.owner=id;
+        group.users.push(id);
 
         try{
+            let user=await User.findById(id).exec();
+            if(!user)
+                throw Error("User not found");
+
+            await group.save();
+
+            user.groups.push(group._id);
             await user.save();
+
             return {
                 status:200,
-                user:user,
+                group:group,
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
-                user:undefined,
-                msg:"Error creating user"
+                group:undefined,
+                msg:"Error creating group"
             };
         }
     },
@@ -75,31 +83,145 @@ module.exports={
     /// Update
     update:async function(id,obj){
         let {
-            firstName,
-            lastName,
-            email,
-            password,
+            name,
         }=obj;
 
         try{
-            await User.updateOne({
-                firstName:firstName,
-                lastName:lastName,
-                email:email,
-                password:password,
-            },{
-                _id:id
-            });
+
+            let group=await Group.findById(id).exec();
+            if(!group)
+                throw Error("Group not found");
+
+            group.name=name;
+            await group.save();
+
             return {
                 status:200,
-                user:user,
-                msg:`User ${id} updated`
+                group:group,
+                msg:`Group ${id} updated`
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
-                user:undefined,
-                msg:"Error updating user"
+                group:undefined,
+                msg:"Error updating group"
+            };
+        }
+    },
+
+    /// Add users
+    addUsers:async function(id,users){
+
+        try{
+            let group=await Group.findById(id).exec();
+            if(!group)
+                throw Error("Group not found");
+
+            for (var i = 0; i < users.length; i++) {
+                group.users.push(users[i]._id);
+            }
+
+            await group.save();
+
+            return {
+                status:200,
+                group:group,
+                msg:`Users added to group ${id}`
+            };
+        }catch(ex){
+            console.log(ex);
+            return {
+                status:400,
+                group:undefined,
+                msg:"Error updating users from group"
+            };
+        }
+    },
+
+    /// Add users
+    removeUsers:async function(id,users){
+
+        try{
+            let group=await Group.findById(id).exec();
+            if(!group)
+                throw Error("Group not found");
+
+            for (var i = 0; i < users.length; i++) {
+                group.users.pull(users[i]._id);
+            }
+
+            await group.save();
+
+            return {
+                status:200,
+                group:group,
+                msg:`Users added to group ${id}`
+            };
+        }catch(ex){
+            console.log(ex);
+            return {
+                status:400,
+                group:undefined,
+                msg:"Error removing users from group"
+            };
+        }
+    },
+
+    /// Add objects
+    addObjects:async function(id,objects){
+
+        try{
+            let group=await Group.findById(id).exec();
+            if(!group)
+                throw Error("Group not found");
+
+            for (var i = 0; i < objects.length; i++) {
+                group.objects.push(objects[i]._id);
+            }
+
+            await group.save();
+
+            return {
+                status:200,
+                group:group,
+                msg:`Objects added to group ${id}`
+            };
+        }catch(ex){
+            console.log(ex);
+            return {
+                status:400,
+                group:undefined,
+                msg:"Error adding objects to group"
+            };
+        }
+    },
+
+    /// Add objects
+    removeObjects:async function(id,objects){
+
+        try{
+            let group=await Group.findById(id).exec();
+            if(!group)
+                throw Error("Group not found");
+
+            for (var i = 0; i < objects.length; i++) {
+                group.objects.pull(users[i]._id);
+            }
+
+            await group.save();
+
+            return {
+                status:200,
+                group:group,
+                msg:`Objects remove of group ${id}`
+            };
+        }catch(ex){
+            console.log(ex);
+            return {
+                status:400,
+                group:undefined,
+                msg:"Error removing objects group"
             };
         }
     },
@@ -107,19 +229,18 @@ module.exports={
     /// Delete
     delete:async function(id){
         try{
-            await User.deleteOne({
+            await Group.deleteOne({
                 _id:id
             });
             return {
                 status:200,
-                user:user,
-                msg:`User ${id} deleted`
+                msg:`Group ${id} deleted`
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
-                user:undefined,
-                msg:"Error deleting user"
+                msg:"Error deleting group"
             };
         }
     }

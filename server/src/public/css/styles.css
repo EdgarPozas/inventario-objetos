@@ -3,7 +3,25 @@ body{
     padding:0;
     background-color: #dfdfdf;
 }
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
 .me-navbar{
     padding-left: 5%;
     padding-right: 5%;
+}
+.b-radius{
+    border-radius: 5px;
+}
+.w-30{
+    width: 30%;
+}
+.w-60{
+    width: 60%;
+}
+.m-ud-auto{
+    margin: auto 0;
 }
