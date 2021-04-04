@@ -1,0 +1,18 @@
+mixin modal(title,content,id,buttons)
+	div(tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" id=id).modal.fade
+		div(role="document").modal-dialog
+			.modal-content
+				.modal-header
+					h5.modal-title #{title}
+					button(type="button" data-bs-dismiss="modal" aria-label="Close").btn-close
+				.modal-body #{content}
+				.modal-footer
+					each button in buttons
+						if button.type=="close-secondary"
+							button(type="button" class="btn btn-secondary" data-bs-dismiss="modal") #{button.title}
+						else if button.type=="close-primary"
+							button(type="button" class="btn btn-primary" data-bs-dismiss="modal") #{button.title}
+						else if button.type=="secondary"
+							button(type="button" class="btn btn-secondary" id=button.id) #{button.title}
+						else if button.type=="primary"
+							button(type="button" class="btn btn-primary" id=button.id) #{button.title}

@@ -8,9 +8,12 @@ include ./shared/modal-register
 doctype html
 html
     head
-        +header("Inicio")
+        +header("Cuenta verificada")
     body
         +nav-bar()
+        div
+            h1 Excelente
+            p Has verificado tu correo, ahora podrás iniciar sesión
         +modal-login()
         +modal-register()
         +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])

@@ -2,6 +2,8 @@
 require("./src/models/database");
 const express=require("express");
 const bodyParser=require("body-parser");
+const session = require('express-session');
+const path=require("path");
 
 /// Import routers
 const homeRouter=require("./src/router/home-router");
@@ -19,6 +21,15 @@ const port=process.env.PORT||3000;
 
 /// Defining configurations
 app.set("view engine","pug");
+app.set("views",path.join(__dirname,"src/views"));
+app.use(express.static(path.join(__dirname,"./src/public")));
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.text());

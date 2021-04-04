@@ -8,9 +8,13 @@ include ./shared/modal-register
 doctype html
 html
     head
-        +header("Inicio")
+        +header("Valida tu cuenta")
     body
         +nav-bar()
+        if error==400
+            div(role="alert").alert.alert-danger Error al ingresar sesión, revisa los datos
+        else if error==401
+            div(role="alert").alert.alert-danger Error al registrar el usuario, revisa los datos
         +modal-login()
         +modal-register()
         +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])

@@ -1,23 +1,19 @@
 /// Initialize dependencies
 const express=require("express");
-const path=require("path");
 const app=express();
 /// Defining a router
 const router=express.Router();
 /// Import function
-const userFunctions=require("../functions/user-functions");
+const groupFunctions=require("../functions/group-functions");
 
-/// Define the view's folder
-app.set("view",path.join(__dirname,"../views"));
-
-/// Route GET /api/user
+/// Route GET /api/group
 router.get("/",async (req,res)=>{
     res.render("register");
 });
 
-/// Route POST /api/user
+/// Route POST /api/group
 router.post("/",async (req,res)=>{
-    let values=userFunctions.create(req.body);
+    let values=groupFunctions.create(req.body);
     res.send(values.status);
 });
 

@@ -8,9 +8,12 @@ include ./shared/modal-register
 doctype html
 html
     head
-        +header("Inicio")
+        +header("Verifica tu correo")
     body
         +nav-bar()
+        div
+            h1 Verifica tu correo
+            p Revisa tu correo y da click en el enlace para validar tu cuenta
         +modal-login()
         +modal-register()
         +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])

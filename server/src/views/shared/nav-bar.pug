@@ -1,0 +1,11 @@
+mixin nav-bar()
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light.me-navbar
+        .container-fluid
+            a(href=server+"/").navbar-brand  Inicio
+            button(type="button" data-bs-toggle="collapse" data-bs-target="#navbar").navbar-toggler
+                span.navbar-toggler-icon
+            div#navbar.collapse.navbar-collapse
+                .d-flex.w-100.justify-content-end
+                    div(data-bs-toggle="modal" data-bs-target="#loginModal").btn.btn-outline-success.m-2 Ingresar
+                    div(data-bs-toggle="modal" data-bs-target="#registerModal").btn.btn-outline-primary.m-2 Registrarse
+    
