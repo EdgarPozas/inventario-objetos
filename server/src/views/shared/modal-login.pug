@@ -6,9 +6,10 @@ mixin modal-login()
 					h5.modal-title Ingresar
 					button(type="button" data-bs-dismiss="modal" aria-label="Close").btn-close
 				.modal-body
-						label Correo
-						input(type="email" required name="email" placeholder="ejemplo@correo.com").form-control
-						label.mt-3 Contraseña
-						input(type="password" required name="password" placeholder="*********").form-control
+					label Correo
+					input(type="email" required name="email" placeholder="ejemplo@correo.com").form-control
+					label.mt-3 Contraseña
+					input(type="password" required name="password" placeholder="*********").form-control
 				.modal-footer
+					button(type="button" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#recoveryModal").btn.btn-outline-secondary Recuperar contraseña 
 					input(type="submit" value="Ingresar").btn.btn-outline-success

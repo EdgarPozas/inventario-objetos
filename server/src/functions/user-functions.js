@@ -25,9 +25,30 @@ module.exports={
     },
 
     /// Get by Id
-    get:async function(id){
+    getById:async function(id){
         try{
             let user=await User.findById(id).exec();
+            return {
+                status:200,
+                user:user,
+                msg:"ok"
+            };
+        }catch(ex){
+            console.log(ex);
+            return {
+                status:400,
+                user:undefined,
+                msg:"Error finding user"
+            };
+        }
+    },
+
+    /// Get by Id
+    getByEmail:async function(email){
+        try{
+            let user=await User.findOne({
+                email:email
+            }).exec();
             return {
                 status:200,
                 user:user,
@@ -138,6 +159,37 @@ module.exports={
         }
     },
 
+    /// Change password
+    changePassword:async function(id,obj){
+        let {
+            email,
+            password,
+        }=obj;
+
+        try{
+
+            let user=await User.findById(id).exec();
+            if(!user)
+                throw Error("User not found");
+            user.email=email;
+            user.password=await bcrypt.hash(password, 10);;
+            await user.save();
+
+            return {
+                status:200,
+                user:user,
+                msg:`User ${id} updated`
+            };
+        }catch(ex){
+            console.log(ex);
+            return {
+                status:400,
+                user:undefined,
+                msg:"Error updating user"
+            };
+        }
+    },
+
     /// Verify
     verify:async function(id){
         try{
@@ -145,7 +197,7 @@ module.exports={
             if(!user)
                 throw Error("User not found");
             user.verified=true;
-            user.save();
+            await user.save();
 
             return {
                 status:200,

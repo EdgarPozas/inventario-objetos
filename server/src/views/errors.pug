@@ -5,18 +5,17 @@ include ./shared/scripts
 include ./shared/modal
 include ./shared/modal-login
 include ./shared/modal-register
+include ./shared/modal-recovery
 doctype html
 html
     head
-        +header("Valida tu cuenta")
+        +header("Error")
     body
         +nav-bar()
-        if error==400
-            div(role="alert").alert.alert-danger Error al ingresar sesión, revisa los datos
-        else if error==401
-            div(role="alert").alert.alert-danger Error al registrar el usuario, revisa los datos
+        div(role="alert").alert.alert-danger #{error}
         +modal-login()
         +modal-register()
+        +modal-recovery()
         +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])
         +scripts()
         script(src=server+"/js/components/user-register-component.js")

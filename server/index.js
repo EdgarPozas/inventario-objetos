@@ -4,6 +4,7 @@ const express=require("express");
 const bodyParser=require("body-parser");
 const session = require('express-session');
 const path=require("path");
+const methodOverride = require('method-override')
 
 /// Import routers
 const homeRouter=require("./src/router/home-router");
@@ -23,7 +24,7 @@ const port=process.env.PORT||3000;
 app.set("view engine","pug");
 app.set("views",path.join(__dirname,"src/views"));
 app.use(express.static(path.join(__dirname,"./src/public")));
-
+app.use(methodOverride('_method'));
 app.use(session({
   secret: 'keyboard cat',
   resave: false,

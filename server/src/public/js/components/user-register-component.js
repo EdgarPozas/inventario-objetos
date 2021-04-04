@@ -1,4 +1,4 @@
-const app = new Vue({
+const appRegister = new Vue({
     el: '#registerModal',
     data: {
         password:"",

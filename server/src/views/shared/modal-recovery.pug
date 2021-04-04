@@ -1,0 +1,13 @@
+mixin modal-recovery()
+	div(tabindex="-1" aria-hidden="true").modal.fade#recoveryModal
+		.modal-dialog.modal-dialog-scrollable
+			form(action=server+"/user/recovery" method="post").modal-content
+				.modal-header
+					h5.modal-title Recuperar contraseña
+					button(type="button" data-bs-dismiss="modal" aria-label="Close").btn-close
+				.modal-body
+					label.mt-3 Correo
+					input(type="email" required name="email" placeholder="ejemplo@correo.com").form-control
+					p Se le inviará un correo con un link para cambiar la contraseña
+				.modal-footer
+					input(type="submit" value="Enviar correo").btn.btn-outline-success

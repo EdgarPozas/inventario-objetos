@@ -5,17 +5,17 @@ include ./shared/scripts
 include ./shared/modal
 include ./shared/modal-login
 include ./shared/modal-register
+include ./shared/modal-recovery
 doctype html
 html
     head
-        +header("Cuenta verificada")
+        +header("Mensaje")
     body
         +nav-bar()
-        div
-            h1 Excelente
-            p Has verificado tu correo, ahora podrás iniciar sesión
+        div(role="alert").alert.alert-primary #{message}
         +modal-login()
         +modal-register()
+        +modal-recovery()
         +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])
         +scripts()
         script(src=server+"/js/components/user-register-component.js")
