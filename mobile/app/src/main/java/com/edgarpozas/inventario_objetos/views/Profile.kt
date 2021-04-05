@@ -1,11 +1,12 @@
-package com.edgarpozas.inventario_objetos
+package com.edgarpozas.inventario_objetos.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.edgarpozas.inventario_objetos.R
 
-class MainActivity : AppCompatActivity() {
+class Profile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.profile)
     }
 }
