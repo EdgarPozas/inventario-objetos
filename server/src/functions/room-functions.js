@@ -1,20 +1,20 @@
 /// Import model
-const Objects=require("../models/object");
+const Room=require("../models/room");
 
 module.exports={
     /// Get all
     all:async function(){
         try{
-            let objects=await Objects.find({});
+            let rooms=await Room.find({});
             return {
                 status:200,
-                objects:objects,
+                rooms:rooms,
                 msg:"ok"
             };
         }catch(ex){
             return {
                 status:400,
-                objects:[],
+                rooms:[],
                 msg:ex
             };
         }
@@ -23,20 +23,20 @@ module.exports={
     /// Get by Id
     getById:async function(id){
         try{
-            let object=await Objects.findById(id).exec();
+            let room=await Room.findById(id).exec();
 
-            if(!object)
-                throw Error("Objects not found");
+            if(!room)
+                throw Error("Room not found");
 
             return {
                 status:200,
-                object:object,
+                room:room,
                 msg:"ok"
             };
         }catch(ex){
             return {
                 status:400,
-                object:undefined,
+                room:undefined,
                 msg:ex
             };
         }
@@ -50,21 +50,21 @@ module.exports={
                 description
             }=obj;
     
-            let object=new Objects();
-            object.name=name;
-            object.description=description;
+            let room=new Room();
+            room.name=name;
+            room.description=description;
 
-            await object.save();
+            await room.save();
 
             return {
                 status:200,
-                object:object,
+                room:room,
                 msg:"ok"
             };
         }catch(ex){
             return {
                 status:400,
-                object:undefined,
+                room:undefined,
                 msg:ex
             };
         }
@@ -78,24 +78,24 @@ module.exports={
                 description
             }=obj;
 
-            let object=await Objects.findById(id).exec();
-            if(!object)
-                throw Error("Objects not found");
+            let room=await Room.findById(id).exec();
+            if(!room)
+                throw Error("Room not found");
 
-            object.name=name;
-            object.description=description;
+            room.name=name;
+            room.description=description;
 
-            await object.save();
+            await room.save();
 
             return {
                 status:200,
-                object:object,
-                msg:`Objects ${id} updated`
+                room:room,
+                msg:`Room ${id} updated`
             };
         }catch(ex){
             return {
                 status:400,
-                object:undefined,
+                room:undefined,
                 msg:ex
             };
         }
@@ -104,12 +104,12 @@ module.exports={
     /// Delete
     delete:async function(id){
         try{
-            await Objects.deleteOne({
+            await Room.deleteOne({
                 _id:id
             });
             return {
                 status:200,
-                msg:`object ${id} deleted`
+                msg:`Room ${id} deleted`
             };
         }catch(ex){
             return {

@@ -1,4 +1,5 @@
 /// Initialize dependencies
+const express=require("express");
 const bcrypt=require("bcrypt");
 /// Import model
 const User=require("../models/user");
@@ -14,10 +15,11 @@ module.exports={
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
                 users:[],
-                msg:ex
+                msg:"Error finding users"
             };
         }
     },
@@ -26,44 +28,38 @@ module.exports={
     getById:async function(id){
         try{
             let user=await User.findById(id).exec();
-
-            if(!user)
-                throw Error("User not found");
-
             return {
                 status:200,
                 user:user,
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
                 user:undefined,
-                msg:ex
+                msg:"Error finding user"
             };
         }
     },
 
-    /// Get by Email
+    /// Get by Id
     getByEmail:async function(email){
         try{
             let user=await User.findOne({
                 email:email
             }).exec();
-
-            if(!user)
-                throw Error("User not found");
-
             return {
                 status:200,
                 user:user,
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
                 user:undefined,
-                msg:ex
+                msg:"Error finding user"
             };
         }
     },
@@ -71,9 +67,12 @@ module.exports={
     /// Login
     login:async function(email,password){
         try{
+
             let user=await User.findOne({
                 email:email
-            }).exec();
+            })
+            .populate("groups")
+            .exec();
 
             if(!user)
                 throw Error("User not found");
@@ -88,67 +87,67 @@ module.exports={
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
                 user:undefined,
-                msg:ex
+                msg:"Error finding user"
             };
         }
     },
 
     /// Create
     create:async function(obj){
+        let {
+            firstName,
+            lastName,
+            email,
+            password,
+        }=obj;
+
+        let user=new User();
+        user.firstName=firstName;
+        user.lastName=lastName;
+        user.email=email;
+        user.password=await bcrypt.hash(password, 10);
+
         try{
-            let {
-                firstName,
-                lastName,
-                email,
-                password,
-            }=obj;
-    
-            let user=new User();
-            user.firstName=firstName;
-            user.lastName=lastName;
-            user.email=email;
-            user.password=await bcrypt.hash(password, 10);
-
             await user.save();
-
             return {
                 status:200,
                 user:user,
                 msg:"ok"
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
                 user:undefined,
-                msg:ex
+                msg:"Error creating user"
             };
         }
     },
 
     /// Update
     update:async function(id,obj){
+        let {
+            firstName,
+            lastName,
+            email,
+            password,
+        }=obj;
+
         try{
-            let {
-                firstName,
-                lastName,
-                email,
-                password,
-                active
-            }=obj;
 
             let user=await User.findById(id).exec();
             if(!user)
                 throw Error("User not found");
-
             user.verified=email==user.email;
             user.firstName=firstName;
             user.lastName=lastName;
             user.email=email;
-            user.active=active;
-            user.password=await bcrypt.hash(password, 10);
+            if(password!="*******************")
+                user.password=await bcrypt.hash(password, 10);
 
             await user.save();
 
@@ -158,10 +157,42 @@ module.exports={
                 msg:`User ${id} updated`
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
                 user:undefined,
-                msg:ex
+                msg:"Error updating user"
+            };
+        }
+    },
+
+    /// Change password
+    changePassword:async function(id,obj){
+        let {
+            email,
+            password,
+        }=obj;
+
+        try{
+
+            let user=await User.findById(id).exec();
+            if(!user)
+                throw Error("User not found");
+            user.email=email;
+            user.password=await bcrypt.hash(password, 10);;
+            await user.save();
+
+            return {
+                status:200,
+                user:user,
+                msg:`User ${id} updated`
+            };
+        }catch(ex){
+            console.log(ex);
+            return {
+                status:400,
+                user:undefined,
+                msg:"Error updating user"
             };
         }
     },
@@ -172,7 +203,6 @@ module.exports={
             let user=await User.findById(id).exec();
             if(!user)
                 throw Error("User not found");
-
             user.verified=true;
             await user.save();
 
@@ -182,10 +212,11 @@ module.exports={
                 msg:`User ${id} account verified`
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
                 user:undefined,
-                msg:ex
+                msg:"Error verifing account user"
             };
         }
     },
@@ -201,9 +232,10 @@ module.exports={
                 msg:`User ${id} deleted`
             };
         }catch(ex){
+            console.log(ex);
             return {
                 status:400,
-                msg:ex
+                msg:"Error deleting user"
             };
         }
     }

@@ -7,10 +7,8 @@ const schema=new mongoose.Schema({
     lastName:String,
     email:String,
     password:String,
+    active:{ type:Boolean, default:true },
     verified:{ type:Boolean, default:false },
-    logged:{ type:Boolean, default:false },
-    groups:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
-    objects:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Object' }],
     createdAt:{ type:Date, default:Date.now }
 });
 
