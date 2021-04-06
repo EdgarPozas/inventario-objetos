@@ -47,12 +47,14 @@ module.exports={
         try{
             let {
                 name,
-                description
+                description,
+                id
             }=obj;
     
             let room=new Room();
             room.name=name;
             room.description=description;
+            room.createdBy=id;
 
             await room.save();
 

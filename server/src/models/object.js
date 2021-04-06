@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const schema=new mongoose.Schema({
     name:String,
     description:String,
-    function:String,
+    functionality:String,
     tags:[{type:String}],
     urlImage:String,
     urlSound:String,

@@ -47,12 +47,28 @@ module.exports={
         try{
             let {
                 name,
-                description
+                description,
+                functionality,
+                tags,
+                urlImage,
+                urlSound,
+                price,
+                sharedBy,
+                positions,
+                createdBy
             }=obj;
     
             let object=new Objects();
             object.name=name;
             object.description=description;
+            object.functionality=functionality;
+            object.tags=tags;
+            object.urlImage=urlImage;
+            object.urlSound=urlSound;
+            object.price=price;
+            object.sharedBy=sharedBy;
+            object.positions=positions;
+            object.createdBy=createdBy;
 
             await object.save();
 
@@ -75,15 +91,31 @@ module.exports={
         try{
             let {
                 name,
-                description
+                description,
+                functionality,
+                tags,
+                urlImage,
+                urlSound,
+                price,
+                sharedBy,
+                positions,
+                createdBy
             }=obj;
-
+    
             let object=await Objects.findById(id).exec();
             if(!object)
                 throw Error("Objects not found");
 
             object.name=name;
             object.description=description;
+            object.functionality=functionality;
+            object.tags=tags;
+            object.urlImage=urlImage;
+            object.urlSound=urlSound;
+            object.price=price;
+            object.sharedBy=sharedBy;
+            object.positions=positions;
+            object.createdBy=createdBy;
 
             await object.save();
 
