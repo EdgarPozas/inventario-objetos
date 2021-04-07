@@ -2,7 +2,7 @@ package com.edgarpozas.inventario_objetos.models
 
 import com.edgarpozas.inventario_objetos.utils.Utils
 
-data class Room(var id:String="",var name:String="", var description:String="", var createdBy:String=""){
+data class Objects(var id:String="", var name:String="", var description:String="", var createdBy:String=""){
 
 
     fun create(): Boolean{
@@ -25,7 +25,6 @@ data class Room(var id:String="",var name:String="", var description:String="", 
         id=""
         name=""
         description=""
-        createdBy=""
     }
 
 }

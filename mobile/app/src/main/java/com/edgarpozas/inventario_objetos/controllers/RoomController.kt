@@ -32,4 +32,12 @@ class RoomController(val room: Room) {
         }
         return deleted
     }
+
+    fun goToIndividual(room: com.edgarpozas.inventario_objetos.models.Room){
+        val destiny = Intent(
+            this.room.context,
+            RoomIndividual::class.java
+        )
+        this.room.startActivity(destiny)
+    }
 }

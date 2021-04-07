@@ -11,5 +11,8 @@
     <string name="button_add">Agregar</string>
     <string name="button_update">Actualizar</string>
     <string name="button_delete">Borrar</string>
+    <string name="title_activity_splash">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_name_room"
                 style="@style/InputStyle"
-                android:inputType="text"
+                android:inputType="textCapSentences|text"
                 android:textSize="15dp"
                 android:id="@+id/editRoomName"/>
             <TextView
@@ -34,7 +34,7 @@
                 style="@style/TextStyle"/>
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:hint="@string/hint_description_room"
                 style="@style/InputStyle"
                 android:inputType="textCapSentences|textNoSuggestions|textMultiLine"

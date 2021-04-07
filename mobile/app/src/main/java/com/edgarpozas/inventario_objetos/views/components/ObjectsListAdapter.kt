@@ -14,20 +14,21 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.RoomController
+import com.edgarpozas.inventario_objetos.models.Objects
 import com.edgarpozas.inventario_objetos.models.Room
 import com.google.android.material.snackbar.Snackbar
 
-class RoomListAdapter(
-        var roomView:com.edgarpozas.inventario_objetos.views.Room,
-        var rooms:List<Room>,
+class ObjectsListAdapter(
+        var objectsView:com.edgarpozas.inventario_objetos.views.Objects,
+        var objects:List<Objects>,
     ): BaseAdapter() {
 
     override fun getCount(): Int {
-        return rooms.count()
+        return objects.count()
     }
 
     override fun getItem(position: Int): Any {
-        return rooms[position]
+        return objects[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -35,10 +36,10 @@ class RoomListAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val layoutInflater:LayoutInflater= LayoutInflater.from(roomView.requireContext())
-        val v=layoutInflater.inflate(R.layout.room_list_item,null)
+        val layoutInflater:LayoutInflater= LayoutInflater.from(objectsView.requireContext())
+        val v=layoutInflater.inflate(R.layout.objects_list_item,null)
 
-        val room=rooms[position]
+        val room=objects[position]
 
         v.findViewById<TextView>(R.id.name).text = room.name
         v.findViewById<TextView>(R.id.description).text = room.description
@@ -46,10 +47,10 @@ class RoomListAdapter(
         val btnDelete: ImageButton?=v.findViewById(R.id.btnDelete)
 
         btnEdit?.setOnClickListener(View.OnClickListener {
-            roomView.editRoom(v,room)
+            objectsView.editObjects(v,room)
         })
         btnDelete?.setOnClickListener(View.OnClickListener {
-            roomView.deleteRoom(v,room)
+            objectsView.deleteObjects(v,room)
         })
 
         return v

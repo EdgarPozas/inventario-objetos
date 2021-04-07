@@ -5,6 +5,22 @@ class DataBase {
     private fun DataBase(){
     }
 
+    fun QuerySQL(){
+
+    }
+
+    fun QueryNoSQL(){
+
+    }
+
+    fun getQuerySQL(){
+
+    }
+
+    fun getQueryNoSQL(){
+
+    }
+
     companion object{
         var dataBase:DataBase?=null
 

@@ -3,7 +3,14 @@ package com.edgarpozas.inventario_objetos.models
 import com.edgarpozas.inventario_objetos.utils.Utils
 
 data class User(var id:String="",var firstName:String="",var lastName:String="",var email:String="",var password:String=""){
+    val dataBase=DataBase.getInstance()
+
+    fun getById(): Boolean{
+        return true
+    }
+
     fun login(): Boolean{
+
         return true
     }
 
@@ -29,5 +36,12 @@ data class User(var id:String="",var firstName:String="",var lastName:String="",
 
     fun isValidEmail():Boolean{
         return Utils.isEmailValid(email)
+    }
+
+    fun reset(){
+        id=""
+        firstName=""
+        lastName=""
+        password=""
     }
 }

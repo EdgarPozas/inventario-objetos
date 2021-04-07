@@ -18,14 +18,14 @@ import com.google.android.material.snackbar.Snackbar
 
 class Profile : Fragment(), View.OnClickListener {
 
-    val profileController:ProfileController= ProfileController(this)
-    var userAux: User=User()
-    var editFirstName:EditText?=null
-    var editLastName:EditText?=null
-    var editEmail:EditText?=null
-    var editPassword:EditText?=null
-    var editConfirmPassword:EditText?=null
-    val profileAlertDialog:GenericAlertDialog= GenericAlertDialog()
+    private val profileController:ProfileController= ProfileController(this)
+    private var userAux: User=User()
+    private var editFirstName:EditText?=null
+    private var editLastName:EditText?=null
+    private var editEmail:EditText?=null
+    private var editPassword:EditText?=null
+    private var editConfirmPassword:EditText?=null
+    private val profileAlertDialog:GenericAlertDialog= GenericAlertDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

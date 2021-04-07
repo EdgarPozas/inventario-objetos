@@ -7,11 +7,12 @@ import com.edgarpozas.inventario_objetos.R
 
 class GenericAlertDialog() {
 
-    fun createAlertDialog(context: Context,
-                          title:String,
-                          message:String,
-                          btnYes:DialogInterface.OnClickListener,
-                          btnNo:DialogInterface.OnClickListener
+    fun createAlertDialog(
+        context: Context,
+        title:String,
+        message:String,
+        btnYes:DialogInterface.OnClickListener,
+        btnNo:DialogInterface.OnClickListener
     ) : AlertDialog{
         return context.let {
             val builder = AlertDialog.Builder(it)

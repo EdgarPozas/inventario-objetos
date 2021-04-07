@@ -1,6 +1,7 @@
 package com.edgarpozas.inventario_objetos.views
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.ActionBar
@@ -11,14 +12,26 @@ import com.edgarpozas.inventario_objetos.models.User
 import com.google.android.material.snackbar.Snackbar
 
 class Register : AppCompatActivity() {
-    var registerController: RegisterController= RegisterController(this);
-    var user: User=User()
-    var confirmPassword=""
+    private var registerController: RegisterController= RegisterController(this);
+    private var user: User=User()
+    private var confirmPassword=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
-        title= R.string.register_title.toString()
+        title= getString(R.string.register_title)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onContextItemSelected(item)
     }
 
     fun register(view: View){

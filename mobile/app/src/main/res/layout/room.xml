@@ -10,11 +10,11 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/swipeRefreshRoom">
+        android:id="@+id/swipeRefresh">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/roomsListView"/>
+            android:id="@+id/listView"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -29,6 +29,6 @@
         android:src="@drawable/ic_baseline_add_24"
         android:backgroundTint="@color/primary"
         android:tintMode="@color/white"
-        android:id="@+id/btnAddRoom"
+        android:id="@+id/btnAdd"
         />
 </RelativeLayout>

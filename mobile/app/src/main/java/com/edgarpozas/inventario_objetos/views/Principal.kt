@@ -10,16 +10,17 @@ import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.PrincipalController
 import com.edgarpozas.inventario_objetos.views.components.GenericAlertDialog
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 
 
 class Principal : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var toolbar:Toolbar?=null
-    var drawer:DrawerLayout?=null
-    var toggle:ActionBarDrawerToggle?=null
-    var navigationView:NavigationView?=null
-    val principalController:PrincipalController= PrincipalController(this)
-    val closeSessionAlertDialog:GenericAlertDialog= GenericAlertDialog()
+    private var toolbar:Toolbar?=null
+    private var drawer:DrawerLayout?=null
+    private var toggle:ActionBarDrawerToggle?=null
+    private var navigationView:NavigationView?=null
+    private val principalController:PrincipalController= PrincipalController(this)
+    private val closeSessionAlertDialog:GenericAlertDialog= GenericAlertDialog()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,7 @@ class Principal : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
         )
         drawer?.addDrawerListener(toggle!!)
         toggle?.syncState()
+
 
         navigationView?.setNavigationItemSelectedListener(this)
     }
@@ -72,7 +74,7 @@ class Principal : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
                     this,
                     getString(R.string.close_session_title),
                     getString(R.string.close_session_message),
-                    { dialog,it->principalController.goToLogin()},
+                    { dialog,it->principalController.closeSession()},
                     { dialog,it-> dialog.dismiss()}
                 ).show()
                 return true

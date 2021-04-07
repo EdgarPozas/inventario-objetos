@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="Widget.Theme.Inventarioobjetos.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="SplashScreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">
+            @drawable/splash
+        </item>
+    </style>
+</resources>

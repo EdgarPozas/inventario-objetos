@@ -1,17 +1,18 @@
 package com.edgarpozas.inventario_objetos.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.LoginController
 import com.edgarpozas.inventario_objetos.models.User
 import com.google.android.material.snackbar.Snackbar
 
 class Login : AppCompatActivity() {
-    var loginController:LoginController=LoginController(this)
-    var user: User=User()
+    private var loginController:LoginController=LoginController(this)
+    private var user: User=User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
