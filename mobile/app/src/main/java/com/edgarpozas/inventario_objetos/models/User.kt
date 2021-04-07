@@ -2,31 +2,32 @@ package com.edgarpozas.inventario_objetos.models
 
 import com.edgarpozas.inventario_objetos.utils.Utils
 
-data class User(var firstName:String="",var lastName:String="",var email:String="",var password:String=""){
-    fun login(): Int{
-        if (email.isEmpty()|| password.isEmpty())
-            return -1
-        if(!Utils.isEmailValid(email))
-            return -2
-
-        return 0
+data class User(var id:String="",var firstName:String="",var lastName:String="",var email:String="",var password:String=""){
+    fun login(): Boolean{
+        return true
     }
 
-    fun register(): Int{
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()|| password.isEmpty())
-            return -1
-        if(!Utils.isEmailValid(email))
-            return -2
-
-        return 0
+    fun register(): Boolean{
+        return true
     }
 
-    fun recovery():Int{
-        if( email.isEmpty())
-            return -1
-        if(!Utils.isEmailValid(email))
-            return -2
+    fun recovery():Boolean{
+        return true
+    }
 
-        return 0
+    fun update():Boolean{
+        return true
+    }
+
+    fun delete():Boolean{
+        return true
+    }
+
+    fun isAllEmpty():Boolean{
+        return firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()|| password.isEmpty()
+    }
+
+    fun isValidEmail():Boolean{
+        return Utils.isEmailValid(email)
     }
 }

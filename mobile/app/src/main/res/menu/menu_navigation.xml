@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_profile"
+            android:icon="@drawable/ic_baseline_account_box_24"
+            android:title="@string/menu_profile"/>
+        <item
+            android:id="@+id/navigation_objects"
+            android:checked="true"
+            android:icon="@drawable/ic_baseline_emoji_objects_24"
+            android:title="@string/menu_objects"/>
+        <item
+            android:id="@+id/navigation_room"
+            android:icon="@drawable/ic_baseline_house_24"
+            android:title="@string/menu_room"/>
+        <item
+            android:id="@+id/navigation_list"
+            android:icon="@drawable/ic_baseline_format_list_numbered_24"
+            android:title="@string/menu_list"/>
+        <item
+            android:id="@+id/navigation_similar"
+            android:icon="@drawable/ic_baseline_search_24"
+            android:title="@string/menu_similar"/>
+        <item
+            android:id="@+id/navigation_close_session"
+            android:icon="@drawable/ic_baseline_exit_to_app_24"
+            android:title="@string/menu_close_session"/>
+    </group>
+</menu>

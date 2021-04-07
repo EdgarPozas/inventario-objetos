@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="passwordsNotMath">Las contraseñas no coinciden</string>
-    <string name="fieldsEmpty">Los campos están vacios</string>
-    <string name="emailFormat">Ingresa una dirección de correo válida</string>
+    <string name="passwords_not_math">Las contraseñas no coinciden</string>
+    <string name="fields_empty">Hay campos vacios</string>
+    <string name="email_format">Ingresa una dirección de correo válida</string>
+    <string name="error_register">Error al registrar tu usuario</string>
+    <string name="error_login">Error al ingresar sesión</string>
+    <string name="error_recovery">Error al recuperar tu contraseña</string>
+    <string name="error_update_user">Error al actualizar el usuario</string>
+    <string name="error_delete_user">Error al borrar al usuario</string>
+    <string name="error_create_room">Error al crear un espacio</string>
+    <string name="error_create_object">Error al crear un objeto</string>
+    <string name="error_update_room">Error al actualizar un espacio</string>
+    <string name="error_update_object">Error al actualizar un espacio</string>
+    <string name="error_delete_room">Error al borrar un espacio</string>
+    <string name="error_delete_object">Error al borrar un objeto</string>
 </resources>

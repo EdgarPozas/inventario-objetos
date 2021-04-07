@@ -1,6 +1,7 @@
 package com.edgarpozas.inventario_objetos.controllers
 
 import android.content.Intent
+import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.views.Login
 import com.edgarpozas.inventario_objetos.views.Principal
@@ -8,17 +9,14 @@ import com.edgarpozas.inventario_objetos.views.RecoveryPassword
 import com.edgarpozas.inventario_objetos.views.Register
 
 
-class RegisterController(val register: Register) {
-
-    fun register(user: User):Boolean{
-        return user.register()
-    }
+class PrincipalController(val principal: Principal) {
 
     fun goToLogin(){
         val destiny = Intent(
-            register.baseContext,
+            principal.baseContext,
             Login::class.java
         )
-        register.startActivity(destiny)
+        principal.startActivity(destiny)
     }
+
 }

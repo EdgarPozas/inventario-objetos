@@ -1,0 +1,4 @@
+<resources>
+    <string name="close_session_title">Cerrar sesión</string>
+    <string name="close_session_message">¿Estás seguro de cerrar sesión?</string>
+</resources>

@@ -38,7 +38,7 @@ class LoginController(val login: Login) {
         login.startActivity(destiny)
     }
 
-    fun login(user: User):Int{
+    fun login(user: User):Boolean{
         return user.login()
     }
 }

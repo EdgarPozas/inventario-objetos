@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="registerTitle">Registrarse</string>
-    <string name="firstName">Nombres</string>
-    <string name="lastName">Apellidos</string>
-    <string name="confirmPassword">Confirmar contraseña</string>
+    <string name="register_title">Registrarse</string>
+    <string name="first_name">Nombres</string>
+    <string name="last_name">Apellidos</string>
+    <string name="confirm_password">Confirmar contraseña</string>
     <string name="register">Registrar</string>
 </resources>

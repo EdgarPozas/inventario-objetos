@@ -10,7 +10,7 @@ import com.edgarpozas.inventario_objetos.models.User
 import com.google.android.material.snackbar.Snackbar
 
 class Login : AppCompatActivity() {
-    var loginController:LoginController?=LoginController(this)
+    var loginController:LoginController=LoginController(this)
     var user: User=User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,25 +19,31 @@ class Login : AppCompatActivity() {
     }
 
     fun goToRegister(view: View) {
-        loginController?.goToRegister()
+        loginController.goToRegister()
     }
 
     fun goToRecovery(view: View) {
-        loginController?.goToRecovery()
+        loginController.goToRecovery()
     }
 
     fun login(view: View) {
         user.email= findViewById<EditText>(R.id.editEmail)?.text.toString()
         user.password= findViewById<EditText>(R.id.editPassword)?.text.toString()
-        val loginCode=loginController?.login(user)
-        if(loginCode==-1){
-            Snackbar.make(view, R.string.fieldsEmpty, Snackbar.LENGTH_SHORT).show()
+
+        if(user.email.isEmpty() || user.password.isEmpty()){
+            Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
             return
         }
-        if(loginCode==-2){
-            Snackbar.make(view, R.string.emailFormat, Snackbar.LENGTH_SHORT).show()
+        if(!user.isValidEmail()){
+            Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
             return
         }
-        loginController?.goToPrincipal(user)
+
+        if(!loginController.login(user)){
+            Snackbar.make(view, R.string.error_login, Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        loginController.goToPrincipal(user)
     }
 }

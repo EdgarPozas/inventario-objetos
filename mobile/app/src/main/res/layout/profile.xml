@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.Register">
+    tools:context=".views.Profile">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -77,14 +77,26 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/register"
+                android:text="@string/update"
                 android:textSize="15dp"
                 android:padding="10dp"
                 android:layout_marginTop="20dp"
-                android:onClick="register"
+                android:id="@+id/btnUpdate"
+                />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textSize="15dp"
+                android:padding="10dp"
+                android:backgroundTint="@color/deleteColor"
+                android:layout_marginTop="20dp"
+                android:onClick="delete"
+                android:id="@+id/btnDelete"
                 />
 
         </LinearLayout>
 
     </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</FrameLayout>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="room_created">Espacio agregado</string>
+    <string name="room_updated">Espacio actualizado</string>
+    <string name="room_deleted">Espacio borrado</string>
+</resources>

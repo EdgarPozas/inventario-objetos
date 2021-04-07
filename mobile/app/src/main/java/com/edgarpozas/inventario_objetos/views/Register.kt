@@ -11,14 +11,14 @@ import com.edgarpozas.inventario_objetos.models.User
 import com.google.android.material.snackbar.Snackbar
 
 class Register : AppCompatActivity() {
-    var registerController: RegisterController?= RegisterController(this);
+    var registerController: RegisterController= RegisterController(this);
     var user: User=User()
     var confirmPassword=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
-        title= R.string.registerTitle.toString()
+        title= R.string.register_title.toString()
     }
 
     fun register(view: View){
@@ -29,19 +29,23 @@ class Register : AppCompatActivity() {
         confirmPassword= findViewById<EditText>(R.id.editConfirmPassword)?.text.toString()
 
         if(user.password!=confirmPassword){
-            Snackbar.make(view, R.string.passwordsNotMath, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, R.string.passwords_not_math, Snackbar.LENGTH_SHORT).show()
+            return
+        }
+        if(user.isAllEmpty()){
+            Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+            return
+        }
+        if(!user.isValidEmail()){
+            Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
             return
         }
 
-        val registerCode=registerController?.register(user)
-        if(registerCode==-1){
-            Snackbar.make(view, R.string.fieldsEmpty, Snackbar.LENGTH_SHORT).show()
+        if(!registerController.register(user)){
+            Snackbar.make(view, R.string.error_register, Snackbar.LENGTH_SHORT).show()
             return
         }
-        if(registerCode==-2){
-            Snackbar.make(view, R.string.emailFormat, Snackbar.LENGTH_SHORT).show()
-            return
-        }
-        registerController?.goToLogin()
+
+        registerController.goToLogin()
     }
 }

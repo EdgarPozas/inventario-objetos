@@ -2,8 +2,6 @@ package com.edgarpozas.inventario_objetos.models
 
 class DataBase {
 
-
-
     private fun DataBase(){
     }
 

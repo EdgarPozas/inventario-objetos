@@ -11,7 +11,7 @@ import com.edgarpozas.inventario_objetos.models.User
 import com.google.android.material.snackbar.Snackbar
 
 class RecoveryPassword : AppCompatActivity() {
-    var recoveryPasswordController: RecoveryPasswordController?= RecoveryPasswordController(this);
+    var recoveryPasswordController: RecoveryPasswordController= RecoveryPasswordController(this);
     var user: User=User()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,15 +22,21 @@ class RecoveryPassword : AppCompatActivity() {
     fun recovery(view: View) {
         user.email= findViewById<EditText>(R.id.editEmail)?.text.toString()
         user.password= findViewById<EditText>(R.id.editPassword)?.text.toString()
-        val recoveryCode=recoveryPasswordController?.recovery(user)
-        if(recoveryCode==-1){
-            Snackbar.make(view, R.string.fieldsEmpty, Snackbar.LENGTH_SHORT).show()
+
+        if(user.email.isEmpty() || user.password.isEmpty()){
+            Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
             return
         }
-        if(recoveryCode==-2){
-            Snackbar.make(view, R.string.emailFormat, Snackbar.LENGTH_SHORT).show()
+        if(user.isValidEmail()){
+            Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
             return
         }
-        recoveryPasswordController?.goToLogin()
+
+        if(!recoveryPasswordController.recovery(user)){
+            Snackbar.make(view, R.string.error_recovery, Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        recoveryPasswordController.goToLogin()
     }
 }

@@ -1,0 +1,10 @@
+<resources>
+    <string name="update">Actualizar</string>
+    <string name="delete">Borrar</string>
+    <string name="update_user_title">Actualizar usuario</string>
+    <string name="delete_user_title">Borrar usuario</string>
+    <string name="update_user_content">¿Estás seguro de querer actualizar el usuario?</string>
+    <string name="delete_user_content">¿Estás seguro de querer borrar tu cuenta?</string>
+    <string name="user_updated">Usuario actualizado</string>
+    <string name="user_deleted">Usuario borrado</string>
+</resources>

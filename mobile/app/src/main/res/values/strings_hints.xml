@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hintFirstName">Edgar</string>
-    <string name="hintLastName">Pozas</string>
-    <string name="hintEmail">ejemplo@correo.com</string>
-    <string name="hintPassword">**********</string>
+    <string name="hint_first_name">Edgar</string>
+    <string name="hint_last_name">Pozas</string>
+    <string name="hint_email">ejemplo@correo.com</string>
+    <string name="hint_password">**********</string>
+    <string name="hint_name_room">Sala</string>
+    <string name="hint_description_room">Este cuarto se encuentra entrando a la casa...</string>
 </resources>

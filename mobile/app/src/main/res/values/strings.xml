@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">inventario-objetos</string>
+
+    <string name="nav_open">Drawer abierto</string>
+    <string name="nav_close">Drawer cerrado</string>
+
+    <string name="button_yes">Sí</string>
+    <string name="button_no">No</string>
+    <string name="button_accept">Aceptar</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_add">Agregar</string>
+    <string name="button_update">Actualizar</string>
+    <string name="button_delete">Borrar</string>
+
 </resources>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="menu_welcome">¡Bienvenido!</string>
+    <string name="menu_instructions">Selecciona una opción</string>
+
+    <string name="menu_profile">Mi perfil</string>
+    <string name="menu_objects">Todos los objetos</string>
+    <string name="menu_room">Espacios de la casa</string>
+    <string name="menu_list">Listar subconjunto</string>
+    <string name="menu_similar">Semejantes</string>
+    <string name="menu_close_session">Cerrar sesión</string>
+</resources>

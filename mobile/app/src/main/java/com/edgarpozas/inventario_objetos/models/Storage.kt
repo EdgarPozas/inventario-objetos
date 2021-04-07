@@ -3,6 +3,7 @@ package com.edgarpozas.inventario_objetos.models
 class Storage {
 
     var user:User=User()
+    var rooms:MutableList<Room> = ArrayList<Room>()
 
 
     private fun Storage(){

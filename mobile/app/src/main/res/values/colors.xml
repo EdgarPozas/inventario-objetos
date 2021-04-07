@@ -4,6 +4,7 @@
     <color name="primaryVariant">#000051</color>
     <color name="secondary">#3f51b5</color>
     <color name="secondaryVariant">#002984</color>
+    <color name="deleteColor">#840000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

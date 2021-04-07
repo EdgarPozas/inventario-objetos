@@ -10,7 +10,7 @@ import com.edgarpozas.inventario_objetos.views.Register
 
 class RecoveryPasswordController(val recoveryPassword: RecoveryPassword) {
 
-    fun recovery(user: User):Int{
+    fun recovery(user: User):Boolean{
         return user.recovery()
     }
 
