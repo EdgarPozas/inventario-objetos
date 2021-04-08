@@ -24,7 +24,6 @@ class Login : AppCompatActivity() {
         setContentView(R.layout.login)
     }
 
-
     fun goToRegister(view: View) {
         loginController.goToRegister()
     }
@@ -52,7 +51,7 @@ class Login : AppCompatActivity() {
                 return@async
             }
 
-            loginController.goToPrincipal(user)
+            loginController.goToPrincipal()
         }
     }
 }

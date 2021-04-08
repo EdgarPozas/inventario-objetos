@@ -61,6 +61,7 @@ class RecoveryPassword : AppCompatActivity() {
                 Snackbar.make(view, R.string.error_recovery, Snackbar.LENGTH_SHORT).show()
                 return@async
             }
+            Snackbar.make(view, R.string.sent_email, Snackbar.LENGTH_SHORT).show()
             recoveryPasswordController.goToLogin()
         }
 

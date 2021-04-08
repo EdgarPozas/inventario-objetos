@@ -31,7 +31,7 @@ class LoginController(val login: Login) {
         login.startActivity(destiny)
     }
 
-    fun goToPrincipal(user: User){
+    fun goToPrincipal(){
 
         val sharedPreferences: SharedPreferences =login.getSharedPreferences(
             ID,
@@ -40,10 +40,8 @@ class LoginController(val login: Login) {
 
         val editor = sharedPreferences.edit()
         editor.clear()
-        editor.putString(USERID, user.id)
+        editor.putString(USERID, Storage.getInstance().user.id)
         editor.apply()
-
-        Storage.getInstance().user=user
 
         val destiny = Intent(
             login.baseContext,
@@ -55,6 +53,9 @@ class LoginController(val login: Login) {
     }
 
     suspend fun login(user: User):Boolean{
-        return user.login(login)
+        val userLogged=User.login(login,user)
+        if(userLogged!=null)
+            Storage.getInstance().user=userLogged
+        return userLogged!=null
     }
 }

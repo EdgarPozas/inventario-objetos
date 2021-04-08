@@ -2,6 +2,7 @@
 <resources>
     <string name="recovery_title">Recuperar contraseña</string>
     <string name="recovery_email">Correo</string>
-    <string name="recovery_instructions">Ingresa tu correo para enviarte las claves de acceso</string>
+    <string name="recovery_instructions">Ingresa tu correo para poder ayudarte a recuperar tu contraseña</string>
     <string name="send_email">Enviar correo</string>
+    <string name="sent_email">Correo de recuperación enviado</string>
 </resources>

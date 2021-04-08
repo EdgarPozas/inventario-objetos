@@ -16,10 +16,8 @@ import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.RoomController
 import com.edgarpozas.inventario_objetos.models.Room
 import com.edgarpozas.inventario_objetos.models.Storage
-import com.edgarpozas.inventario_objetos.views.components.GenericAlertDialog
-import com.edgarpozas.inventario_objetos.views.components.ObjectsListAdapter
-import com.edgarpozas.inventario_objetos.views.components.RoomAlertDialog
-import com.edgarpozas.inventario_objetos.views.components.RoomListAdapter
+import com.edgarpozas.inventario_objetos.utils.Utils
+import com.edgarpozas.inventario_objetos.views.components.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
@@ -70,20 +68,32 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
 
     fun refresh(){
         swipeRefresh?.isRefreshing=true
+        val room=this
         scope.async {
+            roomController.getAll()
+            adapter= RoomListAdapter(room,Storage.getInstance().rooms);
             listView?.adapter=adapter;
             swipeRefresh?.isRefreshing=false
         }
     }
 
     fun createRoom(view:View){
+        if(!Utils.isNetworkAvailable(view.context)){
+            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
         roomAlertDialog.room=Room()
         val alertDialog=roomAlertDialog.createAlertDialog(
             getString(R.string.add_room_title)
         )
 
         alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_add),DialogInterface.OnClickListener{item,it->
-            val room:Room=Room(
+            if(!Utils.isNetworkAvailable(view.context)){
+                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                return@OnClickListener
+            }
+            val room=Room(
                 "",
                 alertDialog.findViewById<EditText>(R.id.editRoomName).text.toString(),
                 alertDialog.findViewById<EditText>(R.id.editDescriptionRoom).text.toString(),
@@ -117,12 +127,16 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
         )
 
         alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_update), DialogInterface.OnClickListener{ item, it->
-
+            if(!Utils.isNetworkAvailable(view.context)){
+                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                return@OnClickListener
+            }
             room.name=alertDialog.findViewById<EditText>(R.id.editRoomName).text.toString()
             room.description=alertDialog.findViewById<EditText>(R.id.editDescriptionRoom).text.toString()
 
             if(room.isAllEmpty()){
                 Snackbar.make(view,R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+                refresh()
                 return@OnClickListener
             }
             scope.async {
@@ -146,7 +160,11 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
             view.context,
             getString(R.string.delete_room_title),
             getString(R.string.delete_room_content),
-            { dialog,it->
+            DialogInterface.OnClickListener{ dialog,it->
+                if(!Utils.isNetworkAvailable(view.context)){
+                    Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                    return@OnClickListener
+                }
                 scope.async {
                     if(roomController.delete(room)){
                         Snackbar.make(view,R.string.room_deleted, Snackbar.LENGTH_SHORT).show()
@@ -156,7 +174,7 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
                     }
                 }
             },
-            { dialog,it->
+            DialogInterface.OnClickListener{ dialog,it->
                 dialog.dismiss()
             }
         ).show()

@@ -12,7 +12,7 @@ import com.edgarpozas.inventario_objetos.views.Register
 class RecoveryPasswordController(val recoveryPassword: RecoveryPassword) {
 
     suspend fun recovery(user: User):Boolean{
-        return user.recovery(recoveryPassword)
+        return User.recovery(recoveryPassword,user)
     }
 
     fun goToLogin(){

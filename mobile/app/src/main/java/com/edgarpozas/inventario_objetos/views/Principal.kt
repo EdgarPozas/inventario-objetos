@@ -57,6 +57,9 @@ class Principal : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
             R.id.navigation_profile -> {
                 ft.replace(R.id.content, Profile()).commit()
             }
+            R.id.navigation_people -> {
+                ft.replace(R.id.content, People()).commit()
+            }
             R.id.navigation_objects -> {
                 ft.replace(R.id.content, Objects()).commit()
             }

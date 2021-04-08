@@ -13,7 +13,7 @@
         android:gravity="bottom|center_horizontal"
         android:width="100dp"
         android:height="30dp"
-        android:bottom="20dp">
+        android:bottom="50dp">
         <bitmap
             android:src="@drawable/ic_nombre"/>
     </item>

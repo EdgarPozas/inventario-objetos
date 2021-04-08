@@ -36,8 +36,8 @@ class DataBase {
         val client = HttpClient(CIO) {
             expectSuccess = false
         }
-        client.close()
         val response: HttpResponse = client.get(SERVER+path)
+        client.close()
         return JSONObject(response.readText())
     }
 

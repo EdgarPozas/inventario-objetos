@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.RoomIndividual">
+    tools:context=".views.Profile"
+    android:windowSoftInputMode="stateHidden">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Inventarioobjetos">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name_room"
+                android:focusable="false"
+                style="@style/TextStyle"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/InputStyle"
+                android:enabled="false"
+                android:focusable="false"
+                android:id="@+id/editRoomName"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description_room"
+                style="@style/TextStyle"/>
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <EditText
+                android:id="@+id/editDescriptionRoom"
+                style="@style/InputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="155dp"
+                android:focusable="false"
+                android:gravity="top"
+                android:enabled="false"
+                android:inputType="textMultiLine" />
 
-</LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

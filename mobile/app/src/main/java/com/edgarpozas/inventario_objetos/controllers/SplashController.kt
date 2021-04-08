@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import com.edgarpozas.inventario_objetos.models.Storage
+import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.utils.ID
 import com.edgarpozas.inventario_objetos.utils.USERID
 import com.edgarpozas.inventario_objetos.utils.Utils
@@ -25,11 +26,21 @@ class SplashController(val splash: Splash) {
         )
 
         if (sharedPreferences.contains(USERID)){
-            destiny = Intent(
-                splash.baseContext,
-                Principal::class.java
-            )
-            Storage.getInstance().user.getById(splash)
+            val id=sharedPreferences.getString(USERID,"")!!
+            if(id.isNotEmpty()){
+                val user= User.getById(splash,id)
+                if(user!=null){
+                    destiny = Intent(
+                        splash.baseContext,
+                        Principal::class.java
+                    )
+                    Storage.getInstance().user=user
+                }else{
+                    val editor = sharedPreferences.edit()
+                    editor.clear()
+                    editor.apply()
+                }
+            }
         }
 
         splash.startActivity(destiny)

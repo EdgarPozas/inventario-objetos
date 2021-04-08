@@ -69,6 +69,7 @@ class Register : AppCompatActivity() {
                 Snackbar.make(view, R.string.error_register, Snackbar.LENGTH_SHORT).show()
                 return@async
             }
+            Snackbar.make(view, R.string.registered, Snackbar.LENGTH_SHORT).show()
             registerController.goToLogin()
         }
     }

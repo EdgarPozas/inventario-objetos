@@ -18,6 +18,7 @@ import com.edgarpozas.inventario_objetos.controllers.RoomController
 import com.edgarpozas.inventario_objetos.models.Objects
 import com.edgarpozas.inventario_objetos.models.Room
 import com.edgarpozas.inventario_objetos.models.Storage
+import com.edgarpozas.inventario_objetos.utils.Utils
 import com.edgarpozas.inventario_objetos.views.components.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -69,19 +70,34 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
 
     fun refresh(){
         swipeRefresh?.isRefreshing=true
+        val objects=this
         scope.async {
+
+            objectsController.getAll()
+
+            adapter= ObjectsListAdapter(objects,Storage.getInstance().objects);
             listView?.adapter=adapter;
             swipeRefresh?.isRefreshing=false
         }
     }
 
     fun createObjects(view:View){
+
+        if(!Utils.isNetworkAvailable(view.context)){
+            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
         objectsAlertDialog.objects= Objects()
         val alertDialog=objectsAlertDialog.createAlertDialog(
             getString(R.string.add_room_title)
         )
 
         alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_add),DialogInterface.OnClickListener{item,it->
+            if(!Utils.isNetworkAvailable(view.context)){
+                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                return@OnClickListener
+            }
             val objects:Objects=Objects(
                 "",
                 alertDialog.findViewById<EditText>(R.id.editRoomName).text.toString(),
@@ -110,18 +126,26 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
     }
 
     fun editObjects(view:View,objects:Objects){
+        if(!Utils.isNetworkAvailable(view.context)){
+            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            return
+        }
         objectsAlertDialog.objects=objects
         val alertDialog=objectsAlertDialog.createAlertDialog(
             getString(R.string.update_room_title)
         )
 
         alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_update), DialogInterface.OnClickListener{ item, it->
-
+            if(!Utils.isNetworkAvailable(view.context)){
+                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                return@OnClickListener
+            }
             objects.name=alertDialog.findViewById<EditText>(R.id.editRoomName).text.toString()
             objects.description=alertDialog.findViewById<EditText>(R.id.editDescriptionRoom).text.toString()
 
             if(objects.isAllEmpty()){
                 Snackbar.make(view,R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+                refresh()
                 return@OnClickListener
             }
             scope.async {
@@ -141,11 +165,19 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
     }
 
     fun deleteObjects(view:View,objects:Objects){
+        if(!Utils.isNetworkAvailable(view.context)){
+            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            return
+        }
         deleteAlertDialog.createAlertDialog(
             view.context,
             getString(R.string.delete_room_title),
             getString(R.string.delete_room_content),
-            { dialog,it->
+            DialogInterface.OnClickListener{ dialog,it->
+                if(!Utils.isNetworkAvailable(view.context)){
+                    Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                    return@OnClickListener
+                }
                 scope.async {
                     if(objectsController.delete(objects)){
                         Snackbar.make(view,R.string.room_deleted, Snackbar.LENGTH_SHORT).show()
@@ -155,7 +187,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
                     }
                 }
             },
-            { dialog,it->
+            DialogInterface.OnClickListener{ dialog,it->
                 dialog.dismiss()
             }
         ).show()

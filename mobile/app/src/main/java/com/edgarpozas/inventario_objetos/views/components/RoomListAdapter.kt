@@ -46,10 +46,10 @@ class RoomListAdapter(
         val btnDelete: ImageButton?=v.findViewById(R.id.btnDelete)
 
         btnEdit?.setOnClickListener(View.OnClickListener {
-            roomView.editRoom(v,room)
+            roomView.editRoom(roomView.requireView(),room)
         })
         btnDelete?.setOnClickListener(View.OnClickListener {
-            roomView.deleteRoom(v,room)
+            roomView.deleteRoom(roomView.requireView(),room)
         })
 
         return v

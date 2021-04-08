@@ -6,6 +6,10 @@
             android:icon="@drawable/ic_baseline_account_box_24"
             android:title="@string/menu_profile"/>
         <item
+            android:id="@+id/navigation_people"
+            android:icon="@drawable/ic_baseline_people_alt_24"
+            android:title="@string/menu_people"/>
+        <item
             android:id="@+id/navigation_objects"
             android:checked="true"
             android:icon="@drawable/ic_baseline_emoji_objects_24"

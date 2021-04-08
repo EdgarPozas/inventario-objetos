@@ -5,6 +5,7 @@ class Storage {
     var user:User=User()
     var rooms:MutableList<Room> = ArrayList()
     var objects:MutableList<Objects> = ArrayList()
+    var users:MutableList<User> = ArrayList()
 
 
     private fun Storage(){

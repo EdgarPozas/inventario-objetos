@@ -6,28 +6,25 @@ import com.edgarpozas.inventario_objetos.views.*
 
 class ObjectsController(val objects: Objects) {
 
-    suspend fun create(objects: com.edgarpozas.inventario_objetos.models.Objects):Boolean{
-        val created=objects.create(this.objects)
-        if(created) {
-            Storage.getInstance().objects.add(objects)
+    suspend fun getAll() {
+        Storage.getInstance().objects.clear()
+        val objects= com.edgarpozas.inventario_objetos.models.Objects.getAll(objects.requireContext())
+        if(objects!=null){
+            for(object_ in objects){
+                Storage.getInstance().objects.add(object_)
+            }
         }
-        return created
+    }
+
+    suspend fun create(objects: com.edgarpozas.inventario_objetos.models.Objects):Boolean{
+        return objects.create(this.objects.requireContext())
     }
 
     suspend fun update(objects: com.edgarpozas.inventario_objetos.models.Objects):Boolean{
-        val updated=objects.update(this.objects)
-        if(updated){
-            val index = Storage.getInstance().objects.indexOf(objects)
-            Storage.getInstance().objects[index]=objects
-        }
-        return updated
+        return objects.update(this.objects.requireContext())
     }
 
     suspend fun delete(objects: com.edgarpozas.inventario_objetos.models.Objects):Boolean{
-        val deleted=objects.delete(this.objects)
-        if(deleted){
-            Storage.getInstance().objects.remove(objects)
-        }
-        return deleted
+        return objects.delete(this.objects.requireContext())
     }
 }

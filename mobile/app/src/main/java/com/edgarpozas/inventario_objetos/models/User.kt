@@ -1,70 +1,110 @@
 package com.edgarpozas.inventario_objetos.models
 
 import android.content.Context
-import android.webkit.JsPromptResult
 import com.edgarpozas.inventario_objetos.utils.Utils
-import com.edgarpozas.inventario_objetos.views.Profile
 import io.ktor.http.*
+import org.json.JSONArray
 import org.json.JSONObject
 
-data class User(var id:String="",var firstName:String="",var lastName:String="",var email:String="",var password:String=""){
-    val dataBase=DataBase.getInstance()
+data class User(var id:String="",var firstName:String="",var lastName:String="",var email:String="",var password:String="",var active:Boolean=false,var verified:Boolean=false){
+    private val dataBase=DataBase.getInstance()
 
-    suspend fun getById(context: Context): Boolean{
-        if(!Utils.isNetworkAvailable(context)){
-            return false
-        }
-        val res=dataBase.getQueryHttp(context,"/api/user/id/$id")
-        val status:Int=res["status"].toString().toInt()
-        if(status==200){
-            val user: JSONObject =res.getJSONObject("user")
-            createFromJSON(user)
-        }
-        return status==200
-    }
+    companion object{
 
-    suspend fun getByEmail(context: Context): Boolean{
-        if(!Utils.isNetworkAvailable(context)){
-            return false
+        suspend fun getById(context: Context,id: String): User? {
+            if(!Utils.isNetworkAvailable(context)){
+                return null
+            }
+            val dataBase=DataBase.getInstance()
+            val res=dataBase.getQueryHttp(context,"/api/user/id/$id")
+            val status:Int=res["status"].toString().toInt()
+            if(status==200){
+                val json: JSONObject =res.getJSONObject("user")
+                return createFromJSON(json)
+            }
+            return null
         }
-        val res=dataBase.getQueryHttp(context,"/api/user/email/$email")
-        val status:Int=res["status"].toString().toInt()
-        if(status==200){
-            val user: JSONObject =res.getJSONObject("user")
-            createFromJSON(user)
-        }
-        return status==200
-    }
 
-    suspend fun login(context: Context): Boolean{
-        if(!Utils.isNetworkAvailable(context)){
-            return false
+        suspend fun getByEmail(context: Context,email: String): Boolean{
+            if(!Utils.isNetworkAvailable(context)){
+                return false
+            }
+            val dataBase=DataBase.getInstance()
+            val res=dataBase.getQueryHttp(context,"/api/user/email/$email")
+            val status:Int=res["status"].toString().toInt()
+            if(status==200){
+                val user: JSONObject =res.getJSONObject("user")
+                createFromJSON(user)
+            }
+            return status==200
         }
-        val res=dataBase.sendQueryHttp(context,"/api/user/login", HttpMethod.Post,toJSON())
-        val status:Int=res["status"].toString().toInt()
-        if(status==200){
-            val user: JSONObject =res.getJSONObject("user")
-            createFromJSON(user)
-        }
-        return status==200
-    }
 
-    suspend fun register(context: Context): Boolean{
-        if(!Utils.isNetworkAvailable(context)){
-            return false
-        }
-        val res=dataBase.sendQueryHttp(context,"/api/user", HttpMethod.Post,toJSON())
-        val status:Int=res["status"].toString().toInt()
-        return status==200
-    }
+        suspend fun getAll(context: Context): ArrayList<User>? {
 
-    suspend fun recovery(context: Context):Boolean{
-        if(!Utils.isNetworkAvailable(context)){
-            return false
+            if(!Utils.isNetworkAvailable(context)){
+                return null
+            }
+            val dataBase=DataBase.getInstance()
+            val res=dataBase.getQueryHttp(context,"/api/user")
+            val status:Int=res["status"].toString().toInt()
+            if(status==200){
+                val list =ArrayList<User>()
+                val users: JSONArray =res.getJSONArray("users")
+                for (i in 0 until users.length()){
+                    val user= createFromJSON(users.getJSONObject(i))
+                    list.add(user)
+                }
+                return list
+            }
+            return null
         }
-        val res=dataBase.sendQueryHttp(context,"/api/email/recovery", HttpMethod.Post,toJSON())
-        val status:Int=res["status"].toString().toInt()
-        return status==200
+
+        suspend fun login(context: Context,user:User): User?{
+            if(!Utils.isNetworkAvailable(context)){
+                return null
+            }
+            val dataBase=DataBase.getInstance()
+            val res=dataBase.sendQueryHttp(context,"/api/user/login", HttpMethod.Post,user.toJSON())
+            val status:Int=res["status"].toString().toInt()
+            if(status==200){
+                val user: JSONObject =res.getJSONObject("user")
+                return createFromJSON(user)
+            }
+            return null
+        }
+
+        suspend fun register(context: Context,user:User): Boolean{
+            if(!Utils.isNetworkAvailable(context)){
+                return false
+            }
+            val dataBase=DataBase.getInstance()
+            val res=dataBase.sendQueryHttp(context,"/api/user", HttpMethod.Post,user.toJSON())
+            val status:Int=res["status"].toString().toInt()
+            return status==200
+        }
+
+        suspend fun recovery(context: Context,user:User):Boolean{
+            if(!Utils.isNetworkAvailable(context)){
+                return false
+            }
+            val dataBase=DataBase.getInstance()
+            val res=dataBase.sendQueryHttp(context,"/api/email/recovery", HttpMethod.Post,user.toJSON())
+            val status:Int=res["status"].toString().toInt()
+            println(status)
+            return status==200
+        }
+
+        fun createFromJSON(json:JSONObject):User{
+            val user=User()
+            user.id=json.getString("_id")
+            user.firstName=json.getString("firstName")
+            user.lastName=json.getString("lastName")
+            user.email=json.getString("email")
+            user.password=json.getString("password")
+            user.verified=json.getBoolean("verified")
+            user.active=json.getBoolean("active")
+            return user
+        }
     }
 
     suspend fun update(context: Context):Boolean{
@@ -99,6 +139,8 @@ data class User(var id:String="",var firstName:String="",var lastName:String="",
         lastName=""
         email=""
         password=""
+        verified=false
+        active=false
     }
 
     fun toJSON():JSONObject{
@@ -108,12 +150,5 @@ data class User(var id:String="",var firstName:String="",var lastName:String="",
         json.put("email",email)
         json.put("password",password)
         return json
-    }
-    fun createFromJSON(json:JSONObject){
-        id=json["_id"].toString()
-        firstName=json["firstName"].toString()
-        lastName=json["lastName"].toString()
-        email=json["email"].toString()
-        password=json["password"].toString()
     }
 }

@@ -43,11 +43,11 @@ class Profile : Fragment(), View.OnClickListener {
     ): View? {
         val view= inflater.inflate(R.layout.profile, container, false)
 
-        editFirstName=view.findViewById<EditText>(R.id.editFirstName)
-        editLastName=view.findViewById<EditText>(R.id.editLastName)
-        editEmail=view.findViewById<EditText>(R.id.editEmail)
-        editPassword=view.findViewById<EditText>(R.id.editPassword)
-        editConfirmPassword=view.findViewById<EditText>(R.id.editConfirmPassword)
+        editFirstName=view.findViewById(R.id.editFirstName)
+        editLastName=view.findViewById(R.id.editLastName)
+        editEmail=view.findViewById(R.id.editEmail)
+        editPassword=view.findViewById(R.id.editPassword)
+        editConfirmPassword=view.findViewById(R.id.editConfirmPassword)
 
         updateFields()
 
@@ -102,18 +102,19 @@ class Profile : Fragment(), View.OnClickListener {
             builder.apply {
                 setTitle(R.string.update_user_title)
                 setMessage(R.string.update_user_content)
-                setPositiveButton(R.string.button_yes, DialogInterface.OnClickListener { dialog, id ->
+                setPositiveButton(R.string.button_yes) { dialog, id ->
                     scope.async {
-                        if(profileController.update(Storage.getInstance().user)){
+                        if (profileController.update(Storage.getInstance().user)) {
                             Snackbar.make(view, R.string.user_updated, Snackbar.LENGTH_SHORT).show()
-                        }else{
-                            Snackbar.make(view, R.string.error_update_user, Snackbar.LENGTH_SHORT).show()
+                        } else {
+                            Snackbar.make(view, R.string.error_update_user, Snackbar.LENGTH_SHORT)
+                                .show()
                         }
                     }
-                })
-                setNegativeButton(R.string.button_no, DialogInterface.OnClickListener { dialog, id ->
+                }
+                setNegativeButton(R.string.button_no) { dialog, id ->
                     dialog.dismiss()
-                })
+                }
             }
             builder.create()
         }
