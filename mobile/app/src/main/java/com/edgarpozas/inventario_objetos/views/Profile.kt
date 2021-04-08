@@ -13,11 +13,17 @@ import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.ProfileController
 import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.models.User
+import com.edgarpozas.inventario_objetos.utils.Utils
 import com.edgarpozas.inventario_objetos.views.components.GenericAlertDialog
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 
 class Profile : Fragment(), View.OnClickListener {
 
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private val profileController:ProfileController= ProfileController(this)
     private var userAux: User=User()
     private var editFirstName:EditText?=null
@@ -64,8 +70,13 @@ class Profile : Fragment(), View.OnClickListener {
         val password=editPassword?.text.toString()
         val confirmPassword= editConfirmPassword?.text.toString()
 
+        if(!Utils.isNetworkAvailable(context)){
+            Snackbar.make(view, R.string.error_no_internet, Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
         if(password!=confirmPassword){
-            Snackbar.make(view, R.string.passwords_not_math, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, R.string.passwords_no_match, Snackbar.LENGTH_SHORT).show()
             return
         }
 
@@ -92,10 +103,12 @@ class Profile : Fragment(), View.OnClickListener {
                 setTitle(R.string.update_user_title)
                 setMessage(R.string.update_user_content)
                 setPositiveButton(R.string.button_yes, DialogInterface.OnClickListener { dialog, id ->
-                    if(profileController.update(Storage.getInstance().user)){
-                        Snackbar.make(view, R.string.user_updated, Snackbar.LENGTH_SHORT).show()
-                    }else{
-                        Snackbar.make(view, R.string.error_update_user, Snackbar.LENGTH_SHORT).show()
+                    scope.async {
+                        if(profileController.update(Storage.getInstance().user)){
+                            Snackbar.make(view, R.string.user_updated, Snackbar.LENGTH_SHORT).show()
+                        }else{
+                            Snackbar.make(view, R.string.error_update_user, Snackbar.LENGTH_SHORT).show()
+                        }
                     }
                 })
                 setNegativeButton(R.string.button_no, DialogInterface.OnClickListener { dialog, id ->
@@ -113,10 +126,12 @@ class Profile : Fragment(), View.OnClickListener {
             getString(R.string.delete_user_title),
             getString(R.string.delete_user_content),
             { dialog, id ->
-                if(profileController.update(Storage.getInstance().user)){
-                    Snackbar.make(view, R.string.user_deleted, Snackbar.LENGTH_SHORT).show()
-                }else{
-                    Snackbar.make(view, R.string.error_delete_user, Snackbar.LENGTH_SHORT).show()
+                scope.async {
+                    if(profileController.update(Storage.getInstance().user)){
+                        Snackbar.make(view, R.string.user_deleted, Snackbar.LENGTH_SHORT).show()
+                    }else{
+                        Snackbar.make(view, R.string.error_delete_user, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             },
             { dialog, id ->

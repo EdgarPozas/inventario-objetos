@@ -7,6 +7,7 @@ import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.utils.ID
 import com.edgarpozas.inventario_objetos.utils.USERID
+import com.edgarpozas.inventario_objetos.utils.Utils
 import com.edgarpozas.inventario_objetos.views.Login
 import com.edgarpozas.inventario_objetos.views.Principal
 import com.edgarpozas.inventario_objetos.views.RecoveryPassword
@@ -53,7 +54,7 @@ class LoginController(val login: Login) {
         login.finish()
     }
 
-    fun login(user: User):Boolean{
-        return user.login()
+    suspend fun login(user: User):Boolean{
+        return user.login(login)
     }
 }

@@ -9,9 +9,16 @@ import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.LoginController
 import com.edgarpozas.inventario_objetos.controllers.RecoveryPasswordController
 import com.edgarpozas.inventario_objetos.models.User
+import com.edgarpozas.inventario_objetos.utils.Utils
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 
 class RecoveryPassword : AppCompatActivity() {
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var recoveryPasswordController: RecoveryPasswordController= RecoveryPasswordController(this);
     private var user: User=User()
 
@@ -35,22 +42,27 @@ class RecoveryPassword : AppCompatActivity() {
 
     fun recovery(view: View) {
         user.email= findViewById<EditText>(R.id.editEmail)?.text.toString()
-        user.password= findViewById<EditText>(R.id.editPassword)?.text.toString()
 
-        if(user.email.isEmpty() || user.password.isEmpty()){
+        if(!Utils.isNetworkAvailable(this)){
+            Snackbar.make(view, R.string.error_no_internet, Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        if(user.email.isEmpty()){
             Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
             return
         }
-        if(user.isValidEmail()){
+        if(!user.isValidEmail()){
             Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
             return
         }
-
-        if(!recoveryPasswordController.recovery(user)){
-            Snackbar.make(view, R.string.error_recovery, Snackbar.LENGTH_SHORT).show()
-            return
+        scope.async {
+            if(!recoveryPasswordController.recovery(user)){
+                Snackbar.make(view, R.string.error_recovery, Snackbar.LENGTH_SHORT).show()
+                return@async
+            }
+            recoveryPasswordController.goToLogin()
         }
 
-        recoveryPasswordController.goToLogin()
     }
 }

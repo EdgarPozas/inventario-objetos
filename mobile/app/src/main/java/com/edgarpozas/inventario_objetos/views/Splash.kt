@@ -14,9 +14,9 @@ class Splash : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.splash)
 
         scope.async{
+            delay(1000)
             splashController.goToNext()
             finish()
         }

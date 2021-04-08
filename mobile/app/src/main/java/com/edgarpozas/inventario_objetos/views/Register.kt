@@ -4,14 +4,20 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.RegisterController
 import com.edgarpozas.inventario_objetos.models.User
+import com.edgarpozas.inventario_objetos.utils.Utils
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 
 class Register : AppCompatActivity() {
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var registerController: RegisterController= RegisterController(this);
     private var user: User=User()
     private var confirmPassword=""
@@ -41,8 +47,12 @@ class Register : AppCompatActivity() {
         user.password= findViewById<EditText>(R.id.editPassword)?.text.toString()
         confirmPassword= findViewById<EditText>(R.id.editConfirmPassword)?.text.toString()
 
+        if(!Utils.isNetworkAvailable(this)){
+            Snackbar.make(view, R.string.error_no_internet, Snackbar.LENGTH_SHORT).show()
+            return
+        }
         if(user.password!=confirmPassword){
-            Snackbar.make(view, R.string.passwords_not_math, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(view, R.string.passwords_no_match, Snackbar.LENGTH_SHORT).show()
             return
         }
         if(user.isAllEmpty()){
@@ -54,11 +64,12 @@ class Register : AppCompatActivity() {
             return
         }
 
-        if(!registerController.register(user)){
-            Snackbar.make(view, R.string.error_register, Snackbar.LENGTH_SHORT).show()
-            return
+        scope.async {
+            if(!registerController.register(user)){
+                Snackbar.make(view, R.string.error_register, Snackbar.LENGTH_SHORT).show()
+                return@async
+            }
+            registerController.goToLogin()
         }
-
-        registerController.goToLogin()
     }
 }

@@ -10,8 +10,8 @@ import com.edgarpozas.inventario_objetos.views.Register
 
 class RegisterController(val register: Register) {
 
-    fun register(user: User):Boolean{
-        return user.register()
+    suspend fun register(user: User):Boolean{
+        return user.register(register)
     }
 
     fun goToLogin(){

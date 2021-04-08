@@ -6,12 +6,13 @@ import android.content.SharedPreferences
 import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.utils.ID
 import com.edgarpozas.inventario_objetos.utils.USERID
+import com.edgarpozas.inventario_objetos.utils.Utils
 import com.edgarpozas.inventario_objetos.views.*
 
 
 class SplashController(val splash: Splash) {
 
-    fun goToNext(){
+    suspend fun goToNext(){
 
         val sharedPreferences: SharedPreferences =splash.getSharedPreferences(
             ID,
@@ -28,7 +29,7 @@ class SplashController(val splash: Splash) {
                 splash.baseContext,
                 Principal::class.java
             )
-            Storage.getInstance().user.getById()
+            Storage.getInstance().user.getById(splash)
         }
 
         splash.startActivity(destiny)

@@ -26,9 +26,9 @@ import kotlinx.coroutines.*
 
 class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var swipeRefresh:SwipeRefreshLayout?=null
     private var listView:ListView?=null
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private val roomAlertDialog:RoomAlertDialog= RoomAlertDialog(this)
     private val roomController:RoomController= RoomController(this)
     private val deleteAlertDialog: GenericAlertDialog = GenericAlertDialog()
@@ -94,12 +94,13 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
                 Snackbar.make(view,R.string.fields_empty,Snackbar.LENGTH_SHORT).show()
                 return@OnClickListener
             }
-
-            if (roomController.create(room)) {
-                Snackbar.make(view, R.string.room_created, Snackbar.LENGTH_SHORT).show()
-                refresh()
-            } else {
-                Snackbar.make(view, R.string.error_create_room, Snackbar.LENGTH_SHORT).show()
+            scope.async {
+                if (roomController.create(room)) {
+                    Snackbar.make(view, R.string.room_created, Snackbar.LENGTH_SHORT).show()
+                    refresh()
+                } else {
+                    Snackbar.make(view, R.string.error_create_room, Snackbar.LENGTH_SHORT).show()
+                }
             }
         })
         alertDialog?.setButton(AlertDialog.BUTTON_NEGATIVE,getString(R.string.button_cancel),DialogInterface.OnClickListener{item,it->
@@ -124,12 +125,13 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
                 Snackbar.make(view,R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
                 return@OnClickListener
             }
-
-            if (roomController.update(room)) {
-                Snackbar.make(view, R.string.room_updated, Snackbar.LENGTH_SHORT).show()
-                refresh()
-            } else {
-                Snackbar.make(view, R.string.error_update_room, Snackbar.LENGTH_SHORT).show()
+            scope.async {
+                if (roomController.update(room)) {
+                    Snackbar.make(view, R.string.room_updated, Snackbar.LENGTH_SHORT).show()
+                    refresh()
+                } else {
+                    Snackbar.make(view, R.string.error_update_room, Snackbar.LENGTH_SHORT).show()
+                }
             }
         })
         alertDialog?.setButton(AlertDialog.BUTTON_NEGATIVE,getString(R.string.button_cancel), DialogInterface.OnClickListener{ item, it->
@@ -145,11 +147,13 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
             getString(R.string.delete_room_title),
             getString(R.string.delete_room_content),
             { dialog,it->
-                if(roomController.delete(room)){
-                    Snackbar.make(view,R.string.room_deleted, Snackbar.LENGTH_SHORT).show()
-                    refresh()
-                }else{
-                    Snackbar.make(view,R.string.error_delete_room, Snackbar.LENGTH_SHORT).show()
+                scope.async {
+                    if(roomController.delete(room)){
+                        Snackbar.make(view,R.string.room_deleted, Snackbar.LENGTH_SHORT).show()
+                        refresh()
+                    }else{
+                        Snackbar.make(view,R.string.error_delete_room, Snackbar.LENGTH_SHORT).show()
+                    }
                 }
             },
             { dialog,it->

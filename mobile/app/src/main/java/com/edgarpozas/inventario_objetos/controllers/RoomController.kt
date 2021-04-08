@@ -8,16 +8,16 @@ import com.edgarpozas.inventario_objetos.views.*
 
 class RoomController(val room: Room) {
 
-    fun create(room: com.edgarpozas.inventario_objetos.models.Room):Boolean{
-        val created=room.create()
+    suspend fun create(room: com.edgarpozas.inventario_objetos.models.Room):Boolean{
+        val created=room.create(this.room.requireContext())
         if(created) {
             Storage.getInstance().rooms.add(room)
         }
         return created
     }
 
-    fun update(room: com.edgarpozas.inventario_objetos.models.Room):Boolean{
-        val updated=room.update()
+    suspend fun update(room: com.edgarpozas.inventario_objetos.models.Room):Boolean{
+        val updated=room.update(this.room.requireContext())
         if(updated){
             val index = Storage.getInstance().rooms.indexOf(room)
             Storage.getInstance().rooms[index]=room
@@ -25,8 +25,8 @@ class RoomController(val room: Room) {
         return updated
     }
 
-    fun delete(room: com.edgarpozas.inventario_objetos.models.Room):Boolean{
-        val deleted=room.delete()
+    suspend fun delete(room: com.edgarpozas.inventario_objetos.models.Room):Boolean{
+        val deleted=room.delete(this.room.requireContext())
         if(deleted){
             Storage.getInstance().rooms.remove(room)
         }

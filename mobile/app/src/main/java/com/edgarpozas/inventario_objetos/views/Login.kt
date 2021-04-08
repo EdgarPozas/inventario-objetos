@@ -3,14 +3,19 @@ package com.edgarpozas.inventario_objetos.views
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.LoginController
 import com.edgarpozas.inventario_objetos.models.User
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 
 class Login : AppCompatActivity() {
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var loginController:LoginController=LoginController(this)
     private var user: User=User()
 
@@ -18,6 +23,7 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
     }
+
 
     fun goToRegister(view: View) {
         loginController.goToRegister()
@@ -40,11 +46,13 @@ class Login : AppCompatActivity() {
             return
         }
 
-        if(!loginController.login(user)){
-            Snackbar.make(view, R.string.error_login, Snackbar.LENGTH_SHORT).show()
-            return
-        }
+        scope.async {
+            if(!loginController.login(user)){
+                Snackbar.make(view, R.string.error_login, Snackbar.LENGTH_SHORT).show()
+                return@async
+            }
 
-        loginController.goToPrincipal(user)
+            loginController.goToPrincipal(user)
+        }
     }
 }
