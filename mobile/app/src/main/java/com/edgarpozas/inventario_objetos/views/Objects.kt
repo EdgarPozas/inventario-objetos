@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ListView
+import android.widget.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.ObjectsController
@@ -74,7 +71,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
 
             objectsController.getAll()
 
-            adapter= ObjectsListAdapter(objects,Storage.getInstance().objects);
+            adapter= ObjectsListAdapter(objects,Storage.getInstance().objects.filter { x->x.active });
             listView?.adapter=adapter;
             swipeRefresh?.isRefreshing=false
         }
@@ -83,7 +80,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
     fun createObjects(view:View){
 
         if(!Utils.isNetworkAvailable(view.context)){
-            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
             return
         }
         objectsController.goToCreateObject()
@@ -91,7 +88,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
 
     fun editObjects(view:View,objects:Objects){
         if(!Utils.isNetworkAvailable(view.context)){
-            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
             return
         }
         objectsController.goToCreateObject(objects)
@@ -99,7 +96,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
 
     fun deleteObjects(view:View,objects:Objects){
         if(!Utils.isNetworkAvailable(view.context)){
-            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
             return
         }
         deleteAlertDialog.createAlertDialog(
@@ -108,15 +105,15 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
             getString(R.string.delete_object_content),
             DialogInterface.OnClickListener{ dialog,it->
                 if(!Utils.isNetworkAvailable(view.context)){
-                    Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
                 scope.async {
                     if(objectsController.delete(objects)){
-                        Snackbar.make(view,R.string.object_deleted, Snackbar.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),R.string.object_deleted, Toast.LENGTH_SHORT).show()
                         refresh()
                     }else{
-                        Snackbar.make(view,R.string.error_delete_object, Snackbar.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),R.string.error_delete_object, Toast.LENGTH_SHORT).show()
                     }
                 }
             },

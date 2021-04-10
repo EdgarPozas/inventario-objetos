@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.LoginController
 import com.edgarpozas.inventario_objetos.controllers.RecoveryPasswordController
@@ -44,24 +45,25 @@ class RecoveryPassword : AppCompatActivity() {
         user.email= findViewById<EditText>(R.id.editEmail)?.text.toString()
 
         if(!Utils.isNetworkAvailable(this)){
-            Snackbar.make(view, R.string.error_no_internet, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.error_no_internet, Toast.LENGTH_SHORT).show()
             return
         }
 
         if(user.email.isEmpty()){
-            Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_SHORT).show()
             return
         }
         if(!user.isValidEmail()){
-            Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.email_format, Toast.LENGTH_SHORT).show()
             return
         }
+        val recoveryPassword=this
         scope.async {
             if(!recoveryPasswordController.recovery(user)){
-                Snackbar.make(view, R.string.error_recovery, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(recoveryPassword, R.string.error_recovery, Toast.LENGTH_SHORT).show()
                 return@async
             }
-            Snackbar.make(view, R.string.sent_email, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(recoveryPassword, R.string.sent_email, Toast.LENGTH_SHORT).show()
             recoveryPasswordController.goToLogin()
         }
 

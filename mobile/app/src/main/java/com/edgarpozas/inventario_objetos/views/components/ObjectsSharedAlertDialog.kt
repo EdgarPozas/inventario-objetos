@@ -22,9 +22,11 @@ class ObjectsSharedAlertDialog(val objectsEdit: ObjectsEdit) {
 
             usersToShow.removeAll(objectsEdit.users)
 
-            val size=usersToShow.size
+            val usersToShowFiltered=usersToShow.filter { x->x.active }
+
+            val size=usersToShowFiltered.size
             val users= Array<String>(size) { i ->
-                val user=usersToShow[i]
+                val user=usersToShowFiltered[i]
                 return@Array "${user.firstName} ${user.lastName}"
             }
 

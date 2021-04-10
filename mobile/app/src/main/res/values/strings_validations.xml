@@ -24,4 +24,7 @@
 
     <string name="error_no_shared">Seleccione quienes comparten el objeto</string>
     <string name="error_no_location">Ingrese su ubicación actual</string>
+    <string name="error_no_room">Debes de seleccionar un espacio</string>
+
+    <string name="error_upload_files">Error al subir los archivos</string>
 </resources>

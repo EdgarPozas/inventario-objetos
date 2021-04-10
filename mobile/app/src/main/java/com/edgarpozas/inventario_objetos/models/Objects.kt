@@ -16,8 +16,10 @@ data class Objects(
     var urlSound:String="",
     var price:Double= 0.0,
     var sharedBy:ArrayList<String>?=null,
-    var positions:ArrayList<Position>?=null,
-    var createdBy:String=""
+    var positions:ArrayList<String>?=null,
+    var position:Position?=null,
+    var createdBy:String="",
+    var active:Boolean=true
     ){
 
     private val dataBase=DataBase.getInstance()
@@ -58,7 +60,6 @@ data class Objects(
 
         fun createFromJSON(json:JSONObject):Objects{
             val objects=Objects()
-            println(json)
             objects.id=json.getString("_id")
             objects.name=json.getString("name")
             objects.description=json.getString("description")
@@ -78,18 +79,17 @@ data class Objects(
                 sharedBy_.add(arraySharedBy.getString(i))
             }
             objects.sharedBy=sharedBy_
-            val positions_=ArrayList<Position>()
+            val positions_=ArrayList<String>()
             val arrayPositions=json.getJSONArray("positions")
             for (i in 0 until arrayPositions.length()){
-                val positionsAux=Position.createFromJSON(arrayPositions.getJSONObject(i))
-                positions_.add(positionsAux)
+                positions_.add(arrayPositions.getString(i))
             }
             objects.positions=positions_
             objects.createdBy=json.getString("createdBy")
+            objects.active=json.getBoolean("active")
             return objects
         }
     }
-
 
     suspend fun create(context: Context): Boolean{
         if(!Utils.isNetworkAvailable(context)){
@@ -150,9 +150,7 @@ data class Objects(
         val listSharedBy=JSONArray()
         sharedBy?.forEach { x-> listSharedBy.put(x) }
         json.put("sharedBy",listSharedBy)
-        val listPositions=JSONArray()
-        positions?.forEach { x-> listPositions.put(x.toJSON()) }
-        json.put("positions",listPositions)
+        json.put("position",position?.toJSON())
         json.put("createdBy",createdBy)
         return json
     }

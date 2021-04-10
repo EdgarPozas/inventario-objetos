@@ -4,5 +4,5 @@
     <string name="delete_room_title">Borrar espacio</string>
     <string name="name_room">Nombre del espacio</string>
     <string name="description_room">Descripción del espacio</string>
-    <string name="delete_room_content">¿Estás seguro de querer borrar este espacio?, si lo borras se eliminarán todos los objetos que estén asignados a el</string>
+    <string name="delete_room_content">¿Estás seguro de borrar este espacio?</string>
 </resources>

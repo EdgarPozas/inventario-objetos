@@ -3,6 +3,7 @@ package com.edgarpozas.inventario_objetos.views
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.LoginController
@@ -37,17 +38,18 @@ class Login : AppCompatActivity() {
         user.password= findViewById<EditText>(R.id.editPassword)?.text.toString()
 
         if(user.email.isEmpty() || user.password.isEmpty()){
-            Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_SHORT).show()
             return
         }
         if(!user.isValidEmail()){
-            Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.email_format, Toast.LENGTH_SHORT).show()
             return
         }
 
+        val login=this
         scope.async {
             if(!loginController.login(user)){
-                Snackbar.make(view, R.string.error_login, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(login, R.string.error_login, Toast.LENGTH_SHORT).show()
                 return@async
             }
 

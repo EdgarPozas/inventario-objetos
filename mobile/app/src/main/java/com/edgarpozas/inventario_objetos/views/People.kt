@@ -66,7 +66,7 @@ class People : Fragment(), SwipeRefreshLayout.OnRefreshListener, AdapterView.OnI
 
             peopleController.getAll()
 
-            adapter= PeopleListAdapter(people,Storage.getInstance().users)
+            adapter= PeopleListAdapter(people,Storage.getInstance().users.filter { x->x.active })
             listView?.adapter=adapter
             swipeRefresh?.isRefreshing=false
         }

@@ -7,6 +7,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
+import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.location.LocationManager
 import android.media.MediaPlayer
@@ -22,16 +24,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.ObjectsEditController
+import com.edgarpozas.inventario_objetos.models.*
 import com.edgarpozas.inventario_objetos.models.Objects
-import com.edgarpozas.inventario_objetos.models.Position
-import com.edgarpozas.inventario_objetos.models.Storage
-import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.utils.*
 import com.edgarpozas.inventario_objetos.views.components.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.material.snackbar.Snackbar
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
+import io.ktor.http.content.*
+import io.ktor.util.*
+import io.ktor.utils.io.core.*
+import io.ktor.utils.io.streams.*
 import kotlinx.coroutines.*
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -70,6 +77,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
     private val genericAlertDialog=GenericAlertDialog()
 
     private var tags=ArrayList<String>()
+    private var imageLoaded=false
     private var fileNameAudio=""
     private var tmpTitle:CharSequence=""
     private var location: Location?=null
@@ -108,9 +116,10 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
             objectsController.getAllUsers()
             objectsController.getAllRooms()
+            objectsController.getAllPositions()
 
             var ls=ArrayList<String>()
-            for (room in Storage.getInstance().rooms){
+            for (room in Storage.getInstance().rooms.filter { x->x.active }){
                 ls.add(room.name)
             }
 
@@ -125,9 +134,10 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                 editDescription?.setText(objectAux?.description)
                 editFunctionality?.setText(objectAux?.functionality)
                 editPrice?.setText(objectAux?.price!!.toInt().toString())
-                val lastRoom= objectAux?.positions!!.last()
-                val roomSelected=Storage.getInstance().rooms.find { x->x.id== lastRoom.room }
-                val index=Storage.getInstance().rooms.indexOf(roomSelected)
+                val lastPositionId= objectAux?.positions!!.last()
+                val lastPosition=Storage.getInstance().positions.find { x->x.id== lastPositionId }
+                val roomSelected=Storage.getInstance().rooms.find { x->x.id== lastPosition?.room }
+                val index=Storage.getInstance().rooms.filter { x->x.active }.indexOf(roomSelected)
                 spinnerRoom?.setSelection(index)
                 btnAdd?.text = getString(R.string.object_update)
 
@@ -136,7 +146,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                 }
 
                 for (id in objectAux!!.sharedBy!!){
-                    val user=Storage.getInstance().users.find { x->x.id==id }
+                    val user=Storage.getInstance().users.filter { x->x.active }.find { x->x.id==id }
                     users.add(user!!)
                 }
             }
@@ -174,6 +184,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun addTag(view: View){
+        addTagAlertDialog.tag=null
         val alertDialog=addTagAlertDialog.createAlertDialog(
             getString(R.string.add_objects_tags_title)
         )
@@ -185,17 +196,17 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                 val tag = alertDialog.findViewById<EditText>(R.id.editTagName).text.toString()
 
                 if (tag.isEmpty()) {
-                    Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
 
                 if (tags.find { x -> x.equals(tag) } != null) {
-                    Snackbar.make(view, R.string.error_tag_repeated, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.error_tag_repeated, Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
 
                 tags.add(tag)
-                Snackbar.make(view, R.string.object_add_tag, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.object_add_tag, Toast.LENGTH_SHORT).show()
                 refreshTags()
             })
         alertDialog?.setButton(
@@ -220,17 +231,17 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                 val tag = alertDialog.findViewById<EditText>(R.id.editTagName).text.toString()
 
                 if (tag.isEmpty()) {
-                    Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
 
                 if (tags.find { x -> x.equals(tag) } != null) {
-                    Snackbar.make(view, R.string.error_tag_repeated, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.error_tag_repeated, Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
 
                 tags.add(tag)
-                Snackbar.make(view, R.string.object_update_tag, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.object_update_tag, Toast.LENGTH_SHORT).show()
                 refreshTags()
             })
         alertDialog?.setButton(
@@ -249,7 +260,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
             getString(R.string.delete_objects_tags_content),
             { dialog, it ->
                 tags.removeAt(position)
-                Snackbar.make(view, R.string.object_delete_tag, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.object_delete_tag, Toast.LENGTH_SHORT).show()
                 refreshTags()
             },
             { dialog, it ->
@@ -311,13 +322,16 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
             imageView?.setImageBitmap(imageBitmap)
             containerImage?.visibility=View.VISIBLE
             btnAddImage?.visibility=View.GONE
+            imageLoaded=true
         }
     }
+
 
     fun deletePhoto(v: View){
         imageView?.setImageResource(0)
         containerImage?.visibility=View.GONE
         btnAddImage?.visibility=View.VISIBLE
+        imageLoaded=false
     }
 
     fun goToRecordAudio(v: View){
@@ -351,8 +365,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun startRecording() {
-        val uuid: String = UUID.randomUUID().toString()
-        fileNameAudio = externalCacheDir!!.absolutePath + "/" + uuid + ".3gp"
+        fileNameAudio = externalCacheDir!!.absolutePath + "/tmpAudio.3gp"
 
         recorder = MediaRecorder()
 
@@ -418,23 +431,22 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun refreshShared(){
-        val objects=this
-        scope.async {
-            adapterListViewShared=ObjectsSharedListAdapter(objects, users)
-            listViewShared?.adapter=adapterListViewShared
-        }
+        adapterListViewShared=ObjectsSharedListAdapter(this, users.filter { x -> x.active })
+        listViewShared?.adapter=adapterListViewShared
     }
 
     fun addShared(view: View){
+        val objectsEdit=this
         scope.async {
             objectsController.getAllUsers()
             val alertDialog=addSharedAlertDialog.createAlertDialog(
                 getString(R.string.add_objects_shared_title),
                 DialogInterface.OnClickListener { dialog, i ->
-                    val user = Storage.getInstance().users[i]
+                    val user = Storage.getInstance().users.filter { x -> x.active }[i]
 
                     users.add(user)
-                    Snackbar.make(view, R.string.object_add_shared, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(objectsEdit, R.string.object_add_shared, Toast.LENGTH_SHORT)
+                        .show()
                     refreshShared()
                 }
             )
@@ -455,7 +467,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
             getString(R.string.delete_objects_shared_content),
             { dialog, it ->
                 users.removeAt(position)
-                Snackbar.make(view, R.string.object_delete_shared, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.object_delete_shared, Toast.LENGTH_SHORT).show()
                 refreshShared()
             },
             { dialog, it ->
@@ -484,12 +496,16 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                     this,
                     getString(R.string.object_location_title),
                     getString(R.string.object_location_content),
-                    { dialog,i->
-                        val intent =Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    { dialog, i ->
+                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         startActivity(intent)
                     },
-                    { dialog,i->
-                        Toast.makeText(this, R.string.error_no_location_permission, Toast.LENGTH_LONG).show()
+                    { dialog, i ->
+                        Toast.makeText(
+                            this,
+                            R.string.error_no_location_permission,
+                            Toast.LENGTH_LONG
+                        ).show()
                         dialog.dismiss()
                     }
                 ).show()
@@ -510,7 +526,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
     fun createObject(v: View){
 
         if(!Utils.isNetworkAvailable(this)){
-            Snackbar.make(v, R.string.error_no_internet, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.error_no_internet, Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -529,49 +545,104 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
         users.forEach { x->sharedBy.add(x.id) }
         objectsTmp.sharedBy= sharedBy
         objectsTmp.createdBy= Storage.getInstance().user.id
-        objectsTmp.positions=ArrayList()
-        if(objectAux!=null){
-            objectsTmp.positions=objectAux!!.positions
+
+        if(Storage.getInstance().rooms.size==0){
+            Toast.makeText(this, R.string.error_no_room, Toast.LENGTH_SHORT).show()
+            return
         }
+
         if(location!=null) {
             val position = Position(
+                "",
                 location!!.latitude,
                 location!!.longitude,
                 location!!.altitude,
-                Storage.getInstance().rooms[spinnerRoom!!.selectedItemPosition].id,
+                Storage.getInstance().rooms.filter { x -> x.active }[spinnerRoom!!.selectedItemPosition].id,
                 Storage.getInstance().user.id
             )
-            objectsTmp.positions!!.add(position)
+            objectsTmp.position=position
         }else{
-            Snackbar.make(v, R.string.error_no_location, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.error_no_location, Toast.LENGTH_SHORT).show()
             return
         }
 
         if(objectsTmp.sharedBy!!.size==0){
-            Snackbar.make(v, R.string.error_no_shared, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.error_no_shared, Toast.LENGTH_SHORT).show()
             return
         }
 
         if(objectsTmp.isAllEmpty()){
-            Snackbar.make(v, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_SHORT).show()
             return
         }
-
+        val objectsEdit=this
         scope.async {
+
+            var uploadData=false
+            val formData=io.ktor.client.request.forms.formData {
+                if(imageLoaded){
+                    val bos = ByteArrayOutputStream()
+                    val bitmap = (imageView?.drawable as BitmapDrawable).bitmap
+                    bitmap.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos)
+                    val bytes: ByteArray = bos.toByteArray()
+                    val uuidImage: String = UUID.randomUUID().toString()
+
+                    append("image", "imagen_$uuidImage.png", ContentType.Image.PNG){
+                        for (b in bytes)
+                            this.writeByte(b)
+                    }
+                    uploadData=true
+                }
+
+                if(fileNameAudio.isNotEmpty()){
+                    player= MediaPlayer()
+                    player?.setDataSource(fileNameAudio)
+
+                    val file = File(fileNameAudio)
+                    val bytes= file.readBytes()
+                    val uuidAudio: String = UUID.randomUUID().toString()
+                    append("audio", "audio_$uuidAudio.3gp", ContentType.Audio.OGG){
+                        for (b in bytes)
+                            this.writeByte(b)
+                    }
+                    uploadData=true
+                }
+
+            }
+
+            if(uploadData){
+                val json=objectsController.uploadFiles(formData)
+                val status=json.getInt("status")
+                if(status==200){
+                    var files=json.getJSONArray("files")
+                    for(i in 0 until files.length()){
+                        val file=files.getJSONObject(i)
+                        if(file.getString("type")=="image"){
+                            objectsTmp.urlImage=file.getString("url")
+                        }else{
+                            objectsTmp.urlSound=file.getString("url")
+                        }
+                    }
+                }else{
+                    Toast.makeText(objectsEdit, R.string.error_upload_files, Toast.LENGTH_SHORT).show()
+                }
+            }
+
             if(objectAux==null){
+
                 if(objectsController.create(objectsTmp)){
-                    Snackbar.make(v, R.string.object_created, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(objectsEdit, R.string.object_created, Toast.LENGTH_SHORT).show()
                     objectsController.goToPrincipal()
                 }else{
-                    Snackbar.make(v, R.string.error_create_object, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(objectsEdit, R.string.error_create_object, Toast.LENGTH_SHORT).show()
                 }
             }else{
                 objectsTmp.id= objectAux!!.id
                 if(objectsController.update(objectsTmp)){
-                    Snackbar.make(v, R.string.object_updated, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(objectsEdit, R.string.object_updated, Toast.LENGTH_SHORT).show()
                     objectsController.goToPrincipal()
                 }else{
-                    Snackbar.make(v, R.string.error_update_object, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(objectsEdit, R.string.error_update_object, Toast.LENGTH_SHORT).show()
                 }
             }
         }

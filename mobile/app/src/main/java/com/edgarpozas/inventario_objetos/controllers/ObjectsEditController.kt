@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
+import com.edgarpozas.inventario_objetos.models.*
 import com.edgarpozas.inventario_objetos.models.Room
-import com.edgarpozas.inventario_objetos.models.Storage
-import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.views.*
 import com.google.android.gms.maps.SupportMapFragment
+import io.ktor.http.*
+import io.ktor.http.content.*
+import org.json.JSONObject
 
 
 class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
@@ -33,6 +35,16 @@ class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
         }
     }
 
+    suspend fun getAllPositions() {
+        Storage.getInstance().positions.clear()
+        val positions= Position.getAll(objectsEdit)
+        if(positions!=null){
+            for(position in positions){
+                Storage.getInstance().positions.add(position)
+            }
+        }
+    }
+
     suspend fun create(objects: com.edgarpozas.inventario_objetos.models.Objects):Boolean{
         return objects.create(objectsEdit)
     }
@@ -43,6 +55,17 @@ class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
 
     suspend fun delete(objects: com.edgarpozas.inventario_objetos.models.Objects):Boolean{
         return objects.delete(objectsEdit)
+    }
+
+    suspend fun uploadFiles(formData:List<PartData>) :JSONObject{
+        val res= DataBase.getInstance().sendFileHttp(
+            objectsEdit,
+            "/api/file",
+            HttpMethod.Post,
+            formData
+        )
+
+        return res
     }
 
     fun goToPrincipal(){

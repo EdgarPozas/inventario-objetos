@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.ProfileController
@@ -71,12 +72,12 @@ class Profile : Fragment(), View.OnClickListener {
         val confirmPassword= editConfirmPassword?.text.toString()
 
         if(!Utils.isNetworkAvailable(context)){
-            Snackbar.make(view, R.string.error_no_internet, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.error_no_internet, Toast.LENGTH_SHORT).show()
             return
         }
 
         if(password!=confirmPassword){
-            Snackbar.make(view, R.string.passwords_no_match, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.passwords_no_match, Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -86,13 +87,13 @@ class Profile : Fragment(), View.OnClickListener {
         Storage.getInstance().user.password=editPassword?.text.toString()
 
         if(Storage.getInstance().user.isAllEmpty()){
-            Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.fields_empty, Toast.LENGTH_SHORT).show()
             Storage.getInstance().user=userAux
             updateFields()
             return
         }
         if(!Storage.getInstance().user.isValidEmail()){
-            Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.email_format, Toast.LENGTH_SHORT).show()
             Storage.getInstance().user=userAux
             updateFields()
             return
@@ -105,9 +106,9 @@ class Profile : Fragment(), View.OnClickListener {
                 setPositiveButton(R.string.button_yes) { dialog, id ->
                     scope.async {
                         if (profileController.update(Storage.getInstance().user)) {
-                            Snackbar.make(view, R.string.user_updated, Snackbar.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), R.string.user_updated, Toast.LENGTH_SHORT).show()
                         } else {
-                            Snackbar.make(view, R.string.error_update_user, Snackbar.LENGTH_SHORT)
+                            Toast.makeText(requireContext(), R.string.error_update_user, Toast.LENGTH_SHORT)
                                 .show()
                         }
                     }
@@ -128,10 +129,11 @@ class Profile : Fragment(), View.OnClickListener {
             getString(R.string.delete_user_content),
             { dialog, id ->
                 scope.async {
-                    if(profileController.update(Storage.getInstance().user)){
-                        Snackbar.make(view, R.string.user_deleted, Snackbar.LENGTH_SHORT).show()
+                    if(profileController.delete(Storage.getInstance().user)){
+                        Toast.makeText(requireContext(), R.string.user_deleted, Toast.LENGTH_SHORT).show()
+                        profileController.goToLogin()
                     }else{
-                        Snackbar.make(view, R.string.error_delete_user, Snackbar.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), R.string.error_delete_user, Toast.LENGTH_SHORT).show()
                     }
                 }
             },

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.RegisterController
@@ -48,29 +49,29 @@ class Register : AppCompatActivity() {
         confirmPassword= findViewById<EditText>(R.id.editConfirmPassword)?.text.toString()
 
         if(!Utils.isNetworkAvailable(this)){
-            Snackbar.make(view, R.string.error_no_internet, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.error_no_internet, Toast.LENGTH_SHORT).show()
             return
         }
         if(user.password!=confirmPassword){
-            Snackbar.make(view, R.string.passwords_no_match, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.passwords_no_match, Toast.LENGTH_SHORT).show()
             return
         }
         if(user.isAllEmpty()){
-            Snackbar.make(view, R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_SHORT).show()
             return
         }
         if(!user.isValidEmail()){
-            Snackbar.make(view, R.string.email_format, Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.email_format, Toast.LENGTH_SHORT).show()
             return
         }
-
+        val register=this
         scope.async {
             if(!registerController.register(user)){
-                Snackbar.make(view, R.string.error_register, Snackbar.LENGTH_SHORT).show()
-                return@async
+                Toast.makeText(register, R.string.error_register, Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(register, R.string.registered, Toast.LENGTH_SHORT).show()
+                registerController.goToLogin()
             }
-            Snackbar.make(view, R.string.registered, Snackbar.LENGTH_SHORT).show()
-            registerController.goToLogin()
         }
     }
 }

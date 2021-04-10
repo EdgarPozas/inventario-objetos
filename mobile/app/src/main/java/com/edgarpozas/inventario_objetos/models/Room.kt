@@ -6,7 +6,13 @@ import io.ktor.http.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class Room(var id:String="",var name:String="", var description:String="", var createdBy:String=""){
+data class Room(
+    var id:String="",
+    var name:String="",
+    var description:String="",
+    var createdBy:String="",
+    var active:Boolean=true
+    ){
     private val dataBase=DataBase.getInstance()
 
     companion object{
@@ -50,6 +56,7 @@ data class Room(var id:String="",var name:String="", var description:String="", 
             room.name=json.getString("name")
             room.description=json.getString("description")
             room.createdBy=json.getString("createdBy")
+            room.active=json.getBoolean("active")
             return room
         }
     }
@@ -90,6 +97,7 @@ data class Room(var id:String="",var name:String="", var description:String="", 
         name=""
         description=""
         createdBy=""
+        active=true
     }
 
     fun toJSON(): JSONObject {

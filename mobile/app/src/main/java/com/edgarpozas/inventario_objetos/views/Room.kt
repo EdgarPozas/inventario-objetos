@@ -7,10 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ListView
+import android.widget.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.RoomController
@@ -59,7 +56,7 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        roomController.goToIndividual(Storage.getInstance().rooms[position])
+        roomController.goToIndividual(Storage.getInstance().rooms.filter { x->x.active }[position])
     }
 
     override fun onRefresh() {
@@ -71,7 +68,7 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
         val room=this
         scope.async {
             roomController.getAll()
-            adapter= RoomListAdapter(room,Storage.getInstance().rooms);
+            adapter= RoomListAdapter(room,Storage.getInstance().rooms.filter { x->x.active });
             listView?.adapter=adapter;
             swipeRefresh?.isRefreshing=false
         }
@@ -79,7 +76,7 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
 
     fun createRoom(view:View){
         if(!Utils.isNetworkAvailable(view.context)){
-            Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -90,7 +87,7 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
 
         alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_add),DialogInterface.OnClickListener{item,it->
             if(!Utils.isNetworkAvailable(view.context)){
-                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
             val room=Room(
@@ -101,15 +98,15 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
             )
 
             if(room.isAllEmpty()){
-                Snackbar.make(view,R.string.fields_empty,Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),R.string.fields_empty,Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
             scope.async {
                 if (roomController.create(room)) {
-                    Snackbar.make(view, R.string.room_created, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.room_created, Toast.LENGTH_SHORT).show()
                     refresh()
                 } else {
-                    Snackbar.make(view, R.string.error_create_room, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.error_create_room, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -128,23 +125,23 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
 
         alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_update), DialogInterface.OnClickListener{ item, it->
             if(!Utils.isNetworkAvailable(view.context)){
-                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
             room.name=alertDialog.findViewById<EditText>(R.id.editRoomName).text.toString()
             room.description=alertDialog.findViewById<EditText>(R.id.editDescriptionRoom).text.toString()
 
             if(room.isAllEmpty()){
-                Snackbar.make(view,R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),R.string.fields_empty, Toast.LENGTH_SHORT).show()
                 refresh()
                 return@OnClickListener
             }
             scope.async {
                 if (roomController.update(room)) {
-                    Snackbar.make(view, R.string.room_updated, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.room_updated, Toast.LENGTH_SHORT).show()
                     refresh()
                 } else {
-                    Snackbar.make(view, R.string.error_update_room, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.error_update_room, Toast.LENGTH_SHORT).show()
                 }
             }
         })
@@ -162,15 +159,15 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
             getString(R.string.delete_room_content),
             DialogInterface.OnClickListener{ dialog,it->
                 if(!Utils.isNetworkAvailable(view.context)){
-                    Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
                     return@OnClickListener
                 }
                 scope.async {
                     if(roomController.delete(room)){
-                        Snackbar.make(view,R.string.room_deleted, Snackbar.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),R.string.room_deleted, Toast.LENGTH_SHORT).show()
                         refresh()
                     }else{
-                        Snackbar.make(view,R.string.error_delete_room, Snackbar.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),R.string.error_delete_room, Toast.LENGTH_SHORT).show()
                     }
                 }
             },

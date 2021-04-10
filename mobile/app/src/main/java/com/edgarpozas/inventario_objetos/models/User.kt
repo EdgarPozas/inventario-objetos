@@ -6,7 +6,15 @@ import io.ktor.http.*
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class User(var id:String="",var firstName:String="",var lastName:String="",var email:String="",var password:String="",var active:Boolean=false,var verified:Boolean=false){
+data class User(
+    var id:String="",
+    var firstName:String="",
+    var lastName:String="",
+    var email:String="",
+    var password:String="",
+    var active:Boolean=false,
+    var verified:Boolean=false
+){
     private val dataBase=DataBase.getInstance()
 
     companion object{
