@@ -5,6 +5,7 @@ const app=express();
 const router=express.Router();
 /// Import function
 const userFunctions=require("../functions/user-functions");
+const emailFunctions=require("../functions/email-functions");
 
 /// Route GET /api/user
 /// Return all users
@@ -72,9 +73,22 @@ router.post("/",async (req,res)=>{
     try{
         let userValues=await userFunctions.getByEmail(req.body.email);
         if(userValues.status==200)
-            throw Error("Email registered")
+            throw Error(userValues.msg)
 
         let values=await userFunctions.create(req.body);
+        if(values.status==200){
+            let url=`http://localhost:3000/user/verify/${values.user._id}`
+            let valuesEmail=await emailFunctions.send({
+                to:values.user.email,
+                subject:"Verificación de correo | Inventario - Objetos",
+                html:`
+                <h1>Hola!, ${values.user.name}</h1>
+                <p>Hemos bienvenido a la App, para poder iniciar sesión es necesario validar tu correo accediendo al siguiente enlace <a href="${url}">${url}</p>
+                `
+            });
+            if(valuesEmail.status!=200)
+                throw Error(valuesEmail.msg)
+        }
         res.json(values);
     }catch(ex){
         console.log(ex);
@@ -93,11 +107,24 @@ router.put("/:id",async (req,res)=>{
        
         if(userValues.status==200){
             if(req.body.email!=userValues.user.email){
-                throw Error("Email registered")
+                throw Error(userValues.msg)
             }
         }
         
         let values=await userFunctions.update(req.params.id,req.body);
+        if(values.status==200 && values.user.email!=req.body.email){
+            let url=`http://localhost:3000/user/verify/${values.user._id}`
+            let valuesEmail=await emailFunctions.send({
+                to:values.user.email,
+                subject:"Verificación de correo | Inventario - Objetos",
+                html:`
+                <h1>Hola!, ${values.user.name}</h1>
+                <p>Hemos recibido tu actualización de correo, para poder iniciar sesión la siguiente vez es necesario validar tu correo accediendo al siguiente enlace <a href="${url}">${url}</p>
+                `
+            });
+            if(valuesEmail.status!=200)
+                throw Error(valuesEmail.msg)
+        }
         res.json(values);
     }catch(ex){
         console.log(ex);

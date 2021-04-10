@@ -1,5 +1,7 @@
 /// Import model
 const Room=require("../models/room");
+const Position=require("../models/position");
+const Objects=require("../models/object");
 
 module.exports={
     /// Get all
@@ -106,9 +108,15 @@ module.exports={
     /// Delete
     delete:async function(id){
         try{
-            await Room.deleteOne({
-                _id:id
-            });
+           
+            let room=await Room.findById(id).exec();
+            if(!room)
+                throw Error("Room not found");
+
+            room.active=false;
+
+            await room.save();
+
             return {
                 status:200,
                 msg:`Room ${id} deleted`

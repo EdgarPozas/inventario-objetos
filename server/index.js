@@ -13,6 +13,7 @@ const roomApi=require("./src/api/room-api");
 const similarApi=require("./src/api/similar-api");
 const emailApi=require("./src/api/email-api");
 const positionApi=require("./src/api/position-api");
+const fileApi=require("./src/api/file-api");
 
 /// Create the app
 const app=express();
@@ -36,6 +37,7 @@ app.use("/api/room",roomApi);
 app.use("/api/similar",similarApi);
 app.use("/api/email",emailApi);
 app.use("/api/position",positionApi);
+app.use("/api/file",fileApi);
 
 /// Starting the server
 app.listen(port);

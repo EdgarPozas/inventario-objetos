@@ -25,7 +25,10 @@ module.exports={
     /// Get by Id
     getById:async function(id){
         try{
-            let user=await User.findById(id).exec();
+            let user=await User.findOne({
+                _id:id,
+                active:true
+            }).exec();
 
             if(!user)
                 throw Error("User not found");
@@ -48,7 +51,8 @@ module.exports={
     getByEmail:async function(email){
         try{
             let user=await User.findOne({
-                email:email
+                email:email,
+                active:true
             }).exec();
 
             if(!user)
@@ -72,7 +76,9 @@ module.exports={
     login:async function(email,password){
         try{
             let user=await User.findOne({
-                email:email
+                email:email,
+                active:true,
+                verified:true
             }).exec();
 
             if(!user)
@@ -196,9 +202,12 @@ module.exports={
     /// Delete
     delete:async function(id){
         try{
-            await User.deleteOne({
-                _id:id
-            });
+            let user=await User.findById(id).exec();
+            if(!user)
+                throw Error("User not found");
+
+            user.active=false;
+            await user.save();
 
             return {
                 status:200,

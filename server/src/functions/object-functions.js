@@ -155,9 +155,15 @@ module.exports={
     /// Delete
     delete:async function(id){
         try{
-            await Objects.deleteOne({
-                _id:id
-            });
+
+            let object=await Objects.findById(id).exec();
+            if(!object)
+                throw Error("Objects not found");
+            
+            object.active=false;
+
+            await object.save();
+
             return {
                 status:200,
                 msg:`object ${id} deleted`

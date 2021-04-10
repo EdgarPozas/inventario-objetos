@@ -10,6 +10,7 @@ const schema=new mongoose.Schema({
     urlImage:String,
     urlSound:String,
     price:Number,
+    active:{type:Boolean,default:true},
     sharedBy:[{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     positions:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Position' }],
     createdBy:{ type: mongoose.Schema.Types.ObjectId, ref: 'User' },
