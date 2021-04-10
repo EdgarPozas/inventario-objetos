@@ -10,37 +10,38 @@ chai.use(chaiHttp);
 /// Importing the app
 const app=require("../index");
 
-/// Import room
-const Room=require("../src/models/room");
+/// Import position
+const Position=require("../src/models/position");
 
 /// Import utils
-const {createUser,createRoom}=require("./utils");
+const {createUser,createRoom,createPosition}=require("./utils");
 
-/// Clean room
+/// Clean position
 beforeEach(async function() {
-    await Room.deleteMany({})
+    await Position.deleteMany({})
 });
 
 /// Creating suit test
-describe("Room",()=>{
+describe("Position",()=>{
 
-    it("GET /api/room show all rooms",async ()=>{
+    it("GET /api/position show all positions",async ()=>{
         try{
-            let res=await chai.request(app).get("/api/room");
+            let res=await chai.request(app).get("/api/position");
             res.should.not.be.a("Error");
             res.should.have.status(200);
             res.body.status.should.to.equal(200);
-            res.body.rooms.should.be.a("array");
+            res.body.positions.should.be.a("array");
         }catch(ex){
             console.log(ex)
         }
     });
 
-    it("GET /api/room/id/:id show room by id",async ()=>{
+    it("GET /api/position/id/:id show position by id",async ()=>{
         try{
             let user=await createUser();
             let room=await createRoom(user.user);
-            let res=await chai.request(app).get(`/api/room/id/${room.room._id}`);
+            let position=await createPosition(user.user,room.room);
+            let res=await chai.request(app).get(`/api/position/id/${position.position._id}`);
             res.should.not.be.a("Error");
             res.should.have.status(200);
             res.body.status.should.to.equal(200);
@@ -49,15 +50,18 @@ describe("Room",()=>{
         }
     });
 
-    it("POST /api/room create room",async ()=>{    
+    it("POST /api/position create position",async ()=>{    
         try{
             let user=await createUser();
+            let room=await createRoom(user.user);
             let body={
-                name:faker.commerce.product(),
-                description:faker.commerce.productDescription(),
-                id: user.user._id
+                latitude:faker.address.latitude(),
+                longitude:faker.address.longitude(),
+                altitude:faker.address.latitude(),
+                room:room.room._id,
+                createdBy:user.user._id
             };
-            let res=await chai.request(app).post(`/api/room`)
+            let res=await chai.request(app).post(`/api/position`)
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send(body);
             res.should.not.be.a("Error");
@@ -68,15 +72,18 @@ describe("Room",()=>{
         }
     });
     
-    it("PUT /api/room/:id update room",async ()=>{
+    it("PUT /api/position/:id update position",async ()=>{
         try{
             let user=await createUser();
             let room=await createRoom(user.user);
+            let position=await createPosition(user.user,room.room);
             let body={
-                name:faker.commerce.product(),
-                description:faker.commerce.productDescription(),
+                latitude:faker.address.latitude(),
+                longitude:faker.address.longitude(),
+                altitude:faker.address.latitude(),
+                room:room.room._id,
             };
-            let res=await chai.request(app).put(`/api/room/${room.room._id}`)
+            let res=await chai.request(app).put(`/api/position/${position.position._id}`)
                 .set('content-type', 'application/x-www-form-urlencoded')
                 .send(body);
             res.should.not.be.a("Error");
@@ -87,11 +94,12 @@ describe("Room",()=>{
         }
     });
     
-    it("DELETE /api/room/:id delete room",async ()=>{
+    it("DELETE /api/position/:id delete position",async ()=>{
         try{
             let user=await createUser();
             let room=await createRoom(user.user);
-            let res=await chai.request(app).delete(`/api/room/${room.room._id}`);
+            let position=await createPosition(user.user,room.room);
+            let res=await chai.request(app).delete(`/api/position/${position.position._id}`);
             res.should.not.be.a("Error");
             res.should.have.status(200);
             res.body.status.should.to.equal(200);

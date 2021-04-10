@@ -4,13 +4,13 @@ const app=express();
 /// Defining a router
 const router=express.Router();
 /// Import function
-const roomFunctions=require("../functions/room-functions");
+const positionFunctions=require("../functions/position-functions");
 
-/// Route GET /api/room
-/// Return all rooms
+/// Route GET /api/position
+/// Return all positions
 router.get("/",async (req,res)=>{
     try{
-        let values=await roomFunctions.all();
+        let values=await positionFunctions.all();
         res.json(values);
     }catch(ex){
         console.log(ex);
@@ -21,11 +21,11 @@ router.get("/",async (req,res)=>{
     }
 });
 
-/// Route GET /api/room/id/:id
-/// Return room by id
+/// Route GET /api/position/id/:id
+/// Return position by id
 router.get("/id/:id",async (req,res)=>{
     try{
-        let values=await roomFunctions.getById(req.params.id);
+        let values=await positionFunctions.getById(req.params.id);
         res.json(values);
     }catch(ex){
         console.log(ex);
@@ -36,11 +36,11 @@ router.get("/id/:id",async (req,res)=>{
     }
 });
 
-/// Route POST /api/room
-/// Create new room
+/// Route POST /api/position
+/// Create new position
 router.post("/",async (req,res)=>{
     try{
-        let values=await roomFunctions.create(req.body);
+        let values=await positionFunctions.create(req.body);
         res.json(values);
     }catch(ex){
         console.log(ex);
@@ -51,11 +51,11 @@ router.post("/",async (req,res)=>{
     }
 });
 
-/// Route PUT /api/room/:id
-/// Update room
+/// Route PUT /api/position/:id
+/// Update position
 router.put("/:id",async (req,res)=>{
     try{
-        let values=await roomFunctions.update(req.params.id,req.body);
+        let values=await positionFunctions.update(req.params.id,req.body);
         res.json(values);
     }catch(ex){
         console.log(ex);
@@ -66,11 +66,11 @@ router.put("/:id",async (req,res)=>{
     }
 });
 
-/// Route DELETE /api/room/:id
-/// Delete room
+/// Route DELETE /api/position/:id
+/// Delete position
 router.delete("/:id",async (req,res)=>{
     try{
-        let values=await roomFunctions.delete(req.params.id);
+        let values=await positionFunctions.delete(req.params.id);
         res.json(values);
     }catch(ex){
         console.log(ex);

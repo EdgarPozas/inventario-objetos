@@ -11,6 +11,8 @@ const userApi=require("./src/api/user-api");
 const objectApi=require("./src/api/object-api");
 const roomApi=require("./src/api/room-api");
 const similarApi=require("./src/api/similar-api");
+const emailApi=require("./src/api/email-api");
+const positionApi=require("./src/api/position-api");
 
 /// Create the app
 const app=express();
@@ -22,6 +24,7 @@ app.set("view engine","pug");
 app.set("views",path.join(__dirname,"src/views"));
 app.use(express.static(path.join(__dirname,"./src/public")));
 app.use(express.urlencoded({extended: true}));
+app.use(express.json())
 
 /// Register controllers
 app.use("/",homeRouter);
@@ -31,6 +34,8 @@ app.use("/api/user",userApi);
 app.use("/api/object",objectApi);
 app.use("/api/room",roomApi);
 app.use("/api/similar",similarApi);
+app.use("/api/email",emailApi);
+app.use("/api/position",positionApi);
 
 /// Starting the server
 app.listen(port);

@@ -14,7 +14,10 @@ router.get("/",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -26,7 +29,10 @@ router.get("/id/:id",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -38,7 +44,10 @@ router.post("/",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -50,7 +59,10 @@ router.put("/:id",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -62,7 +74,10 @@ router.delete("/:id",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 

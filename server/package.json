@@ -4,7 +4,7 @@
     "description": "inventario-objetos server",
     "main": "index.js",
     "scripts": {
-        "test": "mocha --timeout 10000",
+        "test": "mocha ./test/room.test.js --timeout 10000",
         "start": "nodemon index.js"
     },
     "author": "Edgar Pozas",

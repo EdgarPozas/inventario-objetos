@@ -11,14 +11,7 @@ const schema=new mongoose.Schema({
     urlSound:String,
     price:Number,
     sharedBy:[{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    positions:[{ 
-        latitude:Number,
-        longitude:Number,
-        altitude:Number,
-        date: { type:Date, default:Date.now },
-        room:{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' },
-        updatedBy:{ type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    }],
+    positions:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Position' }],
     createdBy:{ type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     createdAt:{ type:Date, default:Date.now }
 });

@@ -1,20 +1,20 @@
 /// Import model
-const Room=require("../models/room");
+const Position=require("../models/position");
 
 module.exports={
     /// Get all
     all:async function(){
         try{
-            let rooms=await Room.find({});
+            let positions=await Position.find({});
             return {
                 status:200,
-                rooms:rooms,
+                positions:positions,
                 msg:"ok"
             };
         }catch(ex){
             return {
                 status:400,
-                rooms:[],
+                positions:[],
                 msg:ex
             };
         }
@@ -23,20 +23,20 @@ module.exports={
     /// Get by Id
     getById:async function(id){
         try{
-            let room=await Room.findById(id).exec();
+            let position=await Position.findById(id).exec();
 
-            if(!room)
-                throw Error("Room not found");
+            if(!position)
+                throw Error("Position not found");
 
             return {
                 status:200,
-                room:room,
+                position:position,
                 msg:"ok"
             };
         }catch(ex){
             return {
                 status:400,
-                room:undefined,
+                position:undefined,
                 msg:ex
             };
         }
@@ -46,27 +46,31 @@ module.exports={
     create:async function(obj){
         try{
             let {
-                name,
-                description,
+                latitude,
+                longitude,
+                altitude,
+                room,
                 createdBy
             }=obj;
     
-            let room=new Room();
-            room.name=name;
-            room.description=description;
-            room.createdBy=createdBy;
+            let position=new Position();
+            position.latitude=latitude;
+            position.longitude=longitude;
+            position.altitude=altitude;
+            position.room=room;
+            position.createdBy=createdBy;
 
-            await room.save();
+            await position.save();
 
             return {
                 status:200,
-                room:room,
+                position:position,
                 msg:"ok"
             };
         }catch(ex){
             return {
                 status:400,
-                room:undefined,
+                position:undefined,
                 msg:ex
             };
         }
@@ -76,28 +80,32 @@ module.exports={
     update:async function(id,obj){
         try{
             let {
-                name,
-                description
+                latitude,
+                longitude,
+                altitude,
+                room
             }=obj;
 
-            let room=await Room.findById(id).exec();
-            if(!room)
-                throw Error("Room not found");
+            let position=await Position.findById(id).exec();
+            if(!position)
+                throw Error("Position not found");
 
-            room.name=name;
-            room.description=description;
+            position.latitude=latitude;
+            position.longitude=longitude;
+            position.altitude=altitude;
+            position.room=room;
 
-            await room.save();
+            await position.save();
 
             return {
                 status:200,
-                room:room,
-                msg:`Room ${id} updated`
+                position:position,
+                msg:`Position ${id} updated`
             };
         }catch(ex){
             return {
                 status:400,
-                room:undefined,
+                position:undefined,
                 msg:ex
             };
         }
@@ -106,12 +114,12 @@ module.exports={
     /// Delete
     delete:async function(id){
         try{
-            await Room.deleteOne({
+            await Position.deleteOne({
                 _id:id
             });
             return {
                 status:200,
-                msg:`Room ${id} deleted`
+                msg:`Position ${id} deleted`
             };
         }catch(ex){
             return {

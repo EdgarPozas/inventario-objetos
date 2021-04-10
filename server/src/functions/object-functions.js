@@ -1,5 +1,6 @@
 /// Import model
 const Objects=require("../models/object");
+const Position=require("../models/position");
 
 module.exports={
     /// Get all
@@ -54,7 +55,7 @@ module.exports={
                 urlSound,
                 price,
                 sharedBy,
-                positions,
+                position,
                 createdBy
             }=obj;
     
@@ -67,7 +68,17 @@ module.exports={
             object.urlSound=urlSound;
             object.price=price;
             object.sharedBy=sharedBy;
-            object.positions=positions;
+
+            let position_=new Position();
+            position_.latitude=position.latitude;
+            position_.longitude=position.longitude;
+            position_.altitude=position.altitude;
+            position_.room=position.room;
+            position_.createdBy=position.createdBy;
+
+            await position_.save();
+    
+            object.positions.push(position_._id);
             object.createdBy=createdBy;
 
             await object.save();
@@ -98,10 +109,9 @@ module.exports={
                 urlSound,
                 price,
                 sharedBy,
-                positions,
-                createdBy
+                position
             }=obj;
-    
+            
             let object=await Objects.findById(id).exec();
             if(!object)
                 throw Error("Objects not found");
@@ -114,8 +124,17 @@ module.exports={
             object.urlSound=urlSound;
             object.price=price;
             object.sharedBy=sharedBy;
-            object.positions=positions;
-            object.createdBy=createdBy;
+
+            let position_=new Position();
+            position_.latitude=position.latitude;
+            position_.longitude=position.longitude;
+            position_.altitude=position.altitude;
+            position_.room=position.room;
+            position_.createdBy=position.createdBy;
+
+            await position_.save();
+
+            object.positions.push(position_._id);
 
             await object.save();
 

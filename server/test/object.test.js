@@ -14,7 +14,7 @@ const app=require("../index");
 const Objects=require("../src/models/object");
 
 /// Import utils
-const {createUser,createRoom,createObject}=require("./utils");
+const {createUser,createRoom,createObject,createPosition}=require("./utils");
 
 /// Clean object
 beforeEach(async function() {
@@ -40,17 +40,18 @@ describe("Objects",()=>{
         }
     });
 
-    it("GET /api/object/:id show object by id",async ()=>{
+    it("GET /api/object/id/:id show object by id",async ()=>{
         try{
             let users=[];
-            let rooms=[];
+            let positions=[];
             for(let i=0;i<5;i++){
                 let user=await createUser();
                 users.push(user.user);
                 let room=await createRoom(user.user);
-                rooms.push(room.room);
+                let position=await createPosition(user.user,room.room);
+                positions.push(position.position);
             }
-            let object=await createObject(users,rooms);
+            let object=await createObject(users,positions);
             let res=await chai.request(app).get(`/api/object/id/${object.object._id}`);
             res.should.not.be.a("Error");
             res.should.have.status(200);
@@ -70,7 +71,7 @@ describe("Objects",()=>{
                 let room=await createRoom(user.user);
                 rooms.push(room.room);
             }
-
+            let position=await createPosition(users[getRandomInt(0,users.length)],rooms[getRandomInt(0,rooms.length)]);
             let body={
                 name:faker.commerce.product(),
                 description:faker.commerce.productDescription(),
@@ -80,7 +81,7 @@ describe("Objects",()=>{
                 urlSound:faker.internet.url(),
                 price:getRandomInt(100,1000),
                 sharedBy:users,
-                positions:[],
+                position:position,
                 createdBy:users[getRandomInt(0,users.length)],
             };
 
@@ -88,19 +89,9 @@ describe("Objects",()=>{
                 body.tags.push("tag"+i);
             } 
 
-            for(let i=0;i<getRandomInt(1,10);i++){
-                body.positions.push({
-                    latitude:faker.datatype.float(),
-                    longitude:faker.datatype.float(),
-                    altitude:faker.datatype.float(),
-                    room:rooms[getRandomInt(0,rooms.length)],
-                    updatedBy:users[getRandomInt(0,users.length)],
-                });
-            } 
-
             let res=await chai.request(app)
                 .post("/api/object")
-                .set('content-type', 'text/json')
+                .set('content-type', 'application/x-www-form-urlencoded')
                 .send(body)
             res.should.not.be.a("Error");
             res.should.have.status(200);
@@ -120,7 +111,7 @@ describe("Objects",()=>{
                 let room=await createRoom(user.user);
                 rooms.push(room.room);
             }
-
+            let position=await createPosition(users[getRandomInt(0,users.length)],rooms[getRandomInt(0,rooms.length)]);
             let body={
                 name:faker.commerce.product(),
                 description:faker.commerce.productDescription(),
@@ -130,7 +121,7 @@ describe("Objects",()=>{
                 urlSound:faker.internet.url(),
                 price:getRandomInt(100,1000),
                 sharedBy:users,
-                positions:[],
+                position:position,
                 createdBy:users[getRandomInt(0,users.length)],
             };
 
@@ -138,15 +129,6 @@ describe("Objects",()=>{
                 body.tags.push("tag"+i);
             } 
 
-            for(let i=0;i<getRandomInt(1,10);i++){
-                body.positions.push({
-                    latitude:faker.datatype.float(),
-                    longitude:faker.datatype.float(),
-                    altitude:faker.datatype.float(),
-                    room:rooms[getRandomInt(0,rooms.length)],
-                    updatedBy:users[getRandomInt(0,users.length)],
-                });
-            } 
             users=[];
             rooms=[];
             for(let i=0;i<5;i++){
@@ -155,9 +137,10 @@ describe("Objects",()=>{
                 let room=await createRoom(user.user);
                 rooms.push(room.room);
             }
-            let object=await createObject(users,rooms);
+            let newPosition=await createPosition(users[getRandomInt(0,users.length)],rooms[getRandomInt(0,rooms.length)]);
+            let object=await createObject(users,rooms,newPosition);
             let res=await chai.request(app).put(`/api/object/${object.object._id}`)
-                .set('content-type', 'text/json')
+                .set('content-type', 'application/x-www-form-urlencoded')
                 .send(body);
             res.should.not.be.a("Error");
             res.should.have.status(200);

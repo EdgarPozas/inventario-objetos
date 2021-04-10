@@ -18,7 +18,7 @@ const {createUser}=require("./utils");
 
 /// Clean users
 beforeEach(async function() {
-    await User.deleteMany({})
+    //await User.deleteMany({})
 });
 
 /// Creating suit test
@@ -36,7 +36,7 @@ describe("User",()=>{
         }
     });
 
-    it("GET /api/user/:id show user by id",async ()=>{
+    it("GET /api/user/id/:id show user by id",async ()=>{
         try{
             let user=await createUser();
             let res=await chai.request(app).get(`/api/user/id/${user.user._id}`);
@@ -59,7 +59,7 @@ describe("User",()=>{
             console.log(ex)
         }
     });
-    
+
 
     it("POST /api/user/login login",async ()=>{
         try{
@@ -80,7 +80,7 @@ describe("User",()=>{
         }
     });
 
-    it("POST /api/user create user",async ()=>{    
+    it("POST /api/user create user",async ()=>{
         try{
             let body={
                 firstName:faker.name.firstName(),
@@ -98,7 +98,7 @@ describe("User",()=>{
             console.log(ex)
         }
     });
-    
+
     it("PUT /api/user/:id update user",async ()=>{
         try{
             let user=await createUser();
@@ -118,7 +118,7 @@ describe("User",()=>{
             console.log(ex)
         }
     });
-    
+
 
     it("GET /api/user/verify/:id verify user",async ()=>{
         try{

@@ -14,7 +14,10 @@ router.get("/",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -26,7 +29,10 @@ router.get("/id/:id",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -38,7 +44,10 @@ router.get("/email/:email",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -50,7 +59,10 @@ router.post("/login",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -58,11 +70,18 @@ router.post("/login",async (req,res)=>{
 /// Create new user
 router.post("/",async (req,res)=>{
     try{
+        let userValues=await userFunctions.getByEmail(req.body.email);
+        if(userValues.status==200)
+            throw Error("Email registered")
+
         let values=await userFunctions.create(req.body);
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -70,11 +89,22 @@ router.post("/",async (req,res)=>{
 /// Update user
 router.put("/:id",async (req,res)=>{
     try{
+        let userValues=await userFunctions.getByEmail(req.body.email);
+       
+        if(userValues.status==200){
+            if(req.body.email!=userValues.user.email){
+                throw Error("Email registered")
+            }
+        }
+        
         let values=await userFunctions.update(req.params.id,req.body);
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -86,7 +116,10 @@ router.get("/verify/:id",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+         res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -98,7 +131,10 @@ router.delete("/:id",async (req,res)=>{
         res.json(values);
     }catch(ex){
         console.log(ex);
-        res.status(400);
+         res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 

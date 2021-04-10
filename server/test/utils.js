@@ -54,7 +54,7 @@ module.exports={
                 });
         });
     },
-    createObject:function (users,rooms){
+    createObject:function (users,positions){
         return new Promise((resolve,reject)=>{
             let body={
                 name:faker.commerce.product(),
@@ -65,7 +65,7 @@ module.exports={
                 urlSound:faker.internet.url(),
                 price:getRandomInt(100,1000),
                 sharedBy:[],
-                positions:[],
+                position:positions[getRandomInt(0,positions.length)]._id,
                 createdBy:users[getRandomInt(0,users.length)]._id,
             };
 
@@ -74,19 +74,9 @@ module.exports={
                 body.sharedBy.push(users[getRandomInt(0,users.length)]._id);
             } 
 
-            for(let i=0;i<getRandomInt(1,10);i++){
-                body.positions.push({
-                    latitude:faker.datatype.float(),
-                    longitude:faker.datatype.float(),
-                    altitude:faker.datatype.float(),
-                    room:rooms[getRandomInt(0,rooms.length)]._id,
-                    updatedBy:users[getRandomInt(0,users.length)]._id,
-                });
-            } 
-
             chai.request(app)
                 .post("/api/object")
-                .set('content-type', 'text/json')
+                .set('content-type', 'application/x-www-form-urlencoded')
                 .send(body)
                 .end((err,res)=>{
                     if(err)
@@ -94,5 +84,26 @@ module.exports={
                     resolve(res.body);
                 });
         });
-    }
+    },
+    createPosition:function (user,room){
+        return new Promise((resolve,reject)=>{
+            let body={
+                latitude:faker.address.latitude(),
+                longitude:faker.address.longitude(),
+                altitude:faker.address.latitude(),
+                room:room._id,
+                createdBy:user._id
+            };
+
+            chai.request(app)
+                .post("/api/position")
+                .set('content-type', 'application/x-www-form-urlencoded')
+                .send(body)
+                .end((err,res)=>{
+                    if(err)
+                        reject(err);
+                    resolve(res.body);
+                });
+        });
+    },
 }

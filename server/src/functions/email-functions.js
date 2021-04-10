@@ -25,8 +25,15 @@ module.exports={
 
         try{
             await sgMail.send(msg);
+            return {
+                status:200,
+                msg:"Message sent"
+            }
         }catch(ex){
-            console.log(ex);
+            return{
+                status:400,
+                msg:ex
+            }
         }
     },
 }

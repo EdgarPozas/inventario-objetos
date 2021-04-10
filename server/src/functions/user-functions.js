@@ -148,8 +148,11 @@ module.exports={
             user.lastName=lastName;
             user.email=email;
             user.active=active;
-            user.password=await bcrypt.hash(password, 10);
-
+            let result=await bcrypt.compare(password, user.password);
+            if(!result){
+                user.password=await bcrypt.hash(password, 10);
+            }
+            
             await user.save();
 
             return {
@@ -196,6 +199,7 @@ module.exports={
             await User.deleteOne({
                 _id:id
             });
+
             return {
                 status:200,
                 msg:`User ${id} deleted`
