@@ -42,7 +42,11 @@ class ObjectsListAdapter(
         val room=objects[position]
 
         v.findViewById<TextView>(R.id.name).text = room.name
-        v.findViewById<TextView>(R.id.description).text = room.description
+        val description=room.description.replace('\n',' ')
+        if(description.length<10)
+            v.findViewById<TextView>(R.id.description).text = description
+        else
+            v.findViewById<TextView>(R.id.description).text = description.substring(0,10)+"..."
         val btnEdit: ImageButton?=v.findViewById(R.id.btnEdit)
         val btnDelete: ImageButton?=v.findViewById(R.id.btnDelete)
 

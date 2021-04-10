@@ -11,36 +11,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_margin="20dp">
+            android:layout_margin="10dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/name_room"
+                android:text="@string/add_objects_tags_label"
                 android:textSize="18dp"
                 style="@style/TextStyle"/>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_name_room"
+                android:hint="@string/hint_tag_object"
                 style="@style/InputStyle"
                 android:inputType="textCapSentences|text"
                 android:textSize="15dp"
-                android:id="@+id/editRoomName"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/description_room"
-                android:textSize="18dp"
-                style="@style/TextStyle"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:hint="@string/hint_description_room"
-                style="@style/InputStyle"
-                android:inputType="textCapSentences|textNoSuggestions|textMultiLine"
-                android:gravity="top"
-                android:textSize="15dp"
-                android:id="@+id/editDescriptionRoom"/>
+                android:id="@+id/editTagName"/>
 
         </LinearLayout>
 

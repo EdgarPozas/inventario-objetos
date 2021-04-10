@@ -16,4 +16,12 @@
     <string name="error_delete_object">Error al borrar un objeto</string>
 
     <string name="error_no_internet">Se necesita internet, revise su conexión de internet</string>
+
+    <string name="error_tag_repeated">El tag ya se encuentra en la lista</string>
+    <string name="error_no_camera_permission">Recuerda que para capturar imágenes necesitas aceptar los permisos</string>
+    <string name="error_no_audio_permission">Recuerda que para capturar audios necesitas aceptar los permisos</string>
+    <string name="error_no_location_permission">Recuerda que para obtener la ubicación necesitas aceptar los permisos</string>
+
+    <string name="error_no_shared">Seleccione quienes comparten el objeto</string>
+    <string name="error_no_location">Ingrese su ubicación actual</string>
 </resources>

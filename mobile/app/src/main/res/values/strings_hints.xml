@@ -6,4 +6,11 @@
     <string name="hint_password">**********</string>
     <string name="hint_name_room">Sala</string>
     <string name="hint_description_room">Este cuarto se encuentra entrando a la casa...</string>
+
+    <string name="hint_name_object">Cepillo</string>
+    <string name="hint_description_object">Es pequeño, azúl y ...</string>
+    <string name="hint_functionality_object">Sirve para cepillar el cabello</string>
+    <string name="hint_price_object">0</string>
+    <string name="hint_tag_object">Azúl</string>
+    <string name="hint_room_object">¿En qué espacio se encuentra el objeto?</string>
 </resources>

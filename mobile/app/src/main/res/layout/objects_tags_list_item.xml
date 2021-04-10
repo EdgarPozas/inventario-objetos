@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:descendantFocusability="blocksDescendants">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:gravity="center_vertical"
+        style="@style/TextStyle"
+        android:text="Nombre"
+        android:id="@+id/name"
+        android:textColor="@color/black"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_edit_24"
+            android:tint="@color/white"
+            android:backgroundTint="@color/secondary"
+            android:layout_weight="1"
+            android:id="@+id/btnEdit"
+            />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_delete_24"
+            android:tint="@color/white"
+            android:backgroundTint="@color/deleteColor"
+            android:layout_weight="1"
+            android:id="@+id/btnDelete"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -29,7 +29,6 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var swipeRefresh:SwipeRefreshLayout?=null
     private var listView:ListView?=null
-    private val objectsAlertDialog: ObjectsAlertDialog = ObjectsAlertDialog(this)
     private val objectsController: ObjectsController = ObjectsController(this)
     private val deleteAlertDialog: GenericAlertDialog = GenericAlertDialog()
     private var adapter:ObjectsListAdapter? = null;
@@ -87,42 +86,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
             Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
             return
         }
-
-        objectsAlertDialog.objects= Objects()
-        val alertDialog=objectsAlertDialog.createAlertDialog(
-            getString(R.string.add_room_title)
-        )
-
-        alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_add),DialogInterface.OnClickListener{item,it->
-            if(!Utils.isNetworkAvailable(view.context)){
-                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
-                return@OnClickListener
-            }
-            val objects:Objects=Objects(
-                "",
-                alertDialog.findViewById<EditText>(R.id.editRoomName).text.toString(),
-                alertDialog.findViewById<EditText>(R.id.editDescriptionRoom).text.toString(),
-                Storage.getInstance().user.id
-            )
-
-            if(objects.isAllEmpty()){
-                Snackbar.make(view,R.string.fields_empty,Snackbar.LENGTH_SHORT).show()
-                return@OnClickListener
-            }
-            scope.async {
-                if (objectsController.create(objects)) {
-                    Snackbar.make(view, R.string.room_created, Snackbar.LENGTH_SHORT).show()
-                    refresh()
-                } else {
-                    Snackbar.make(view, R.string.error_create_room, Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        })
-        alertDialog?.setButton(AlertDialog.BUTTON_NEGATIVE,getString(R.string.button_cancel),DialogInterface.OnClickListener{item,it->
-            item.dismiss()
-        })
-
-        alertDialog?.show()
+        objectsController.goToCreateObject()
     }
 
     fun editObjects(view:View,objects:Objects){
@@ -130,38 +94,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
             Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
             return
         }
-        objectsAlertDialog.objects=objects
-        val alertDialog=objectsAlertDialog.createAlertDialog(
-            getString(R.string.update_room_title)
-        )
-
-        alertDialog?.setButton(AlertDialog.BUTTON_POSITIVE,getString(R.string.button_update), DialogInterface.OnClickListener{ item, it->
-            if(!Utils.isNetworkAvailable(view.context)){
-                Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
-                return@OnClickListener
-            }
-            objects.name=alertDialog.findViewById<EditText>(R.id.editRoomName).text.toString()
-            objects.description=alertDialog.findViewById<EditText>(R.id.editDescriptionRoom).text.toString()
-
-            if(objects.isAllEmpty()){
-                Snackbar.make(view,R.string.fields_empty, Snackbar.LENGTH_SHORT).show()
-                refresh()
-                return@OnClickListener
-            }
-            scope.async {
-                if (objectsController.update(objects)) {
-                    Snackbar.make(view, R.string.room_updated, Snackbar.LENGTH_SHORT).show()
-                    refresh()
-                } else {
-                    Snackbar.make(view, R.string.error_update_room, Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        })
-        alertDialog?.setButton(AlertDialog.BUTTON_NEGATIVE,getString(R.string.button_cancel), DialogInterface.OnClickListener{ item, it->
-            item.dismiss()
-        })
-
-        alertDialog?.show()
+        objectsController.goToCreateObject(objects)
     }
 
     fun deleteObjects(view:View,objects:Objects){
@@ -171,8 +104,8 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
         }
         deleteAlertDialog.createAlertDialog(
             view.context,
-            getString(R.string.delete_room_title),
-            getString(R.string.delete_room_content),
+            getString(R.string.delete_object_title),
+            getString(R.string.delete_object_content),
             DialogInterface.OnClickListener{ dialog,it->
                 if(!Utils.isNetworkAvailable(view.context)){
                     Snackbar.make(view,R.string.error_no_internet,Snackbar.LENGTH_SHORT).show()
@@ -180,10 +113,10 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
                 }
                 scope.async {
                     if(objectsController.delete(objects)){
-                        Snackbar.make(view,R.string.room_deleted, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(view,R.string.object_deleted, Snackbar.LENGTH_SHORT).show()
                         refresh()
                     }else{
-                        Snackbar.make(view,R.string.error_delete_room, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(view,R.string.error_delete_object, Snackbar.LENGTH_SHORT).show()
                     }
                 }
             },

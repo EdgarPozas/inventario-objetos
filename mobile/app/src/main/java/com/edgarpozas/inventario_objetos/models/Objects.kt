@@ -55,6 +55,7 @@ data class Objects(
             }
             return null
         }
+
         fun createFromJSON(json:JSONObject):Objects{
             val objects=Objects()
             objects.id=json.getString("_id")
@@ -69,7 +70,7 @@ data class Objects(
             objects.tags=tags_
             objects.urlImage=json.getString("urlImage")
             objects.urlSound=json.getString("urlSound")
-            objects.price=json.getDouble("urlSound")
+            objects.price=json.getDouble("price")
             val sharedBy_=ArrayList<String>()
             val arraySharedBy=json.getJSONArray("sharedBy")
             for (i in 0 until arraySharedBy.length()){
@@ -117,7 +118,7 @@ data class Objects(
     }
 
     fun isAllEmpty():Boolean{
-        return name.isEmpty() || description.isEmpty()
+        return name.isEmpty() || description.isEmpty() || functionality.isEmpty()
     }
 
     fun reset(){
@@ -139,12 +140,18 @@ data class Objects(
         json.put("name",name)
         json.put("description",description)
         json.put("functionality",functionality)
-        json.put("tags",tags)
+        var tagsArray=JSONArray()
+        tags?.forEach { x-> tagsArray.put(x) }
+        json.put("tags",tagsArray)
         json.put("urlImage",urlImage)
         json.put("urlSound",urlSound)
         json.put("price",price)
-        json.put("sharedBy",sharedBy)
-        json.put("positions",positions)
+        val listSharedBy=JSONArray()
+        sharedBy?.forEach { x-> listSharedBy.put(x) }
+        json.put("sharedBy",listSharedBy)
+        val listPositions=JSONArray()
+        positions?.forEach { x-> listPositions.put(x.toJSON()) }
+        json.put("positions",listPositions)
         json.put("createdBy",createdBy)
         return json
     }

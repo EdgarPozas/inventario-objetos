@@ -1,0 +1,8 @@
+<resources>
+    <string name="add_objects_tags_title">Agregar tag</string>
+    <string name="add_objects_tags_label">Tag</string>
+    <string name="update_objects_tags_title">Actualizar tag</string>
+    <string name="update_objects_tags_content">¿Estás seguro que deseas actualizar el tag?</string>
+    <string name="delete_objects_tags_title">Borrar tag</string>
+    <string name="delete_objects_tags_content">¿Estás seguro que deseas borrar el tag?</string>
+</resources>

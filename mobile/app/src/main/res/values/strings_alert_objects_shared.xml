@@ -1,0 +1,7 @@
+<resources>
+    <string name="add_objects_shared_title">Agregar compartido con</string>
+    <string name="update_objects_shared_title">Actualizar compartido con</string>
+    <string name="update_objects_shared_content">¿Estás seguro que deseas actualizar con quien esta compartido el objeto?</string>
+    <string name="delete_objects_shared_title">Borrar compartido con</string>
+    <string name="delete_objects_shared_content">¿Estás seguro que deseas borrar con quien esta compartido el objeto?</string>
+</resources>

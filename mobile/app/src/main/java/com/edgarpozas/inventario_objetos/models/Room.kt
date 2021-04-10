@@ -33,7 +33,6 @@ data class Room(var id:String="",var name:String="", var description:String="", 
             val dataBase=DataBase.getInstance()
             val res=dataBase.getQueryHttp(context,"/api/room")
             val status:Int=res["status"].toString().toInt()
-            println(res)
             if(status==200){
                 val list =ArrayList<Room>()
                 val rooms: JSONArray =res.getJSONArray("rooms")

@@ -1,13 +1,9 @@
 package com.edgarpozas.inventario_objetos.models
 
-import android.content.Context
-import com.edgarpozas.inventario_objetos.utils.Utils
-import io.ktor.http.*
-import org.json.JSONArray
 import org.json.JSONObject
 
 data class Position(
-    var latitude:Double=0.0,
+    var latitude: Double =0.0,
     var longitude:Double=0.0,
     var altitude:Double=0.0,
     var room:String="",

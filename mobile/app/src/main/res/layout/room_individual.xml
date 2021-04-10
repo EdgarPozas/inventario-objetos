@@ -38,7 +38,7 @@
                 android:id="@+id/editDescriptionRoom"
                 style="@style/InputStyle"
                 android:layout_width="match_parent"
-                android:layout_height="155dp"
+                android:layout_height="wrap_content"
                 android:focusable="false"
                 android:gravity="top"
                 android:enabled="false"

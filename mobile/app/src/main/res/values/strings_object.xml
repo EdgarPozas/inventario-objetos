@@ -1,0 +1,41 @@
+<resources>
+    <string name="delete_object_title">Borrar objeto</string>
+    <string name="delete_object_content">¿Estás seguro de querer borrar este objeto?</string>
+
+    <string name="object_create">Agregar nuevo objeto</string>
+    <string name="object_update">Actualizar objeto</string>
+
+    <string name="object_name">Nombre</string>
+    <string name="object_description">Descripción</string>
+    <string name="object_functionality">Funcionalidad</string>
+    <string name="object_tags">Tags</string>
+    <string name="object_image">Imagen</string>
+    <string name="object_sound">Audio</string>
+    <string name="object_price">Precio</string>
+    <string name="object_shared">Compartido con</string>
+    <string name="object_position">Posición</string>
+    <string name="object_room">Espacio de la casa</string>
+
+    <string name="object_add">Agregar objeto</string>
+
+    <string name="object_add_tag">Tag agregado</string>
+    <string name="object_update_tag">Tag actualizado</string>
+    <string name="object_delete_tag">Tag borrado</string>
+
+    <string name="object_add_shared">Compartido con agregado</string>
+    <string name="object_update_shared">Compartido con actualizado</string>
+    <string name="object_delete_shared">Compartido con borrado</string>
+
+    <string name="object_record_title">Grabar audio</string>
+    <string name="object_record_content">¿Quiere comenzar la grabación?</string>
+
+    <string name="object_recording_audio">Grabando audio</string>
+    <string name="object_playing_audio">Reproduciendo audio</string>
+
+    <string name="object_location_title">Habilitar ubicación</string>
+    <string name="object_location_content">¿Quiere habilitar su ubicación?</string>
+
+    <string name="object_created">Objeto creado</string>
+    <string name="object_updated">Objeto actualizado</string>
+    <string name="object_deleted">Objeto borrado</string>
+</resources>
