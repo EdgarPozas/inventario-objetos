@@ -7,7 +7,8 @@ data class Position(
     var longitude:Double=0.0,
     var altitude:Double=0.0,
     var room:String="",
-    var updatedBy:String=""
+    var updatedBy:String="",
+    var date:Long=0
     ){
 
     companion object{
@@ -18,6 +19,7 @@ data class Position(
             position.altitude=json.getDouble("altitude")
             position.room=json.getString("room")
             position.updatedBy=json.getString("updatedBy")
+            position.date=json.getLong("date")
             return position
         }
     }
@@ -29,6 +31,7 @@ data class Position(
         json.put("altitude",altitude)
         json.put("room",room)
         json.put("updatedBy",updatedBy)
+        json.put("date",date)
         return json
     }
 }

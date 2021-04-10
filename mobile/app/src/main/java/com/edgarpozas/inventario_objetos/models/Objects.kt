@@ -58,6 +58,7 @@ data class Objects(
 
         fun createFromJSON(json:JSONObject):Objects{
             val objects=Objects()
+            println(json)
             objects.id=json.getString("_id")
             objects.name=json.getString("name")
             objects.description=json.getString("description")

@@ -52,6 +52,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
     private var btnAddImage:ImageButton?=null
     private var btnAddSound:ImageButton?=null
+    private var btnAdd:Button?=null
 
     private var containerImage:LinearLayout?=null
     private var containerSound:LinearLayout?=null
@@ -98,6 +99,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
         btnAddImage=findViewById(R.id.btnAddImage)
         btnAddSound=findViewById(R.id.btnAddSound)
+        btnAdd=findViewById(R.id.btnAdd)
 
         btnPlayAudio=findViewById(R.id.btnPlayAudio)
 
@@ -117,15 +119,17 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
             if(objectAux==null) {
                 title = getString(R.string.object_create)
-
             } else {
                 title = getString(R.string.object_update)
                 editName?.setText(objectAux?.name)
-                editDescription?.setText(objectAux?.name)
-                editFunctionality?.setText(objectAux?.name)
-                val roomSelected=Storage.getInstance().rooms.find { x->x.id== objectAux!!.id }
+                editDescription?.setText(objectAux?.description)
+                editFunctionality?.setText(objectAux?.functionality)
+                editPrice?.setText(objectAux?.price!!.toInt().toString())
+                val lastRoom= objectAux?.positions!!.last()
+                val roomSelected=Storage.getInstance().rooms.find { x->x.id== lastRoom.room }
                 val index=Storage.getInstance().rooms.indexOf(roomSelected)
                 spinnerRoom?.setSelection(index)
+                btnAdd?.text = getString(R.string.object_update)
 
                 for (tag in objectAux!!.tags!!){
                     tags.add(tag)
@@ -517,12 +521,18 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
         objectsTmp.tags= tags
         //objectsTmp.name= editName?.text.toString()
         //objectsTmp.name= editName?.text.toString()
-        objectsTmp.price= editPrice?.text.toString().toDouble()
+        var price=0.0
+        if(!editPrice?.text.toString().isEmpty())
+            price=editPrice?.text.toString().toDouble()
+        objectsTmp.price= price
         val sharedBy=ArrayList<String>()
         users.forEach { x->sharedBy.add(x.id) }
         objectsTmp.sharedBy= sharedBy
         objectsTmp.createdBy= Storage.getInstance().user.id
         objectsTmp.positions=ArrayList()
+        if(objectAux!=null){
+            objectsTmp.positions=objectAux!!.positions
+        }
         if(location!=null) {
             val position = Position(
                 location!!.latitude,
@@ -548,11 +558,21 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
         }
 
         scope.async {
-            if(objectsController.create(objectsTmp)){
-                Snackbar.make(v, R.string.object_created, Snackbar.LENGTH_SHORT).show()
-                objectsController.goToPrincipal()
+            if(objectAux==null){
+                if(objectsController.create(objectsTmp)){
+                    Snackbar.make(v, R.string.object_created, Snackbar.LENGTH_SHORT).show()
+                    objectsController.goToPrincipal()
+                }else{
+                    Snackbar.make(v, R.string.error_create_object, Snackbar.LENGTH_SHORT).show()
+                }
             }else{
-                Snackbar.make(v, R.string.error_create_object, Snackbar.LENGTH_SHORT).show()
+                objectsTmp.id= objectAux!!.id
+                if(objectsController.update(objectsTmp)){
+                    Snackbar.make(v, R.string.object_updated, Snackbar.LENGTH_SHORT).show()
+                    objectsController.goToPrincipal()
+                }else{
+                    Snackbar.make(v, R.string.error_update_object, Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }

@@ -200,7 +200,6 @@
             android:hint="@string/hint_price_object"
             style="@style/InputStyle"
             android:inputType="number"
-            android:text="0"
             android:gravity="top"
             android:textSize="15dp"
             android:id="@+id/editObjectPrice"/>
@@ -292,6 +291,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="40dp"
             android:onClick="createObject"
+            android:id="@+id/btnAdd"
             />
 
     </LinearLayout>
