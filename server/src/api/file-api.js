@@ -15,17 +15,22 @@ var fieldUpload = upload.fields([{ name: 'image', maxCount: 1 }, { name: 'audio'
 router.post("/",fieldUpload,async (req,res)=>{
     try{
         let urls=[];
-        let fileImage=req.files.image[0];
-        let valuesImage=await fileFunctions.upload(fileImage);
-        if(valuesImage.status!=200)
-            throw Error(valuesImage.msg)
-        urls.push(valuesImage)
-        let fileAudio=req.files.audio[0];
-        let valuesAudio=await fileFunctions.upload(fileAudio);
-        if(valuesAudio.status!=200)
-            throw Error(valuesAudio.msg)
-        urls.push(valuesAudio)
-        
+        if(req.files.image){
+            let fileImage=req.files.image[0];
+            let valuesImage=await fileFunctions.upload(fileImage);
+            if(valuesImage.status!=200)
+                throw Error(valuesImage.msg)
+            valuesImage.type="image"
+            urls.push(valuesImage)
+        }
+        if(req.files.audio){
+            let fileAudio=req.files.audio[0];
+            let valuesAudio=await fileFunctions.upload(fileAudio);
+            if(valuesAudio.status!=200)
+                throw Error(valuesAudio.msg)
+            valuesAudio.type="audio"
+            urls.push(valuesAudio)
+        }
         res.json({
             status:200,
             files:urls,
@@ -35,7 +40,7 @@ router.post("/",fieldUpload,async (req,res)=>{
         console.log(ex);
         res.json({
             status:400,
-            msg:ex
+            //msg:ex
         });
     }
 });
