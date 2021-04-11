@@ -38,4 +38,7 @@
     <string name="object_created">Objeto creado</string>
     <string name="object_updated">Objeto actualizado</string>
     <string name="object_deleted">Objeto borrado</string>
+
+    <string name="object_downloading">Descargando información</string>
+    <string name="object_uploading">Subiendo información</string>
 </resources>

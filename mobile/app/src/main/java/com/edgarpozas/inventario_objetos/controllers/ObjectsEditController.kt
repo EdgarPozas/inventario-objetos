@@ -8,6 +8,7 @@ import com.edgarpozas.inventario_objetos.models.*
 import com.edgarpozas.inventario_objetos.models.Room
 import com.edgarpozas.inventario_objetos.views.*
 import com.google.android.gms.maps.SupportMapFragment
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.http.content.*
 import org.json.JSONObject
@@ -57,8 +58,8 @@ class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
         return objects.delete(objectsEdit)
     }
 
-    suspend fun uploadFiles(formData:List<PartData>) :JSONObject{
-        val res= DataBase.getInstance().sendFileHttp(
+    suspend fun uploadFile(formData:List<PartData>) :JSONObject{
+        val res= DataBase.getInstance().uploadFileHttp(
             objectsEdit,
             "/api/file",
             HttpMethod.Post,
@@ -66,6 +67,16 @@ class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
         )
 
         return res
+    }
+
+    suspend fun downloadFile(path:String) :ByteArray{
+        val res= DataBase.getInstance().downloadFileHttp(
+            objectsEdit,
+            path,
+            HttpMethod.Get
+        )
+
+        return res.readBytes()
     }
 
     fun goToPrincipal(){

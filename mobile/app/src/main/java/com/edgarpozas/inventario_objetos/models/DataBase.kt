@@ -31,7 +31,7 @@ class DataBase {
         return JSONObject(response.readText())
     }
 
-    suspend fun sendFileHttp(context: Context,path:String,httpMethod:HttpMethod,data:List<PartData>): JSONObject{
+    suspend fun uploadFileHttp(context: Context,path:String,httpMethod:HttpMethod,data:List<PartData>): JSONObject{
         val client = HttpClient(CIO) {
             expectSuccess = false
         }
@@ -42,6 +42,18 @@ class DataBase {
         }
         client.close()
         return JSONObject(response.readText())
+    }
+
+    suspend fun downloadFileHttp(context: Context,path:String,httpMethod:HttpMethod): HttpResponse{
+        val client = HttpClient(CIO) {
+            expectSuccess = false
+        }
+        val response: HttpResponse = client.request{
+            url(path)
+            method = httpMethod
+        }
+        client.close()
+        return response
     }
 
     fun getQueryLocal(){

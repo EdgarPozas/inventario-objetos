@@ -8,18 +8,23 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
+import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationManager
+import android.media.MediaDataSource
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.media.MediaRecorder
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.edgarpozas.inventario_objetos.R
@@ -39,6 +44,7 @@ import io.ktor.utils.io.streams.*
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileDescriptor
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -78,7 +84,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
     private var tags=ArrayList<String>()
     private var imageLoaded=false
-    private var fileNameAudio=""
+    private var fileAudio:File?=null
     private var tmpTitle:CharSequence=""
     private var location: Location?=null
     var users=ArrayList<User>()
@@ -113,6 +119,8 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
         val objectsEdit=this
         scope.async {
+
+            Toast.makeText(objectsEdit,R.string.object_downloading,Toast.LENGTH_LONG).show()
 
             objectsController.getAllUsers()
             objectsController.getAllRooms()
@@ -149,6 +157,20 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                     val user=Storage.getInstance().users.filter { x->x.active }.find { x->x.id==id }
                     users.add(user!!)
                 }
+
+                if(objectAux?.urlImage!!.isNotEmpty()){
+                    val byteArrayImage=objectsController.downloadFile(objectAux?.urlImage!!)
+                    val image: Drawable =BitmapDrawable(resources, BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.size))
+                    imageView?.setImageDrawable(image)
+                    showImage(true)
+                }
+                if(objectAux?.urlSound!!.isNotEmpty()){
+                    val byteArraySound=objectsController.downloadFile(objectAux?.urlSound!!)
+                    fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.3gp")
+                    fileAudio?.appendBytes(byteArraySound)
+                    showAudio(true)
+                }
+
             }
 
             refreshTags()
@@ -320,18 +342,39 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             imageView?.setImageBitmap(imageBitmap)
+            showImage(true)
+        }
+    }
+
+    fun showImage(show:Boolean){
+        if(show){
             containerImage?.visibility=View.VISIBLE
             btnAddImage?.visibility=View.GONE
             imageLoaded=true
+
+        }else{
+            containerImage?.visibility=View.GONE
+            btnAddImage?.visibility=View.VISIBLE
+            imageLoaded=false
+            imageView?.setImageResource(0)
+        }
+    }
+
+    fun showAudio(show:Boolean){
+        if(show){
+            containerSound?.visibility=View.VISIBLE
+            btnAddSound?.visibility=View.GONE
+
+        }else{
+            containerSound?.visibility=View.GONE
+            btnAddSound?.visibility=View.VISIBLE
+            fileAudio=null
         }
     }
 
 
     fun deletePhoto(v: View){
-        imageView?.setImageResource(0)
-        containerImage?.visibility=View.GONE
-        btnAddImage?.visibility=View.VISIBLE
-        imageLoaded=false
+        showImage(false)
     }
 
     fun goToRecordAudio(v: View){
@@ -364,16 +407,18 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
         ).show()
     }
 
+    @SuppressLint("NewApi")
     fun startRecording() {
-        fileNameAudio = externalCacheDir!!.absolutePath + "/tmpAudio.3gp"
+        fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.3gp")
 
         recorder = MediaRecorder()
 
         recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
         recorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        recorder?.setOutputFile(fileNameAudio)
+        recorder?.setOutputFile(fileAudio)
         recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
         recorder?.prepare()
+
 
         recorder?.start()
         tmpTitle = title
@@ -392,9 +437,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun deleteAudio(v: View){
-        fileNameAudio=""
-        containerSound?.visibility=View.GONE
-        btnAddSound?.visibility=View.VISIBLE
+        showAudio(false)
     }
 
     fun playAudio(v: View){
@@ -408,7 +451,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
-        player?.setDataSource(fileNameAudio)
+        player?.setDataSource(fileAudio?.path)
 
         player?.setOnCompletionListener(OnCompletionListener {
             stopAudio(tmpTitle)
@@ -578,6 +621,8 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
         val objectsEdit=this
         scope.async {
 
+            Toast.makeText(objectsEdit,R.string.object_uploading,Toast.LENGTH_LONG).show()
+
             var uploadData=false
             val formData=io.ktor.client.request.forms.formData {
                 if(imageLoaded){
@@ -594,12 +639,8 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                     uploadData=true
                 }
 
-                if(fileNameAudio.isNotEmpty()){
-                    player= MediaPlayer()
-                    player?.setDataSource(fileNameAudio)
-
-                    val file = File(fileNameAudio)
-                    val bytes= file.readBytes()
+                if(fileAudio!=null){
+                    val bytes= fileAudio!!.readBytes()
                     val uuidAudio: String = UUID.randomUUID().toString()
                     append("audio", "audio_$uuidAudio.3gp", ContentType.Audio.OGG){
                         for (b in bytes)
@@ -611,7 +652,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
             }
 
             if(uploadData){
-                val json=objectsController.uploadFiles(formData)
+                val json=objectsController.uploadFile(formData)
                 val status=json.getInt("status")
                 if(status==200){
                     var files=json.getJSONArray("files")
