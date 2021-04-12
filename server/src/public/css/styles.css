@@ -1,7 +1,13 @@
+@font-face {
+    font-family: Quicksand;
+    src: url(../fonts/Quicksand-Regular.ttf);
+}
+
 body{
     margin:0;
     padding:0;
-    background-color: #dfdfdf;
+    background-color: #f4f5fa;
+    font-family: 'Quicksand';
 }
 a{
     text-decoration: none;
@@ -16,12 +22,72 @@ a:hover{
 .b-radius{
     border-radius: 5px;
 }
-.w-30{
-    width: 30%;
+.me-margin-main{
+    margin: 5rem 5%;
 }
-.w-60{
-    width: 60%;
+.me-container-items{
+    flex-wrap: wrap;
 }
-.m-ud-auto{
-    margin: auto 0;
+.me-container-items>div{
+    flex: 0 0 30%;
+}
+@keyframes rotate {
+    from {
+        margin-left: -70%;
+        transform: rotateZ(0deg);
+    }
+    to {
+        margin-left: 70%;
+        transform: rotateZ(360deg);
+    }
+}
+.img-sad{
+    animation-name: rotate;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+.img-sad:hover{
+    transform: rotateY(180deg);
+}
+.me-card-hover:hover{
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.425)!important;
+}
+.me-a-no-style{
+    color:var(--bs-dark);
+    cursor:pointer;
+    transition: all .25s ease;
+}
+.me-a-no-style:hover{
+    text-decoration: none;
+    color:var(--bs-dark);
+    transform: translateY(-4px) scale(1.02);
+    z-index: 30;
+}
+.me-progress{
+    height: 2px;
+}
+.me-filter{
+    cursor:pointer;
+    transition: all .25s ease;
+}
+.me-filter:hover{
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.425)!important;
+    transform: translateY(-4px) scale(1.02);
+    z-index: 30;
+}
+.me-filter>.card-body * .progress-bar{
+    width: 0;   
+    transition: all .25s ease;
+}
+.me-filter:hover .card-body * .progress-bar , .me-filter.hover .card-body * .progress-bar{
+    width: 100%;
+}
+.me-filter-selected{
+    box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, 0.425)!important;
+    transform: translateY(-4px) scale(1.02);
+    z-index: 30;
+}
+.me-filter-selected>.card-body * .progress-bar{
+    width: 100%;
 }

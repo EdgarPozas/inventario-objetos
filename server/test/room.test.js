@@ -14,12 +14,12 @@ const app=require("../index");
 const Room=require("../src/models/room");
 
 /// Import utils
-const {createUser,createRoom}=require("./utils");
+const {createUser,createRoom,getUserExisting}=require("./utils");
 
 /// Clean room
-beforeEach(async function() {
-    await Room.deleteMany({})
-});
+// beforeEach(async function() {
+//     await Room.deleteMany({})
+// });
 
 /// Creating suit test
 describe("Room",()=>{
@@ -38,8 +38,8 @@ describe("Room",()=>{
 
     it("GET /api/room/id/:id show room by id",async ()=>{
         try{
-            let user=await createUser();
-            let room=await createRoom(user.user);
+            let user=await getUserExisting();
+            let room=await createRoom(user);
             let res=await chai.request(app).get(`/api/room/id/${room.room._id}`);
             res.should.not.be.a("Error");
             res.should.have.status(200);
@@ -51,11 +51,11 @@ describe("Room",()=>{
 
     it("POST /api/room create room",async ()=>{    
         try{
-            let user=await createUser();
+            let user=await getUserExisting();
             let body={
                 name:faker.commerce.product(),
                 description:faker.commerce.productDescription(),
-                id: user.user._id
+                id: user._id
             };
             let res=await chai.request(app).post(`/api/room`)
                 .set('content-type', 'application/x-www-form-urlencoded')
@@ -70,8 +70,8 @@ describe("Room",()=>{
     
     it("PUT /api/room/:id update room",async ()=>{
         try{
-            let user=await createUser();
-            let room=await createRoom(user.user);
+            let user=await getUserExisting();
+            let room=await createRoom(user);
             let body={
                 name:faker.commerce.product(),
                 description:faker.commerce.productDescription(),
@@ -89,8 +89,8 @@ describe("Room",()=>{
     
     it("DELETE /api/room/:id delete room",async ()=>{
         try{
-            let user=await createUser();
-            let room=await createRoom(user.user);
+            let user=await getUserExisting();
+            let room=await createRoom(user);
             let res=await chai.request(app).delete(`/api/room/${room.room._id}`);
             res.should.not.be.a("Error");
             res.should.have.status(200);

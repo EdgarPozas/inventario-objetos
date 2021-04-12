@@ -17,9 +17,9 @@ const User=require("../src/models/user");
 const {createUser}=require("./utils");
 
 /// Clean users
-beforeEach(async function() {
-    //await User.deleteMany({})
-});
+// beforeEach(async function() {
+//     //await User.deleteMany({})
+// });
 
 /// Creating suit test
 describe("User",()=>{

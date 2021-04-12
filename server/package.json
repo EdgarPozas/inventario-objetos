@@ -4,8 +4,8 @@
     "description": "inventario-objetos server",
     "main": "index.js",
     "scripts": {
-        "test": "mocha ./test/file.test.js --timeout 10000",
-        "start": "nodemon index.js"
+        "test": "mocha ./test/user.test.js --timeout 10000",
+        "start": "nodemon index.js --ignore './public/*.js'"
     },
     "author": "Edgar Pozas",
     "license": "ISC",

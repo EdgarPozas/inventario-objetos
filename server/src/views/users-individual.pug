@@ -1,0 +1,93 @@
+include ./shared/constants
+include ./shared/header
+include ./shared/nav-bar
+include ./shared/scripts
+include ./shared/modal
+include ./shared/footer
+
+-let filters=[{name:"Objetos propios"},{name:"Espacios registrados"}]
+
+doctype html
+html
+    head
+        +header(user.firstName+" "+user.lastName)
+    body
+        +nav-bar(0)
+        div.me-margin-main#user-component  
+            div.card.me-container-filter.shadow
+                .card-header
+                    h5.card-title.fw-bold.m-0 Miembro
+                .card-body.row
+                    .col-6
+                        label.form-label.fw-bold Nombre
+                        br
+                        label.form-label #{user.firstName}
+                    .col-6
+                        label.form-label.fw-bold Apellido
+                        br
+                        label.form-label #{user.lastName}
+                    .col-6
+                        label.form-label.fw-bold Correo
+                        br
+                        label.form-label #{user.email}
+                    .col-6.m-auto
+                        .row
+                            .col-6
+                                .form-check
+                                    input(type="checkbox" v-model="active" disabled).form-check-input#inputActive
+                                    label(for="inputActive").form-check-label.fw-bold Activo
+                            .col-6
+                                .form-check
+                                    input(type="checkbox" v-model="verified" disabled).form-check-input#inputVerified
+                                    label(for="inputVerified").form-check-label.fw-bold Verificado
+                    .col-6
+                        label.form-label.fw-bold Fecha de registro
+                        br
+                        label.form-label #{dateToString(new Date(user.createdAt))}
+                .card-footer.text-end
+            div.mt-3#user-individual-component
+                div.d-flex.justify-content-center
+                    for filter,i in filters
+                        div(@click="select("+i+")" :class="filterSelected=="+i+"? 'me-filter-selected':'me-filter'").card.m-2.shadow.w-100
+                            .card-body
+                                h5.card-title.fw-bold #{filter.name}
+                                div.progress.me-progress
+                                    div.progress-bar
+            
+                div.mt-3
+                    div(v-if="filterSelected==0").d-flex.me-container-items.justify-content-center
+                        div(v-for="object in objects").card.m-2.shadow.me-card-hover.me-a-no-style
+                            a(:href="'http://localhost:3000/objects/'+object._id").text-decoration-none.text-dark
+                                .card-header
+                                    h5.card-title.fw-bold {{object.name}}
+                                .card-body 
+                                    div.text-center
+                                        img(:src="object.urlImage" v-if="object.urlImage!=''")
+                                        audio(:src="object.urlSound" controls="controls" type="audio/mpeg" preload="preload" v-if="object.urlSound!=''").w-100.mt-3
+                                    label.form-label.fw-bold Descripción
+                                    p.card-text {{object.description}}
+                        div(v-if="objects.length==0").text-center.m-5
+                            img(src=server+"/images/ic_triste.png", alt="").img-sad
+                            h1 No hay información
+                    div(v-if="filterSelected==1").d-flex.me-container-items.justify-content-center
+                        div(v-for="room in rooms").card.m-2.shadow.me-card-hover.me-a-no-style
+                            a(:href="'http://localhost:3000/rooms/'+room._id").text-decoration-none.text-dark
+                                .card-header
+                                    h5.card-title.fw-bold {{room.name}}
+                                .card-body
+                                    label.form-label.fw-bold Descripción
+                                    p.card-sub-title {{room.description}}
+                                    div 
+                                        .form-check
+                                            input(type="checkbox" :checked="room.active" disabled).form-check-input
+                                            label.form-check-label.fw-bold Activo
+                        div(v-if="rooms.length==0").text-center.m-5
+                            img(src=server+"/images/ic_triste.png", alt="").img-sad
+                            h1 No hay información
+                input(type="hidden" data=objects)#user-objects
+                input(type="hidden" data=rooms)#user-rooms
+      
+        +footer()
+        +scripts()
+        script(src=server+"/js/components/user-individual-component.js") 
+        

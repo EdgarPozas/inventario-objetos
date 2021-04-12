@@ -14,12 +14,12 @@ const app=require("../index");
 const Objects=require("../src/models/object");
 
 /// Import utils
-const {createUser,createRoom,createObject,createPosition}=require("./utils");
+const {createUser,createRoom,createObject,createPosition, getUserExisting, getRoomExisting}=require("./utils");
 
 /// Clean object
-beforeEach(async function() {
-    await Objects.deleteMany({})
-});
+// beforeEach(async function() {
+//     await Objects.deleteMany({})
+// });
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
@@ -45,10 +45,10 @@ describe("Objects",()=>{
             let users=[];
             let positions=[];
             for(let i=0;i<5;i++){
-                let user=await createUser();
-                users.push(user.user);
-                let room=await createRoom(user.user);
-                let position=await createPosition(user.user,room.room);
+                let user=await getUserExisting()
+                users.push(user);
+                let room=await getRoomExisting();
+                let position=await createPosition(user,room);
                 positions.push(position.position);
             }
             let object=await createObject(users,positions);
@@ -66,10 +66,10 @@ describe("Objects",()=>{
             let users=[];
             let rooms=[];
             for(let i=0;i<5;i++){
-                let user=await createUser();
-                users.push(user.user);
-                let room=await createRoom(user.user);
-                rooms.push(room.room);
+                let user=await getUserExisting();
+                users.push(user);
+                let room=await getRoomExisting();
+                rooms.push(room);
             }
             let position=await createPosition(users[getRandomInt(0,users.length)],rooms[getRandomInt(0,rooms.length)]);
             let body={
@@ -106,10 +106,10 @@ describe("Objects",()=>{
             let users=[];
             let rooms=[];
             for(let i=0;i<5;i++){
-                let user=await createUser();
-                users.push(user.user);
-                let room=await createRoom(user.user);
-                rooms.push(room.room);
+                let user=await getUserExisting();
+                users.push(user);
+                let room=await getRoomExisting();
+                rooms.push(room);
             }
             let position=await createPosition(users[getRandomInt(0,users.length)],rooms[getRandomInt(0,rooms.length)]);
             let body={
@@ -132,10 +132,10 @@ describe("Objects",()=>{
             users=[];
             rooms=[];
             for(let i=0;i<5;i++){
-                let user=await createUser();
-                users.push(user.user);
-                let room=await createRoom(user.user);
-                rooms.push(room.room);
+                let user=await getUserExisting();
+                users.push(user);
+                let room=await getRoomExisting();
+                rooms.push(room);
             }
             let newPosition=await createPosition(users[getRandomInt(0,users.length)],rooms[getRandomInt(0,rooms.length)]);
             let object=await createObject(users,rooms,newPosition);
@@ -155,10 +155,10 @@ describe("Objects",()=>{
             let users=[];
             let rooms=[];
             for(let i=0;i<5;i++){
-                let user=await createUser();
-                users.push(user.user);
-                let room=await createRoom(user.user);
-                rooms.push(room.room);
+                let user=await getUserExisting();
+                users.push(user);
+                let room=await getRoomExisting();
+                rooms.push(room);
             }
             let object=await createObject(users,rooms);
             let res=await chai.request(app).delete(`/api/object/${object.object._id}`);

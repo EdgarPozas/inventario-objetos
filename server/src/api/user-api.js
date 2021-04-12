@@ -74,21 +74,20 @@ router.post("/",async (req,res)=>{
         let userValues=await userFunctions.getByEmail(req.body.email);
         if(userValues.status==200)
             throw Error(userValues.msg)
-
         let values=await userFunctions.create(req.body);
-        if(values.status==200){
-            let url=`http://localhost:3000/user/verify/${values.user._id}`
-            let valuesEmail=await emailFunctions.send({
-                to:values.user.email,
-                subject:"Verificación de correo | Inventario - Objetos",
-                html:`
-                <h1>Hola!, ${values.user.name}</h1>
-                <p>Hemos bienvenido a la App, para poder iniciar sesión es necesario validar tu correo accediendo al siguiente enlace <a href="${url}">${url}</p>
-                `
-            });
-            if(valuesEmail.status!=200)
-                throw Error(valuesEmail.msg)
-        }
+        // if(values.status==200){
+        //     let url=`http://localhost:3000/user/verify/${values.user._id}`
+        //     let valuesEmail=await emailFunctions.send({
+        //         to:values.user.email,
+        //         subject:"Verificación de correo | Inventario - Objetos",
+        //         html:`
+        //         <h1>Hola!, ${values.user.name}</h1>
+        //         <p>Hemos bienvenido a la App, para poder iniciar sesión es necesario validar tu correo accediendo al siguiente enlace <a href="${url}">${url}</p>
+        //         `
+        //     });
+        //     if(valuesEmail.status!=200)
+        //         throw Error(valuesEmail.msg)
+        // }
         res.json(values);
     }catch(ex){
         console.log(ex);

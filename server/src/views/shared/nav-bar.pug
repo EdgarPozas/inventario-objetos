@@ -1,20 +1,17 @@
-mixin nav-bar()
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light.me-navbar.shadow-sm
+mixin nav-bar(index)
+    -let options=[{name:"Miembros",url:"/users"},{name:"Objetos",url:"/objects"},{name:"Espacios",url:"/rooms"},{name:"Acerca de",url:"/about"}]
+    nav.navbar.navbar-expand-lg.navbar-light.bg-white.me-navbar.shadow.fixed-top
         .container-fluid
-            a(href=server+"/").navbar-brand  Inventario-Objetos
+            a(href=server+"/").navbar-brand
+                img(src=server+"/images/ic_logo.png" width="30" height="30").d-inline-block.align-text-top.me-3
+                |Inventario-Objetos
             button(type="button" data-bs-toggle="collapse" data-bs-target="#navbar").navbar-toggler
                 span.navbar-toggler-icon
             div#navbar.collapse.navbar-collapse
-                if user
-                    ul.navbar-nav.w-100
+                ul.navbar-nav.w-100.justify-content-end
+                    for it,i in options
                         li.nav-item
-                            a(href=server+"/user/profile").nav-link Mi perfil
-                        li.nav-item
-                            a(href=server+"/group").nav-link Mis grupos
-                    .d-flex.w-100.justify-content-end
-                        div(data-bs-toggle="modal" data-bs-target="#closeSessionModal").btn.btn-outline-danger.m-2 Cerrar sesión
-                else
-                    .d-flex.w-100.justify-content-end
-                        div(data-bs-toggle="modal" data-bs-target="#loginModal").btn.btn-outline-primary.m-2 Ingresar
-                        div(data-bs-toggle="modal" data-bs-target="#registerModal").btn.btn-outline-secondary.m-2 Registrarse
-    
+                            if i==index
+                                a(href=server+it.url).nav-link.active #{it.name}
+                            else
+                                a(href=server+it.url).nav-link #{it.name}

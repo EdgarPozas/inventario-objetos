@@ -26,12 +26,25 @@ module.exports={
 
             chai.request(app)
                 .post("/api/user")
-                .set('content-type', 'application/x-www-form-urlencoded')
                 .send(body)
                 .end((err,res)=>{
                     if(err)
                         reject(err);
                     resolve(res.body);
+                });
+        });
+    },
+    getUserExisting:function (){
+        return new Promise((resolve,reject)=>{
+            chai.request(app)
+                .get("/api/user")
+                .end((err,res)=>{
+                    if(err)
+                        reject(err);
+                    
+                    let users=res.body.users;
+                    let user=users[getRandomInt(0,users.length)];
+                    resolve(user);
                 });
         });
     },
@@ -51,6 +64,20 @@ module.exports={
                     if(err)
                         reject(err);
                     resolve(res.body);
+                });
+        });
+    },
+    getRoomExisting:function (){
+        return new Promise((resolve,reject)=>{
+            chai.request(app)
+                .get("/api/room")
+                .end((err,res)=>{
+                    if(err)
+                        reject(err);
+                    
+                    let rooms=res.body.rooms;
+                    let room=rooms[getRandomInt(0,rooms.length)];
+                    resolve(room);
                 });
         });
     },
@@ -82,6 +109,20 @@ module.exports={
                     if(err)
                         reject(err);
                     resolve(res.body);
+                });
+        });
+    },
+    getObjectExisting:function (){
+        return new Promise((resolve,reject)=>{
+            chai.request(app)
+                .get("/api/object")
+                .end((err,res)=>{
+                    if(err)
+                        reject(err);
+                    
+                    let objects=res.body.objects;
+                    let object_=objects[getRandomInt(0,objects.length)];
+                    resolve(object_);
                 });
         });
     },

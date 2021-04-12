@@ -19,22 +19,22 @@ const readFile = util.promisify(fs.readFile);
 /// Creating suit test
 describe("Files",()=>{
 
-    it("POST /api/file upload file",async ()=>{    
-        try{
-            let file= await readFile(path.join(__dirname,'imagen.jpg'));
+    // it("POST /api/file upload file",async ()=>{    
+    //     try{
+    //         let file= await readFile(path.join(__dirname,'imagen.jpg'));
 
-            let res=await chai.request(app).post(`/api/file`)
-                .set('content-type', 'application/x-www-form-urlencoded')
-                .attach('image', file,'imagen.jpg')
-                .attach('audio', file,'imagen2.jpg')
+    //         let res=await chai.request(app).post(`/api/file`)
+    //             .set('content-type', 'application/x-www-form-urlencoded')
+    //             .attach('image', file,'imagen.jpg')
+    //             .attach('audio', file,'imagen2.jpg')
 
-            res.should.not.be.a("Error");
-            res.should.have.status(200);
-            res.body.status.should.to.equal(200);
+    //         res.should.not.be.a("Error");
+    //         res.should.have.status(200);
+    //         res.body.status.should.to.equal(200);
 
-        }catch(ex){
-            console.log(ex)
-        }
-    });
+    //     }catch(ex){
+    //         console.log(ex)
+    //     }
+    // });
     
 });

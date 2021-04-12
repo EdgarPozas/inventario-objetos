@@ -1,0 +1,66 @@
+include ./shared/constants
+include ./shared/header
+include ./shared/nav-bar
+include ./shared/scripts
+include ./shared/modal
+include ./shared/footer
+doctype html
+html
+    head
+        +header("Usuarios")
+    body
+        +nav-bar(0)
+        div.me-margin-main#user-component
+            div.card.me-container-filter.shadow
+                .card-header
+                    h5.card-title.fw-bold.m-0 Buscar miembros por
+                .card-body.row
+                    .col-6
+                        label.form-label.fw-bold Nombre
+                        input(type="text" placeholder="Ej. Edgar" v-model="firstName" @keyup="filter").form-control#inputFirstName
+                    .col-6
+                        label.form-label.fw-bold Apellido
+                        input(type="text" placeholder="Ej. Pozas" v-model="lastName" @keyup="filter").form-control#inputLastName
+                    .col-12
+                        label.form-label.fw-bold Correo
+                        input(type="text" placeholder="Ej. ejemplo@correo.com" v-model="email" @keyup="filter").form-control#inputEmail
+                    .col-12.mt-3
+                        .row
+                            .col-6
+                                .form-check
+                                    input(type="checkbox" v-model="active" @change="filter" ).form-check-input#inputActive
+                                    label(for="inputActive").form-check-label.fw-bold Activo
+                            .col-6
+                                .form-check
+                                    input(type="checkbox" v-model="verified" @change="filter" ).form-check-input#inputVerified
+                                    label(for="inputVerified").form-check-label.fw-bold Verificado
+                .card-footer.text-end
+                    button(@click="clearFilters").btn.btn-outline-primary Limpiar filtros
+            div.mt-3.d-flex.me-container-items.justify-content-center
+                div(v-for="user in users" style="").card.m-2.shadow.me-card-hover.me-a-no-style
+                     a(:href="'http://localhost:3000/users/'+user._id").text-decoration-none.text-dark
+                        .card-header
+                            h5.card-title.fw-bold {{user.firstName}} {{user.lastName}}
+                        .card-body
+                            p.card-sub-title {{user.email}}
+                            p.card-text {{user.lastName}}
+                            .col-12.mt-3
+                                .row
+                                    .col-6
+                                        .form-check
+                                            input(type="checkbox" :checked="user.active" disabled).form-check-input
+                                            label.form-check-label.fw-bold Activo
+                                    .col-6
+                                        .form-check
+                                            input(type="checkbox" :checked="user.verified" disabled).form-check-input
+                                            label.form-check-label.fw-bold Verificado
+            div(v-if="users.length==0").text-center.m-5
+                img(src=server+"/images/ic_triste.png", alt="").img-sad
+                h1 No hay información
+
+            input(type="hidden" data=users)#user-data
+            
+        +footer()
+        +scripts()
+        script(src=server+"/js/components/user-component.js")
+        

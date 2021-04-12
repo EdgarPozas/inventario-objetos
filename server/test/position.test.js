@@ -14,12 +14,12 @@ const app=require("../index");
 const Position=require("../src/models/position");
 
 /// Import utils
-const {createUser,createRoom,createPosition}=require("./utils");
+const {createUser,createRoom,createPosition,getUserExisting,getRoomExisting}=require("./utils");
 
 /// Clean position
-beforeEach(async function() {
-    await Position.deleteMany({})
-});
+// beforeEach(async function() {
+//     await Position.deleteMany({})
+// });
 
 /// Creating suit test
 describe("Position",()=>{
@@ -38,9 +38,9 @@ describe("Position",()=>{
 
     it("GET /api/position/id/:id show position by id",async ()=>{
         try{
-            let user=await createUser();
-            let room=await createRoom(user.user);
-            let position=await createPosition(user.user,room.room);
+            let user=await getUserExisting();
+            let room=await getRoomExisting();
+            let position=await createPosition(user,room);
             let res=await chai.request(app).get(`/api/position/id/${position.position._id}`);
             res.should.not.be.a("Error");
             res.should.have.status(200);
@@ -52,14 +52,14 @@ describe("Position",()=>{
 
     it("POST /api/position create position",async ()=>{    
         try{
-            let user=await createUser();
-            let room=await createRoom(user.user);
+            let user=await getUserExisting();
+            let room=await getRoomExisting();
             let body={
                 latitude:faker.address.latitude(),
                 longitude:faker.address.longitude(),
                 altitude:faker.address.latitude(),
-                room:room.room._id,
-                createdBy:user.user._id
+                room:room._id,
+                createdBy:user._id
             };
             let res=await chai.request(app).post(`/api/position`)
                 .set('content-type', 'application/x-www-form-urlencoded')
@@ -74,14 +74,14 @@ describe("Position",()=>{
     
     it("PUT /api/position/:id update position",async ()=>{
         try{
-            let user=await createUser();
-            let room=await createRoom(user.user);
-            let position=await createPosition(user.user,room.room);
+            let user=await getUserExisting();
+            let room=await getRoomExisting();
+            let position=await createPosition(user,room);
             let body={
                 latitude:faker.address.latitude(),
                 longitude:faker.address.longitude(),
                 altitude:faker.address.latitude(),
-                room:room.room._id,
+                room:room._id,
             };
             let res=await chai.request(app).put(`/api/position/${position.position._id}`)
                 .set('content-type', 'application/x-www-form-urlencoded')
@@ -96,9 +96,9 @@ describe("Position",()=>{
     
     it("DELETE /api/position/:id delete position",async ()=>{
         try{
-            let user=await createUser();
-            let room=await createRoom(user.user);
-            let position=await createPosition(user.user,room.room);
+            let user=await getUserExisting();
+            let room=await getRoomExisting();
+            let position=await createPosition(user,room);
             let res=await chai.request(app).delete(`/api/position/${position.position._id}`);
             res.should.not.be.a("Error");
             res.should.have.status(200);
