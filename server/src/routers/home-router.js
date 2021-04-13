@@ -1,6 +1,7 @@
 /// Initialize dependencies
 const express=require("express");
 const app=express();
+const bcrypt=require("bcrypt");
 /// Defining a router
 const router=express.Router();
 /// Models
@@ -8,6 +9,9 @@ const User=require("../models/user");
 const Objects=require("../models/object");
 const Room=require("../models/room");
 const Position=require("../models/position");
+/// Functions
+const userFunctions=require("../functions/user-functions");
+const user = require("../models/user");
 
 /// Route GET /
 router.get("/",async (req,res)=>{
@@ -20,7 +24,10 @@ router.get("/users",async (req,res)=>{
         let users=await User.find({});
         res.render("users",{users});
     }catch(ex){
-        res.send(ex)
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -33,7 +40,10 @@ router.get("/users/:id",async (req,res)=>{
         let rooms=await Room.find({createdBy:id});
         res.render("users-individual",{user,objects,rooms});
     }catch(ex){
-        res.send(ex)
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -45,7 +55,10 @@ router.get("/objects",async (req,res)=>{
         let rooms=await Room.find({});
         res.render("objects",{objects,users,rooms});
     }catch(ex){
-        res.send(ex)
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -58,7 +71,10 @@ router.get("/objects/:id",async (req,res)=>{
         let rooms=await Room.find({});
         res.render("objects-individual",{object,users,rooms});
     }catch(ex){
-        res.send(ex)
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -68,7 +84,10 @@ router.get("/rooms",async (req,res)=>{
         let rooms=await Room.find({});
         res.render("rooms",{rooms});
     }catch(ex){
-        res.send(ex)
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
@@ -93,14 +112,77 @@ router.get("/rooms/:id",async (req,res)=>{
         let objectsAux=await Objects.find({_id:{$in:arrayObjects}}).populate("sharedBy").populate("positions");
         res.render("rooms-individual",{room,objects:objectsAux});
     }catch(ex){
-        res.send(ex)
+        res.json({
+            status:400,
+            msg:ex
+        });
     }
 });
 
 /// Route GET /user/verify/:id
-router.get("/user/verify/:id",async (req,res)=>{
-    res.render("verify");
+router.get("/users/verify/:id",async (req,res)=>{
+    try{
+        let values=await userFunctions.verify(req.params.id);
+        if(values.status!=200)
+            throw Error(values.msg);
+        res.render("verify");
+    }catch(ex){
+        console.log(ex);
+        res.json({
+            status:400,
+            msg:ex
+        });
+    }
 });
+
+/// Route GET /users/verify/:id
+router.get("/users/recovery/:id",async (req,res)=>{
+    try{
+        let user=await User.findById(req.params.id);
+        res.render("recovery",{user});
+    }catch(ex){
+        console.log(ex);
+        res.json({
+            status:400,
+            msg:ex
+        });
+    }
+    
+});
+
+/// Route POST /users/recovery/:id
+router.post("/users/recovery/:id",async (req,res)=>{
+    try{
+        let {
+            email,
+            password,
+        }=req.body;
+        
+        let user=await User.findOne({
+            _id:req.params.id,
+            email:email
+        }).exec();
+
+        if(!user)
+            throw Error("User not found");
+
+        user.password=await bcrypt.hash(password, 10);
+        await user.save();
+
+        res.render("recovery", {
+            status:200,
+            user:user,
+        });
+    }catch(ex){
+        console.log(ex);
+        let user=await User.findById(req.params.id);
+        res.render("recovery", {
+            status:400,
+            user:user,
+        });
+    }
+});
+
 
 /// Route GET /about
 router.use((req,res,next)=>{

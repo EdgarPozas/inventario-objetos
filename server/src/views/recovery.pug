@@ -1,0 +1,36 @@
+include ./shared/constants
+include ./shared/header
+include ./shared/nav-bar
+include ./shared/scripts
+include ./shared/modal
+include ./shared/footer
+
+doctype html
+html
+    head
+        +header("Cambiar contraseña")
+    body
+        +nav-bar(0)
+        div.me-margin-main#recovery-component
+            form(action=server+"/users/recovery/"+user._id method="post").card.me-container-filter.shadow
+                .card-header
+                    h5.card-title.fw-bold.m-0 Cambiar contraseña
+                .card-body.row.p-5
+                    if status==200
+                        div.alert.alert-success.mt-3 Contraseña actualizada correctamente
+                    if status==400
+                        div.alert.alert-danger.mt-3 Error al actualizar las contraseñas
+                    label.fw-bold.mt-3 Ingresa tu correo
+                    input(type="email" required name="email" placeholder="Ej. correo@ejemplo.com").form-control
+                    label.fw-bold.mt-3 Ingresa tu nueva contraseña
+                    input(type="password" required name="password" placeholder="**********" v-model="password").form-control
+                    label.fw-bold.mt-3 Confirma tu nueva contraseña
+                    input(type="password" required name="confirmPassword" placeholder="**********" v-model="confirmPassword").form-control
+                    div(v-if="password!=confirmPassword").alert.alert-danger.mt-3 Las contraseñas no coinciden
+                .card-footer.p-5.text-end
+                    button(v-if="password==confirmPassword").btn.btn-primary Cambiar contraseña
+        +footer()
+        +scripts()
+        script(src=server+"/js/components/recovery-component.js") 
+            
+        

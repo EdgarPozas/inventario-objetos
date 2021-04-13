@@ -4,42 +4,24 @@ include ./shared/nav-bar
 include ./shared/scripts
 include ./shared/modal
 include ./shared/footer
+
 doctype html
 html
     head
-        +header("Usuarios")
+        +header("Verificar cuenta")
     body
-        +nav-bar()
-        //- div.bg-dark.p-5.shadow
-        //-     div.d-flex.p-5.align-items-center
-        //-         div.w-100
-        //-             h2.text-light Aplicación móvil
-        //-             p.text-light.mt-5 Puedes descargar la aplicación móvil para complementar la experiencia
-        //-             a(href=server+"").text-light.mt-5 Aplicación android
-        //-         div.w-100.text-center
-        //-             img(src="" height="300" width="200" alt="Imágen de la aplicación móvil")
-                    
-        //- div.justify-content-center.m-5.text-center
-        //-     h1 Funcionalidades
-        //-     each functionality in functionalities
-        //-         div.bg-light.p-5.shadow-sm.m-3.w-30.b-radius.d-inline-block
-        //-             div.text-center
-        //-                 h3 #{functionality.title}
-        //-             p.mt-3 #{functionality.content}
-                    
-        //- div.justify-content-center.m-5.text-center
-        //-     h1 Arquitectura
-        //-     div.p-5.text-center
-        //-         img(src="https://github.com/EdgarPozas/inventario-objetos/blob/master/extras/DIAGRAMA_ARQUITECTURA.png?raw=true" alt="Imágen de la arquitectura del sistema").w-100
-        //- hr
-        //- div.justify-content-center.m-5.text-center
-        //-     h1 Tecnologías
-        //-     each option in tecnologies
-        //-         div.bg-light.p-5.shadow-sm.m-3.w-30.b-radius.d-inline-block
-        //-             div.text-center
-        //-                 h3 #{option.title}
-        //-             p.mt-3 #{option.content}
-        //- +footer()
-        //- +modal("Atención","Revisa los campos","modal-check-data",[{type:"close-secondary",title:"Cerrar"}])
+        +nav-bar(0)
+        div.me-margin-main
+            div.card.me-container-filter.shadow
+                .card-header
+                    h5.card-title.fw-bold.m-0 Verificación de cuenta
+                .card-body.row
+                    h1 Excelente 
+                    p.form-label Acabas de verificar tu cuenta éxitosamente, ahora puedes continuar con tu sesión en la aplicación móvil.
+                .card-footer
+
+            input(type="hidden" data=users)#user-data
+        +footer()
         +scripts()
+        script(src=server+"/js/utils.js")
         

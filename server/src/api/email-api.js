@@ -20,7 +20,7 @@ router.post("/recovery",async (req,res)=>{
         if(userValues.status!=200)
             throw Error(userValues.msg)
 
-        let url=`http://localhost:3000/user/verify/${userValues.user._id}`
+        let url=`http://localhost:3000/user/recovery/${userValues.user._id}`
         let values=await emailFunctions.send({
             to:email,
             subject:"Recuperar contraseña | Inventario - Objetos",
