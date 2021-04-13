@@ -10,57 +10,116 @@ html
         +header("Objetos")
     body
         +nav-bar(1)
-        div.me-margin-main#user-component
+        div.me-margin-main#object-component
             div.card.me-container-filter.shadow
                 .card-header
-                    h5.card-title.fw-bold.m-0 Buscar miembros por
+                    h5.card-title.fw-bold.m-0 Buscar objetos por
                 .card-body.row
                     .col-6
                         label.form-label.fw-bold Nombre
-                        input(type="text" placeholder="Ej. Edgar" v-model="firstName" @keyup="filter").form-control#inputFirstName
+                        input(type="text" placeholder="Ej. Cepillo" v-model="name" @keyup="filter").form-control
                     .col-6
-                        label.form-label.fw-bold Apellido
-                        input(type="text" placeholder="Ej. Pozas" v-model="lastName" @keyup="filter").form-control#inputLastName
+                        label.form-label.fw-bold Descripcion
+                        input(type="text" placeholder="Ej. Es de color azúl con ..." v-model="description" @keyup="filter").form-control
+                    .col-6
+                        label.form-label.fw-bold Funcionalidad
+                        input(type="text" placeholder="Ej. Su función es..." v-model="functionality" @keyup="filter").form-control
+                    .col-6
+                        .row 
+                            .col-6
+                                label.form-label.fw-bold Precio min
+                                input(type="number" placeholder="Ej. 5" v-model="priceMin" @change="filter").form-control
+                            .col-6
+                                label.form-label.fw-bold Precio max
+                                input(type="number" placeholder="Ej. 100" v-model="priceMax" @change="filter").form-control
                     .col-12
-                        label.form-label.fw-bold Correo
-                        input(type="text" placeholder="Ej. ejemplo@correo.com" v-model="email" @keyup="filter").form-control#inputEmail
-                    .col-12.mt-3
-                        .row
-                            .col-6
-                                .form-check
-                                    input(type="checkbox" v-model="active" @change="filter" ).form-check-input#inputActive
-                                    label(for="inputActive").form-check-label.fw-bold Activo
-                            .col-6
-                                .form-check
-                                    input(type="checkbox" v-model="verified" @change="filter" ).form-check-input#inputVerified
-                                    label(for="inputVerified").form-check-label.fw-bold Verificado
+                        label.form-label.fw-bold Tags
+                        .row 
+                            .col-10
+                                input(type="text" placeholder="Ej. Azúl" v-model="tag" @keyup="filter").form-control
+                            .col-2
+                                button(@click="addTag").btn.btn-outline-primary.w-100 Agregar tag
+                        ul.mt-3
+                            li(v-for="(tag_,i) in tags").row
+                                .col-10 {{tag_}}
+                                .col-2
+                                    button(@click="removeTag(i)").btn.btn-outline-danger.w-100 Remover tag
+                                hr.mt-2
+                    .col-12
+                        label.form-label.fw-bold Compartido con
+                        .row 
+                            .col-9
+                                select(v-model="userShared").form-select
+                                    option(v-for="user in usersAvailable" :value="user") {{user.firstName}} {{user.lastName}}
+                            div(v-if="usersAvailable.length>0").col-3
+                                button(@click="addShared").btn.btn-outline-primary.w-100 Agregar compartido
+                        ul.mt-3
+                            li(v-for="shared,i in usersShared").row
+                                .col-10 {{shared.firstName}}
+                                .col-2
+                                    button(@click="removeShared(i)").btn.btn-outline-danger Remover
+                                hr.mt-2
+                    .col-12
+                        label.form-label.fw-bold Espacio
+                        input(type="text" placeholder="Ej. Sala" v-model="room" @keyup="filter").form-control
+
                 .card-footer.text-end
+                    input(type="submit" @click="tableMode=!tableMode" :value="tableMode?'Modo tarjeta':'Modo tabla'").btn.btn-outline-primary.me-3
                     button(@click="clearFilters").btn.btn-outline-primary Limpiar filtros
             div.mt-3.d-flex.me-container-items.justify-content-center
-                div(v-for="user in users" style="").card.m-2.shadow.me-card-hover.me-a-no-style
-                     a(:href="'http://localhost:3000/users/'+user._id").text-decoration-none.text-dark
+                div(v-if="tableMode").card.m-2.shadow.me-card-hover.w-100.p-3
+                    table.table 
+                        thead 
+                            tr 
+                                td.fw-bold #
+                                td.fw-bold Nombre 
+                                td.fw-bold Descripción
+                                td.fw-bold Funcionalidad
+                                td.fw-bold Precio
+                                td.fw-bold Tags
+                                td.fw-bold Compartido con
+                                td.fw-bold Espacio
+                                td.fw-bold Registrado por
+                                td.fw-bold Consultar
+                        tbody
+                            tr(v-for="object,i in objects")
+                                td {{i+1}}
+                                td {{object.name}}
+                                td {{object.description}}
+                                td {{object.functionality}}
+                                td {{object.price}}
+                                td
+                                    ul 
+                                        li(v-for="tag in object.tags") {{tag}}
+                                td
+                                    ul 
+                                        li(v-for="user in object.sharedBy") {{user.firstName}} {{user.lastName}}
+                                td 
+                                    div(v-if="!object.positions[object.positions.length-1].room")
+                                    a(v-else :href="'http://localhost:3000/rooms/'+object.positions[object.positions.length-1].room") {{rooms.filter(x=>x._id==object.positions[object.positions.length-1].room)[0].name}}
+                                td 
+                                    a(:href="'http://localhost:3000/users/'+object.createdBy._id") {{object.createdBy.firstName}} {{object.createdBy.lastName}}
+                                td 
+                                    a(:href="'http://localhost:3000/objects/'+object._id") Ver
+                div(v-else v-for="object in objects" style="").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
+                     a(:href="'http://localhost:3000/objects/'+object._id").text-decoration-none.text-dark
                         .card-header
-                            h5.card-title.fw-bold {{user.firstName}} {{user.lastName}}
-                        .card-body
-                            p.card-sub-title {{user.email}}
-                            p.card-text {{user.lastName}}
-                            .col-12.mt-3
-                                .row
-                                    .col-6
-                                        .form-check
-                                            input(type="checkbox" :checked="user.active" disabled).form-check-input
-                                            label.form-check-label.fw-bold Activo
-                                    .col-6
-                                        .form-check
-                                            input(type="checkbox" :checked="user.verified" disabled).form-check-input
-                                            label.form-check-label.fw-bold Verificado
-            div(v-if="users.length==0").text-center.m-5
+                            h5.card-title.fw-bold {{object.name}}
+                        .card-body 
+                            div.text-center
+                                img(:src="object.urlImage" v-if="object.urlImage!=''")
+                                audio(:src="object.urlSound" controls="controls" type="audio/mpeg" preload="preload" v-if="object.urlSound!=''").w-100.mt-3
+                            label.form-label.fw-bold Descripción
+                            p.card-text {{object.description}}
+            div(v-if="objects.length==0").text-center.m-5
                 img(src=server+"/images/ic_triste.png", alt="").img-sad
                 h1 No hay información
 
-            input(type="hidden" data=users)#user-data
+            input(type="hidden" data=objects)#object-data
+            input(type="hidden" data=users)#users-data
+            input(type="hidden" data=rooms)#rooms-data
             
         +footer()
         +scripts()
-        script(src=server+"/js/components/user-component.js")
+        script(src=server+"/js/components/object-component.js")
         

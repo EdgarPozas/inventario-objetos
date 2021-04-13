@@ -6,6 +6,7 @@ const app=new Vue({
         email:"",
         active:true,
         verified:true,
+        tableMode:false,
         usersOriginal:[],
         users:[]
     },

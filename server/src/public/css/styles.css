@@ -28,7 +28,7 @@ a:hover{
 .me-container-items{
     flex-wrap: wrap;
 }
-.me-container-items>div{
+.me-container-items-child{
     flex: 0 0 30%;
 }
 @keyframes rotate {

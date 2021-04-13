@@ -1,0 +1,35 @@
+const app=new Vue({
+    el:"#room-component",
+    data:{
+        name:"",
+        description:"",
+        active:true,
+        tableMode:false,
+        filterSelected:0,
+        roomsOriginal:[],
+        rooms:[]
+    },
+    mounted(){
+        this.roomsOriginal=JSON.parse($("#room-data").attr("data"));
+        this.filter();
+    },
+    methods:{
+        filter:function(){
+            Object.assign(this.rooms,this.roomsOriginal);
+            if(this.name!="")
+                this.rooms=this.rooms.filter(x=>x.name.toLowerCase().includes(this.name.toLowerCase()));
+            if(this.description!="")
+                this.rooms=this.rooms.filter(x=>x.description.toLowerCase().includes(this.description.toLowerCase()));
+            this.rooms=this.rooms.filter(x=>x.active==this.active);
+        },
+        clearFilters:function(){
+            this.reset();
+            Object.assign(this.rooms,this.roomsOriginal);
+        },
+        reset:function(){
+            this.name="";
+            this.description="";
+            this.active=true;
+        }
+    }
+});

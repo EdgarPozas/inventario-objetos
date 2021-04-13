@@ -13,7 +13,7 @@ html
         +header(user.firstName+" "+user.lastName)
     body
         +nav-bar(0)
-        div.me-margin-main#user-component  
+        div.me-margin-main#user-individual-component  
             div.card.me-container-filter.shadow
                 .card-header
                     h5.card-title.fw-bold.m-0 Miembro
@@ -34,17 +34,19 @@ html
                         .row
                             .col-6
                                 .form-check
-                                    input(type="checkbox" v-model="active" disabled).form-check-input#inputActive
+                                    input(type="checkbox" disabled checked=user.active).form-check-input#inputActive
                                     label(for="inputActive").form-check-label.fw-bold Activo
                             .col-6
                                 .form-check
-                                    input(type="checkbox" v-model="verified" disabled).form-check-input#inputVerified
+                                    input(type="checkbox" disabled checked=user.verified).form-check-input#inputVerified
                                     label(for="inputVerified").form-check-label.fw-bold Verificado
                     .col-6
                         label.form-label.fw-bold Fecha de registro
                         br
                         label.form-label #{dateToString(new Date(user.createdAt))}
                 .card-footer.text-end
+                    input(type="submit" @click="tableMode=!tableMode" :value="tableMode?'Modo tarjeta':'Modo tabla'").btn.btn-outline-primary.me-3
+                    
             div.mt-3#user-individual-component
                 div.d-flex.justify-content-center
                     for filter,i in filters
@@ -56,7 +58,30 @@ html
             
                 div.mt-3
                     div(v-if="filterSelected==0").d-flex.me-container-items.justify-content-center
-                        div(v-for="object in objects").card.m-2.shadow.me-card-hover.me-a-no-style
+                        div(v-if="tableMode").card.m-2.shadow.me-card-hover.w-100.p-3
+                            table.table 
+                                thead 
+                                    tr 
+                                        td.fw-bold #
+                                        td.fw-bold Nombre 
+                                        td.fw-bold Descripción
+                                        td.fw-bold Imagen 
+                                        td.fw-bold Sonido 
+                                        td.fw-bold Activo
+                                        td.fw-bold Consultar
+                                tbody
+                                    tr(v-for="object,i in objects")
+                                        td {{i+1}}
+                                        td {{object.name}}
+                                        td {{object.description}}
+                                        td 
+                                            img(:src="object.urlImage" v-if="object.urlImage!=''")
+                                        td 
+                                            audio(:src="object.urlSound" controls="controls" type="audio/mpeg" preload="preload" v-if="object.urlSound!=''").w-100
+                                        td {{object.active? "Sí":"No"}}
+                                        td 
+                                            a(:href="'http://localhost:3000/objects/'+object._id") Ver
+                        div(v-else v-for="object in objects").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
                             a(:href="'http://localhost:3000/objects/'+object._id").text-decoration-none.text-dark
                                 .card-header
                                     h5.card-title.fw-bold {{object.name}}
@@ -70,7 +95,24 @@ html
                             img(src=server+"/images/ic_triste.png", alt="").img-sad
                             h1 No hay información
                     div(v-if="filterSelected==1").d-flex.me-container-items.justify-content-center
-                        div(v-for="room in rooms").card.m-2.shadow.me-card-hover.me-a-no-style
+                        div(v-if="tableMode").card.m-2.shadow.me-card-hover.w-100.p-3
+                            table.table 
+                                thead 
+                                    tr 
+                                        td.fw-bold #
+                                        td.fw-bold Nombre 
+                                        td.fw-bold Descripción
+                                        td.fw-bold Activo
+                                        td.fw-bold Consultar
+                                tbody
+                                    tr(v-for="room,i in rooms")
+                                        td {{i+1}}
+                                        td {{room.name}}
+                                        td {{room.description}}
+                                        td {{room.active? "Sí":"No"}}
+                                        td 
+                                            a(:href="'http://localhost:3000/rooms/'+room._id") Ver
+                        div(v-else v-for="room in rooms").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
                             a(:href="'http://localhost:3000/rooms/'+room._id").text-decoration-none.text-dark
                                 .card-header
                                     h5.card-title.fw-bold {{room.name}}

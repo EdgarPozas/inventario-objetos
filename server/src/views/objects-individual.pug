@@ -5,89 +5,117 @@ include ./shared/scripts
 include ./shared/modal
 include ./shared/footer
 
--let filters=[{name:"Objetos propios"},{name:"Espacios registrados"}]
+-let statistics=[{name:"Veces movido"},{name:"Usuarios que comparten"},{name:"Precio"}]
 
 doctype html
 html
     head
-        +header(user.firstName+" "+user.lastName)
+        +header(object.name)
     body
-        +nav-bar(0)
-        div.me-margin-main#user-component  
+        +nav-bar(2)
+        div.me-margin-main#object-individual-component  
             div.card.me-container-filter.shadow
                 .card-header
-                    h5.card-title.fw-bold.m-0 Miembro
+                    h5.card-title.fw-bold.m-0 Objeto
                 .card-body.row
                     .col-6
+                        label.form-label.fw-bold Imagen
+                        br
+                        img(src=object.urlImage)
+                    
+                    .col-6.mt-3
                         label.form-label.fw-bold Nombre
                         br
-                        label.form-label #{user.firstName}
+                        label.form-label #{object.name}
+                        
                     .col-6
-                        label.form-label.fw-bold Apellido
+                        label.form-label.fw-bold Sonido
                         br
-                        label.form-label #{user.lastName}
+                        if object.urlSound!=""
+                            audio(src=object.urlSound controls="controls" type="audio/mpeg" preload="preload").w-100.mt-3
                     .col-6
-                        label.form-label.fw-bold Correo
+                        label.form-label.fw-bold Descripción
                         br
-                        label.form-label #{user.email}
-                    .col-6.m-auto
-                        .row
-                            .col-6
-                                .form-check
-                                    input(type="checkbox" v-model="active" disabled).form-check-input#inputActive
-                                    label(for="inputActive").form-check-label.fw-bold Activo
-                            .col-6
-                                .form-check
-                                    input(type="checkbox" v-model="verified" disabled).form-check-input#inputVerified
-                                    label(for="inputVerified").form-check-label.fw-bold Verificado
+                        label.form-label #{object.description}
                     .col-6
-                        label.form-label.fw-bold Fecha de registro
+                        label.form-label.fw-bold Funcionalidad
                         br
-                        label.form-label #{dateToString(new Date(user.createdAt))}
-                .card-footer.text-end
+                        label.form-label #{object.functionality}
+                    .col-6
+                        label.form-label.fw-bold Precio
+                        br
+                        label.form-label #{object.price}
+                    .col-6
+                        label.form-label.fw-bold Tags
+                        br
+                        ul
+                            for tag in object.tags
+                                li.form-label #{tag}
+                    .col-6
+                        label.form-label.fw-bold Compartido con
+                        br
+                        ul
+                            for user in object.sharedBy
+                                li.form-label
+                                    a(href=server+"/users/"+user._id) #{user.firstName} #{user.lastName}
+                    .col-12
+                        label.form-label.fw-bold Espacio actual
+                        br
+                        -let room=object.positions[object.positions.length-1].room+""
+                        if room
+                            label.form-label 
+                                a(href=server+"/room/"+room) #{rooms.filter(x=>x._id==room)[0].name}
+                    .col-12
+                        label.form-label.fw-bold Mapa
+                        br
+                        div(style="height:30rem")#map
+                    .col-12.mt-3
+                        label.form-label.fw-bold Posiciones en el mapa
+                        br
+                        table.table 
+                            thead 
+                                tr 
+                                    td Número
+                                    td Espacio
+                                    td Miembro que lo utilizó
+                                    td Fecha
+                                    td Consultar
+                            tbody
+                                -let size=object.positions.length
+                                for position,i in object.positions.reverse()
+                                    -let room=rooms.filter(x=>x._id==position.room+"")[0]
+                                    -let user=users.filter(x=>x._id==position.createdBy+"")[0]
+                                    tr
+                                        td #{size-i}
+                                        td #{room.name} 
+                                        td #{user.firstName} #{user.lastName}
+                                        td #{dateToString(position.createdAt)}
+                                        td 
+                                            button(@click="selectPosition("+i+")" value="Seleccionar").btn
+                                                if i==0
+                                                    img(src="https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|0045DD")
+                                                else
+                                                    img(src="https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|DD2342")
+                                
+                    
+                .card-footer.text-end 
+                
             div.mt-3#user-individual-component
                 div.d-flex.justify-content-center
-                    for filter,i in filters
-                        div(@click="select("+i+")" :class="filterSelected=="+i+"? 'me-filter-selected':'me-filter'").card.m-2.shadow.w-100
+                    for statistic,i in statistics
+                        div.me-statistic-selected.card.m-2.shadow.w-100
                             .card-body
-                                h5.card-title.fw-bold #{filter.name}
+                                h5.card-title.fw-bold #{statistic.name}
                                 div.progress.me-progress
                                     div.progress-bar
             
                 div.mt-3
-                    div(v-if="filterSelected==0").d-flex.me-container-items.justify-content-center
-                        div(v-for="object in objects").card.m-2.shadow.me-card-hover.me-a-no-style
-                            a(:href="'http://localhost:3000/objects/'+object._id").text-decoration-none.text-dark
-                                .card-header
-                                    h5.card-title.fw-bold {{object.name}}
-                                .card-body 
-                                    div.text-center
-                                        img(:src="object.urlImage" v-if="object.urlImage!=''")
-                                        audio(:src="object.urlSound" controls="controls" type="audio/mpeg" preload="preload" v-if="object.urlSound!=''").w-100.mt-3
-                                    label.form-label.fw-bold Descripción
-                                    p.card-text {{object.description}}
-                        div(v-if="objects.length==0").text-center.m-5
-                            img(src=server+"/images/ic_triste.png", alt="").img-sad
-                            h1 No hay información
-                    div(v-if="filterSelected==1").d-flex.me-container-items.justify-content-center
-                        div(v-for="room in rooms").card.m-2.shadow.me-card-hover.me-a-no-style
-                            a(:href="'http://localhost:3000/rooms/'+room._id").text-decoration-none.text-dark
-                                .card-header
-                                    h5.card-title.fw-bold {{room.name}}
-                                .card-body
-                                    label.form-label.fw-bold Descripción
-                                    p.card-sub-title {{room.description}}
-                                    div 
-                                        .form-check
-                                            input(type="checkbox" :checked="room.active" disabled).form-check-input
-                                            label.form-check-label.fw-bold Activo
-                        div(v-if="rooms.length==0").text-center.m-5
-                            img(src=server+"/images/ic_triste.png", alt="").img-sad
-                            h1 No hay información
-                input(type="hidden" data=objects)#user-objects
-                input(type="hidden" data=rooms)#user-rooms
-      
+                    div.d-flex.me-container-items.justify-content-center
+                       
+            input(type="hidden" data=rooms)#object-rooms
+            input(type="hidden" data=object)#object-object
         +footer()
         +scripts()
-        script(src=server+"/js/components/user-individual-component.js") 
+        script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtgodRqlFww_-LGzW-QrbJ3JeqGw7lK4Y&callback=initMap&libraries=&v=weekly" async)
+        script(src=server+"/js/components/object-individual-component.js") 
         

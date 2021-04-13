@@ -10,57 +10,60 @@ html
         +header("Espacios")
     body
         +nav-bar(2)
-        div.me-margin-main#user-component
+        div.me-margin-main#room-component
             div.card.me-container-filter.shadow
                 .card-header
-                    h5.card-title.fw-bold.m-0 Buscar miembros por
+                    h5.card-title.fw-bold.m-0 Buscar espacios por
                 .card-body.row
                     .col-6
                         label.form-label.fw-bold Nombre
-                        input(type="text" placeholder="Ej. Edgar" v-model="firstName" @keyup="filter").form-control#inputFirstName
+                        input(type="text" placeholder="Ej. Sala" v-model="name" @keyup="filter").form-control
                     .col-6
-                        label.form-label.fw-bold Apellido
-                        input(type="text" placeholder="Ej. Pozas" v-model="lastName" @keyup="filter").form-control#inputLastName
-                    .col-12
-                        label.form-label.fw-bold Correo
-                        input(type="text" placeholder="Ej. ejemplo@correo.com" v-model="email" @keyup="filter").form-control#inputEmail
+                        label.form-label.fw-bold Descripción
+                        input(type="text" placeholder="Ej. En este lugar ..." v-model="description" @keyup="filter").form-control
                     .col-12.mt-3
-                        .row
-                            .col-6
-                                .form-check
-                                    input(type="checkbox" v-model="active" @change="filter" ).form-check-input#inputActive
-                                    label(for="inputActive").form-check-label.fw-bold Activo
-                            .col-6
-                                .form-check
-                                    input(type="checkbox" v-model="verified" @change="filter" ).form-check-input#inputVerified
-                                    label(for="inputVerified").form-check-label.fw-bold Verificado
+                        .form-check
+                            input(type="checkbox" v-model="active" @change="filter" ).form-check-input#inputActive
+                            label(for="inputActive").form-check-label.fw-bold Activo
                 .card-footer.text-end
+                    input(type="submit" @click="tableMode=!tableMode" :value="tableMode?'Modo tarjeta':'Modo tabla'").btn.btn-outline-primary.me-3
                     button(@click="clearFilters").btn.btn-outline-primary Limpiar filtros
             div.mt-3.d-flex.me-container-items.justify-content-center
-                div(v-for="user in users" style="").card.m-2.shadow.me-card-hover.me-a-no-style
-                     a(:href="'http://localhost:3000/users/'+user._id").text-decoration-none.text-dark
+            div(v-if="filterSelected==0").d-flex.me-container-items.justify-content-center
+                div(v-if="tableMode").card.m-2.shadow.me-card-hover.w-100.p-3
+                    table.table 
+                        thead 
+                            tr 
+                                td.fw-bold #
+                                td.fw-bold Nombre 
+                                td.fw-bold Descripción
+                                td.fw-bold Activo
+                                td.fw-bold Consultar
+                        tbody
+                            tr(v-for="room,i in rooms")
+                                td {{i+1}}
+                                td {{room.name}}
+                                td {{room.description}}
+                                td {{room.active? "Sí":"No"}}
+                                td 
+                                    a(:href="'http://localhost:3000/rooms/'+room._id") Ver
+                div(v-else v-for="room in rooms" style="").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
+                     a(:href="'http://localhost:3000/rooms/'+room._id").text-decoration-none.text-dark
                         .card-header
-                            h5.card-title.fw-bold {{user.firstName}} {{user.lastName}}
+                            h5.card-title.fw-bold {{room.name}}
                         .card-body
-                            p.card-sub-title {{user.email}}
-                            p.card-text {{user.lastName}}
+                            p.card-text {{room.description}}
                             .col-12.mt-3
-                                .row
-                                    .col-6
-                                        .form-check
-                                            input(type="checkbox" :checked="user.active" disabled).form-check-input
-                                            label.form-check-label.fw-bold Activo
-                                    .col-6
-                                        .form-check
-                                            input(type="checkbox" :checked="user.verified" disabled).form-check-input
-                                            label.form-check-label.fw-bold Verificado
-            div(v-if="users.length==0").text-center.m-5
+                                .form-check
+                                    input(type="checkbox" :checked="room.active" disabled).form-check-input
+                                    label.form-check-label.fw-bold Activo
+            div(v-if="rooms.length==0").text-center.m-5
                 img(src=server+"/images/ic_triste.png", alt="").img-sad
                 h1 No hay información
 
-            input(type="hidden" data=users)#user-data
+            input(type="hidden" data=rooms)#room-data
             
         +footer()
         +scripts()
-        script(src=server+"/js/components/user-component.js")
+        script(src=server+"/js/components/room-component.js")
         

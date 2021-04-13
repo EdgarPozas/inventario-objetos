@@ -7,6 +7,7 @@ const router=express.Router();
 const User=require("../models/user");
 const Objects=require("../models/object");
 const Room=require("../models/room");
+const Position=require("../models/position");
 
 /// Route GET /
 router.get("/",async (req,res)=>{
@@ -39,8 +40,10 @@ router.get("/users/:id",async (req,res)=>{
 /// Route GET /objects
 router.get("/objects",async (req,res)=>{
     try{
-        let objects=await Objects.find({});
-        res.render("objects",{objects});
+        let objects=await Objects.find({}).populate("createdBy").populate("sharedBy").populate("positions");
+        let users=await User.find({});
+        let rooms=await Room.find({});
+        res.render("objects",{objects,users,rooms});
     }catch(ex){
         res.send(ex)
     }
@@ -50,8 +53,10 @@ router.get("/objects",async (req,res)=>{
 router.get("/objects/:id",async (req,res)=>{
     try{
         let {id}=req.params;
-        let object=await Objects.find({_id:id});
-        res.render("objects-individual",{object});
+        let object=await Objects.findById({_id:id}).populate("createdBy").populate("sharedBy").populate("positions");
+        let users=await User.find({});
+        let rooms=await Room.find({});
+        res.render("objects-individual",{object,users,rooms});
     }catch(ex){
         res.send(ex)
     }
@@ -71,8 +76,22 @@ router.get("/rooms",async (req,res)=>{
 router.get("/rooms/:id",async (req,res)=>{
     try{
         let {id}=req.params;
-        let room=await Room.find({_id:id});
-        res.render("rooms-individual",{room});
+        let room=await Room.findById({_id:id}).populate("createdBy");
+        let positions=await Position.find({room:id},"_id");
+        let arrayPositions=[];
+        for(let i=0;i<positions.length;i++){
+            arrayPositions.push(positions[i]._id);
+        }
+        let objects=await Objects.aggregate([
+            { $project: { lastPosition: { $arrayElemAt: ['$positions', -1] } } },
+            { $match: { lastPosition: {$in:arrayPositions} } }
+        ]);
+        let arrayObjects=[];
+        for(let i=0;i<objects.length;i++){
+            arrayObjects.push(objects[i]._id+"");
+        }
+        let objectsAux=await Objects.find({_id:{$in:arrayObjects}});
+        res.render("rooms-individual",{room,objects:objectsAux});
     }catch(ex){
         res.send(ex)
     }
