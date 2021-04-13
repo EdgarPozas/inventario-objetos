@@ -4,6 +4,8 @@ const app=new Vue({
         firstName:"",
         lastName:"",
         email:"",
+        filterSelected:"",
+        useFilter:true,
         active:true,
         verified:true,
         tableMode:false,
@@ -11,12 +13,15 @@ const app=new Vue({
         users:[]
     },
     mounted(){
+        // console.log($("#user-data").attr("data"));
         this.usersOriginal=JSON.parse($("#user-data").attr("data"));
         this.filter();
     },
     methods:{
         filter:function(){
             Object.assign(this.users,this.usersOriginal);
+            if(!this.useFilter)
+                return;
             if(this.firstName!="")
                 this.users=this.users.filter(x=>x.firstName.toLowerCase().includes(this.firstName.toLowerCase()));
             if(this.lastName!="")
@@ -26,9 +31,16 @@ const app=new Vue({
             this.users=this.users.filter(x=>x.active==this.active);
             this.users=this.users.filter(x=>x.verified==this.verified);
         },
+        removeFilters:function(){
+            this.useFilter=! this.useFilter;
+            this.filter();
+        },
         clearFilters:function(){
             this.reset();
             Object.assign(this.users,this.usersOriginal);
+        },
+        select:function(i){
+            this.filterSelected=i;
         },
         reset:function(){
             this.firstName="";

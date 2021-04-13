@@ -63,6 +63,7 @@ html
                                         td.fw-bold Precio
                                         td.fw-bold Tags
                                         td.fw-bold Compartido con
+                                        td.fw-bold Fecha de registro
                                         td.fw-bold Consultar
                                 tbody
                                     tr(v-for="object,i in objects")
@@ -71,12 +72,14 @@ html
                                         td {{object.description}}
                                         td {{object.functionality}}
                                         td {{object.price}}
+                                        
                                         td
                                             ul 
                                                 li(v-for="tag in object.tags") {{tag}}
                                         td
-                                            ul 
+                                            ul
                                                 li(v-for="user in object.sharedBy") {{user.firstName}} {{user.lastName}}
+                                        td {{dateToString(new Date(object.createdAt))}}
                                         td 
                                             a(:href="'http://localhost:3000/objects/'+object._id") Ver
                         div(v-else v-for="object in objects").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
@@ -89,11 +92,23 @@ html
                                         audio(:src="object.urlSound" controls="controls" type="audio/mpeg" preload="preload" v-if="object.urlSound!=''").w-100.mt-3
                                     label.form-label.fw-bold Descripción
                                     p.card-text {{object.description}}
+                                    label.form-label.fw-bold Fecha de registro
+                                    p.card-text {{dateToString(new Date(object.createdAt))}}
                         div(v-if="objects.length==0").text-center.m-5
                             img(src=server+"/images/ic_triste.png", alt="").img-sad
                             h1 No hay información
+                    div.card.me-container-filter.shadow.mt-3
+                        .card-header
+                            h5.card-title.fw-bold.m-0 Gráficas
+                        .card-body
+                            canvas(width="400" height="300")#roomsChart
+                        .card-footer.text-end
+                            button(@click="").btn.btn-outline-success Generar reporte
             input(type="hidden" data=objects)#room-objects
+            input(type="hidden" data=users)#room-users
+            input(type="hidden" data=room)#room-room
         +footer()
+        script(src=server+"/js/utils.js") 
         +scripts()
         script(src=server+"/js/components/room-individual-component.js") 
         

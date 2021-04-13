@@ -14,7 +14,7 @@ html
             div.card.me-container-filter.shadow
                 .card-header
                     h5.card-title.fw-bold.m-0 Buscar objetos por
-                .card-body.row
+                div(v-if="useFilter").card-body.row
                     .col-6
                         label.form-label.fw-bold Nombre
                         input(type="text" placeholder="Ej. Cepillo" v-model="name" @keyup="filter").form-control
@@ -62,10 +62,18 @@ html
                     .col-12
                         label.form-label.fw-bold Espacio
                         input(type="text" placeholder="Ej. Sala" v-model="room" @keyup="filter").form-control
+                    .col-12.mt-3
+                        label.form-label.fw-bold Cantidad de registros 
+                        p.form-label {{objects.length}}
 
-                .card-footer.text-end
-                    input(type="submit" @click="tableMode=!tableMode" :value="tableMode?'Modo tarjeta':'Modo tabla'").btn.btn-outline-primary.me-3
-                    button(@click="clearFilters").btn.btn-outline-primary Limpiar filtros
+                .card-footer
+                    .row
+                        .col-9
+                            input(type="submit" @click="removeFilters" :value="useFilter?'Quitar filtros':'Utilizar filtros'").btn.btn-outline-secondary.me-3
+                            button(@click="clearFilters" v-if="useFilter").btn.btn-outline-primary.me-3 Limpiar filtros
+                            button(@click="clearFilters").btn.btn-outline-success Generar reporte
+                        .col-3.text-end
+                            input(type="submit" @click="tableMode=!tableMode" :value="tableMode?'Modo tarjeta':'Modo tabla'").btn.btn-outline-primary.me-3
             div.mt-3.d-flex.me-container-items.justify-content-center
                 div(v-if="tableMode").card.m-2.shadow.me-card-hover.w-100.p-3
                     table.table 
@@ -78,7 +86,7 @@ html
                                 td.fw-bold Precio
                                 td.fw-bold Tags
                                 td.fw-bold Compartido con
-                                td.fw-bold Espacio
+                                td.fw-bold Espacio actual
                                 td.fw-bold Registrado por
                                 td.fw-bold Consultar
                         tbody

@@ -13,6 +13,7 @@ const app=new Vue({
         usersAvailable:[],
         usersShared:[],
         tableMode:true,
+        useFilter:true,
         objectsOriginal:[],
         objects:[],
         rooms:[]
@@ -26,6 +27,8 @@ const app=new Vue({
     methods:{
         filter:function(){
             Object.assign(this.objects,this.objectsOriginal);
+            if(!this.useFilter)
+                return;
             if(this.name!="")
                 this.objects=this.objects.filter(x=>x.name.toLowerCase().includes(this.name.toLowerCase()));
             if(this.description!="")
@@ -97,9 +100,16 @@ const app=new Vue({
             this.usersShared.splice(i,1);
             this.filter();
         },
+        removeFilters:function(){
+            this.useFilter=! this.useFilter;
+            this.filter();
+        },
         clearFilters:function(){
             this.reset();
             Object.assign(this.objects,this.objectsOriginal);
+        },
+        select:function(i){
+            this.filterSelected=i;
         },
         reset:function(){
             this.name="";

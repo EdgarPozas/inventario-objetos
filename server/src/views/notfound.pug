@@ -1,0 +1,19 @@
+include ./shared/constants
+include ./shared/header
+include ./shared/nav-bar
+include ./shared/scripts
+include ./shared/modal
+include ./shared/footer
+doctype html
+html
+    head
+        +header("Página no encontrada")
+    body
+        +nav-bar(0)
+        .me-margin-main
+            div(style="padding:16%").text-center.m-5
+                img(src=server+"/images/ic_triste.png", alt="").img-sad
+                h1 Recurso solicitado no encontrado
+        +footer()
+        +scripts()
+        

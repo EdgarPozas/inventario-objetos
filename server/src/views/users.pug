@@ -4,6 +4,9 @@ include ./shared/nav-bar
 include ./shared/scripts
 include ./shared/modal
 include ./shared/footer
+
+-let filters=[{name:"Modo tarjeta"},{name:"Modo tabla"}]
+
 doctype html
 html
     head
@@ -14,7 +17,7 @@ html
             div.card.me-container-filter.shadow
                 .card-header
                     h5.card-title.fw-bold.m-0 Buscar miembros por
-                .card-body.row
+                div(v-if="useFilter").card-body.row
                     .col-6
                         label.form-label.fw-bold Nombre
                         input(type="text" placeholder="Ej. Edgar" v-model="firstName" @keyup="filter").form-control
@@ -34,9 +37,17 @@ html
                                 .form-check
                                     input(type="checkbox" v-model="verified" @change="filter" ).form-check-input#inputVerified
                                     label(for="inputVerified").form-check-label.fw-bold Verificado
-                .card-footer.text-end
-                    input(type="submit" @click="tableMode=!tableMode" :value="tableMode?'Modo tarjeta':'Modo tabla'").btn.btn-outline-primary.me-3
-                    button(@click="clearFilters").btn.btn-outline-primary Limpiar filtros
+                    .col-12.mt-3
+                        label.form-label.fw-bold Cantidad de registros 
+                        p.form-label {{users.length}}
+                .card-footer
+                    .row
+                        .col-9
+                            input(type="submit" @click="removeFilters" :value="useFilter?'Quitar filtros':'Utilizar filtros'").btn.btn-outline-secondary.me-3
+                            button(@click="clearFilters" v-if="useFilter").btn.btn-outline-primary.me-3 Limpiar filtros
+                            button(@click="clearFilters").btn.btn-outline-success Generar reporte
+                        .col-3.text-end
+                            input(type="submit" @click="tableMode=!tableMode" :value="tableMode?'Modo tarjeta':'Modo tabla'").btn.btn-outline-primary.me-3
             div.mt-3.d-flex.me-container-items.justify-content-center
                 div(v-if="tableMode").card.m-2.shadow.me-card-hover.w-100.p-3
                     table.table 
@@ -48,6 +59,7 @@ html
                                 td.fw-bold Correo 
                                 td.fw-bold Activo
                                 td.fw-bold Verificado
+                                td.fw-bold Fecha de registro
                                 td.fw-bold Consultar
                         tbody
                             tr(v-for="user,i in users")
@@ -57,6 +69,7 @@ html
                                 td {{user.email}}
                                 td {{user.active? "Sí":"No"}}
                                 td {{user.verified? "Sí":"No"}}
+                                td {{dateToString(new Date(user.createdAt))}}
                                 td 
                                     a(:href="'http://localhost:3000/users/'+user._id") Ver
                 div(v-else v-for="user in users").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
@@ -64,8 +77,8 @@ html
                         .card-header
                             h5.card-title.fw-bold {{user.firstName}} {{user.lastName}}
                         .card-body
+                            label.form-label.fw-bold.mt-3 Correo
                             p.card-sub-title {{user.email}}
-                            p.card-text {{user.lastName}}
                             .col-12.mt-3
                                 .row
                                     .col-6
@@ -76,6 +89,8 @@ html
                                         .form-check
                                             input(type="checkbox" :checked="user.verified" disabled).form-check-input
                                             label.form-check-label.fw-bold Verificado
+                            label.form-label.fw-bold.mt-3 Fecha de registro
+                            p.card-sub-title {{dateToString(new Date(user.createdAt))}}
                 
             div(v-if="users.length==0").text-center.m-5
                 img(src=server+"/images/ic_triste.png", alt="").img-sad
@@ -84,5 +99,6 @@ html
             input(type="hidden" data=users)#user-data
         +footer()
         +scripts()
+        script(src=server+"/js/utils.js")
         script(src=server+"/js/components/user-component.js")
         

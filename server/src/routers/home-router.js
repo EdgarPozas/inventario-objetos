@@ -11,7 +11,7 @@ const Position=require("../models/position");
 
 /// Route GET /
 router.get("/",async (req,res)=>{
-    res.render("home");
+    res.redirect("/objects");
 });
 
 /// Route GET /users
@@ -90,22 +90,23 @@ router.get("/rooms/:id",async (req,res)=>{
         for(let i=0;i<objects.length;i++){
             arrayObjects.push(objects[i]._id+"");
         }
-        let objectsAux=await Objects.find({_id:{$in:arrayObjects}});
+        let objectsAux=await Objects.find({_id:{$in:arrayObjects}}).populate("sharedBy").populate("positions");
         res.render("rooms-individual",{room,objects:objectsAux});
     }catch(ex){
         res.send(ex)
     }
 });
 
-/// Route GET /about
-router.get("/about",async (req,res)=>{
-    res.render("about");
-});
-
 /// Route GET /user/verify/:id
 router.get("/user/verify/:id",async (req,res)=>{
     res.render("verify");
 });
+
+/// Route GET /about
+router.use((req,res,next)=>{
+    res.render("notfound");
+});
+
 
 /// Export module
 module.exports=router;

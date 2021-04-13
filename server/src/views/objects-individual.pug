@@ -97,25 +97,40 @@ html
                                                 else
                                                     img(src="https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|DD2342")
                                 
-                    
+                    .col-12.mt-3
+                        label.form-label.fw-bold Veces que se ha movido el objeto
+                        table.table 
+                            thead 
+                                tr 
+                                    td Rango de tiempo
+                                    td Veces que se ha movido 
+                            tbody
+                                -const dates=(date)=> new Date(new Date()-new Date(date))
+                                tr
+                                    td Día
+                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<1).length}
+                                tr
+                                    td Semana
+                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<7).length} 
+                                tr
+                                    td Mes
+                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<30).length} 
+                                tr
+                                    td Año
+                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<365).length}
+                        p.form-label.fw-bold Gráfica de veces que se ha movido el objeto
+                        canvas(width="400" height="300")#timesMovedDay
+                        canvas(width="400" height="300")#timesMovedWeek
+                        canvas(width="400" height="300")#timesMovedMonth
+                        canvas(width="400" height="300")#timesMovedYear
                 .card-footer.text-end 
-                
-            div.mt-3#user-individual-component
-                div.d-flex.justify-content-center
-                    for statistic,i in statistics
-                        div.me-statistic-selected.card.m-2.shadow.w-100
-                            .card-body
-                                h5.card-title.fw-bold #{statistic.name}
-                                div.progress.me-progress
-                                    div.progress-bar
-            
-                div.mt-3
-                    div.d-flex.me-container-items.justify-content-center
+                    button(@click="").btn.btn-outline-success Generar reporte
                        
             input(type="hidden" data=rooms)#object-rooms
             input(type="hidden" data=object)#object-object
         +footer()
         +scripts()
+        script(src=server+"/js/utils.js") 
         script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDtgodRqlFww_-LGzW-QrbJ3JeqGw7lK4Y&callback=initMap&libraries=&v=weekly" async)
         script(src=server+"/js/components/object-individual-component.js") 
         

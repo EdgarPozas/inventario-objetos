@@ -68,6 +68,7 @@ html
                                         td.fw-bold Imagen 
                                         td.fw-bold Sonido 
                                         td.fw-bold Activo
+                                        td.fw-bold Fecha de registro
                                         td.fw-bold Consultar
                                 tbody
                                     tr(v-for="object,i in objects")
@@ -79,6 +80,7 @@ html
                                         td 
                                             audio(:src="object.urlSound" controls="controls" type="audio/mpeg" preload="preload" v-if="object.urlSound!=''").w-100
                                         td {{object.active? "Sí":"No"}}
+                                        td {{dateToString(new Date(object.createdAt))}}
                                         td 
                                             a(:href="'http://localhost:3000/objects/'+object._id") Ver
                         div(v-else v-for="object in objects").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
@@ -91,6 +93,8 @@ html
                                         audio(:src="object.urlSound" controls="controls" type="audio/mpeg" preload="preload" v-if="object.urlSound!=''").w-100.mt-3
                                     label.form-label.fw-bold Descripción
                                     p.card-text {{object.description}}
+                                    label.form-label.fw-bold Fecha de registro
+                                    p.card-sub-title {{dateToString(new Date(object.createdAt))}}
                         div(v-if="objects.length==0").text-center.m-5
                             img(src=server+"/images/ic_triste.png", alt="").img-sad
                             h1 No hay información
@@ -103,6 +107,7 @@ html
                                         td.fw-bold Nombre 
                                         td.fw-bold Descripción
                                         td.fw-bold Activo
+                                        td.fw-bold Fecha de registro
                                         td.fw-bold Consultar
                                 tbody
                                     tr(v-for="room,i in rooms")
@@ -110,6 +115,7 @@ html
                                         td {{room.name}}
                                         td {{room.description}}
                                         td {{room.active? "Sí":"No"}}
+                                        td {{dateToString(new Date(room.createdAt))}}
                                         td 
                                             a(:href="'http://localhost:3000/rooms/'+room._id") Ver
                         div(v-else v-for="room in rooms").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
@@ -123,13 +129,31 @@ html
                                         .form-check
                                             input(type="checkbox" :checked="room.active" disabled).form-check-input
                                             label.form-check-label.fw-bold Activo
+                                    label.form-label.fw-bold Fecha de registro
+                                    p.card-sub-title {{dateToString(new Date(room.createdAt))}}
                         div(v-if="rooms.length==0").text-center.m-5
                             img(src=server+"/images/ic_triste.png", alt="").img-sad
                             h1 No hay información
+                    div.card.me-container-filter.shadow.mt-3
+                        .card-header
+                            h5.card-title.fw-bold.m-0 Gráficas
+                        div(v-show="filterSelected==0")
+                            .card-body
+                                canvas(width="400" height="300")#objectsChart
+                            .card-footer.text-end
+                                button(@click="").btn.btn-outline-success Generar reporte
+                        div(v-show="filterSelected==1")
+                            .card-body
+                                canvas(width="400" height="300")#roomsChart
+                            .card-footer.text-end
+                                button(@click="").btn.btn-outline-success Generar reporte
+
                 input(type="hidden" data=objects)#user-objects
                 input(type="hidden" data=rooms)#user-rooms
+                input(type="hidden" data=user)#user-user
       
         +footer()
+        script(src=server+"/js/utils.js") 
         +scripts()
         script(src=server+"/js/components/user-individual-component.js") 
         
