@@ -5,11 +5,14 @@ const app=new Vue({
         filterSelected:0,
         tableMode:false,
         rooms:[],
+        users:[],
         object:"",
+        waitingResponse:false,
     },
     mounted(){
         this.rooms=JSON.parse($("#object-rooms").attr("data"));
         this.object=JSON.parse($("#object-object").attr("data"));
+        this.users=JSON.parse($("#object-users").attr("data"));
         this.loadChart("timesMovedDay",1,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por día");
         this.loadChart("timesMovedWeek",7,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por semana");
         this.loadChart("timesMovedMonth",30,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por mes");
@@ -52,8 +55,6 @@ const app=new Vue({
         },
         loadChart:function(id,days,label,title){
             var ctx = document.getElementById(id).getContext('2d');
-
-            const dates=(date)=> new Date(new Date()-new Date(date));
             
             let startDate=new Date().addDays(-days);
             let labels=[];
@@ -104,6 +105,30 @@ const app=new Vue({
                 }
             });
         },
+        makeReport:async function(){
+            try{
+                this.waitingResponse=true;
+                let result=await axios.post("/report/object-individual",{
+                    data:[
+                        {
+                            object:this.object
+                        },
+                        {
+                            rooms:this.rooms
+                        },
+                        {
+                            users:this.users
+                        }
+                    ]
+                });
+                this.waitingResponse=false;
+                if(result.data.status!=200)
+                    throw Error(result.data.msg);
+                window.open(result.data.url);
+            }catch(ex){
+                console.log(ex);
+            }
+        }
     }
 });
 function initMap(){

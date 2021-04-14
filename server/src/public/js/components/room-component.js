@@ -8,7 +8,8 @@ const app=new Vue({
         useFilter:true,
         filterSelected:0,
         roomsOriginal:[],
-        rooms:[]
+        rooms:[],
+        waitingResponse:false,
     },
     mounted(){
         this.roomsOriginal=JSON.parse($("#room-data").attr("data"));
@@ -40,6 +41,38 @@ const app=new Vue({
             this.name="";
             this.description="";
             this.active=true;
+        },
+        makeReport:async function(){
+            try{
+                this.waitingResponse=true;
+                let result=await axios.post("/report/room",{
+                    filters:[
+                        {
+                            name:"Nombre",
+                            filter: this.name
+                        },
+                        {
+                            name:"Descripción",
+                            filter: this.description
+                        },
+                        {
+                            name:"Activo",
+                            filter: this.active
+                        },
+                    ],
+                    data:[
+                        {
+                            rooms:this.rooms
+                        }
+                    ]
+                });
+                this.waitingResponse=false;
+                if(result.data.status!=200)
+                    throw Error(result.data.msg);
+                window.open(result.data.url);
+            }catch(ex){
+                console.log(ex);
+            }
         }
     }
 });

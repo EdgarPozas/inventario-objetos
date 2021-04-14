@@ -124,10 +124,12 @@ html
                         canvas(width="400" height="300")#timesMovedMonth
                         canvas(width="400" height="300")#timesMovedYear
                 .card-footer.text-end 
-                    button(@click="").btn.btn-outline-success Generar reporte
+                    button(@click="makeReport").btn.btn-outline-success Generar reporte
+                    label(v-if="waitingResponse").form-check-label.fw-bold.ms-3 Generando reporte.....
                        
             input(type="hidden" data=rooms)#object-rooms
             input(type="hidden" data=object)#object-object
+            input(type="hidden" data=users)#object-users
         +footer()
         +scripts()
         script(src=server+"/js/utils.js") 

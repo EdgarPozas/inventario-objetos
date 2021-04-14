@@ -139,14 +139,16 @@ html
                             h5.card-title.fw-bold.m-0 Gráficas
                         div(v-show="filterSelected==0")
                             .card-body
-                                canvas(width="400" height="300")#objectsChart
+                                canvas(width="400" height="100")#objectsChart
                             .card-footer.text-end
-                                button(@click="").btn.btn-outline-success Generar reporte
+                                button(@click="makeReport").btn.btn-outline-success Generar reporte
+                                label(v-if="waitingResponse").form-check-label.fw-bold.ms-3 Generando reporte.....
                         div(v-show="filterSelected==1")
                             .card-body
-                                canvas(width="400" height="300")#roomsChart
+                                canvas(width="400" height="100")#roomsChart
                             .card-footer.text-end
-                                button(@click="").btn.btn-outline-success Generar reporte
+                                button(@click="makeReport").btn.btn-outline-success Generar reporte
+                                label(v-if="waitingResponse").form-check-label.fw-bold.ms-3 Generando reporte.....
 
                 input(type="hidden" data=objects)#user-objects
                 input(type="hidden" data=rooms)#user-rooms

@@ -4,7 +4,8 @@ const app=new Vue({
         filterSelected:0,
         tableMode:false,
         objects:[],
-        room:""
+        room:"",
+        waitingResponse:false,
     },
     mounted(){
         this.objects=JSON.parse($("#room-objects").attr("data"));
@@ -73,5 +74,26 @@ const app=new Vue({
                 }
             });
         },
+        makeReport:async function(){
+            try{
+                this.waitingResponse=true;
+                let result=await axios.post("/report/room-individual",{
+                    data:[
+                        {
+                            room:this.room
+                        },
+                        {
+                            objects:this.objects
+                        }
+                    ]
+                });
+                this.waitingResponse=false;
+                if(result.data.status!=200)
+                    throw Error(result.data.msg);
+                window.open(result.data.url);
+            }catch(ex){
+                console.log(ex);
+            }
+        }
     }
 });

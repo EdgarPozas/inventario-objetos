@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte</title>
+    <style>
+        body{
+            font-family: 'Arial';
+        }
+        h1{
+            margin:0
+        }
+        .d-inline{
+            display: inline-block;
+        }
+        .w-100{width: 100%;}
+        .w-90{width: 90%;}
+        .w-80{width: 80%;}
+        .w-70{width: 70%;}
+        .w-60{width: 60%;}
+        .w-50{width: 50%;}
+        .w-40{width: 40%;}
+        .w-30{width: 30%;}
+        .w-20{width: 20%;}
+        .w-18{width: 18%;}
+        .w-10{width: 10%;}
+        .t-center{text-align: center;}
+        table{width: 100%;}
+        table, th, td {border: 1px solid black;}
+        .fw-bold{font-weight: bold;}
+    </style>
+</head>
+<body>
+    <div>
+        <div >
+            <div class="w-80 d-inline">
+                <img src="http://localhost:3000/images/ic_logo.png" height="50" class="d-inline">
+                <h1 class="w-80 d-inline">#NAME#</h1>
+            </div>
+            <div class="w-18 d-inline">
+                <label for="">Hora del reporte</label>
+                <br>
+                <label for="">#HOUR#</label>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <h2>Filtros aplicados</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <td class='fw-bold'>Nombre del filtro</td>
+                        <td class='fw-bold'>Valor del filtro</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    #FILTERSTABLEBODY#
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <div>
+            <h2>Información</h2>
+            <p>#LEYEND#</p>
+            <table>
+                <thead>
+                    <tr>
+                        <td class='fw-bold'>#</td>
+                        <td class='fw-bold'>Nombre</td>
+                        <td class='fw-bold'>Descripción</td>
+                        <td class='fw-bold'>Activo</td>
+                        <td class='fw-bold'>Fecha de registro</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    #TABLEBODY#
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

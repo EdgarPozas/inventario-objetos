@@ -103,7 +103,8 @@ html
                         .card-body
                             canvas(width="400" height="300")#roomsChart
                         .card-footer.text-end
-                            button(@click="").btn.btn-outline-success Generar reporte
+                            button(@click="makeReport").btn.btn-outline-success Generar reporte
+                            label(v-if="waitingResponse").form-check-label.fw-bold.ms-3 Generando reporte.....
             input(type="hidden" data=objects)#room-objects
             input(type="hidden" data=users)#room-users
             input(type="hidden" data=room)#room-room

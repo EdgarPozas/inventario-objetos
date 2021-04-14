@@ -16,7 +16,8 @@ const app=new Vue({
         useFilter:true,
         objectsOriginal:[],
         objects:[],
-        rooms:[]
+        rooms:[],
+        waitingResponse:false,
     },
     mounted(){
         this.objectsOriginal=JSON.parse($("#object-data").attr("data"));
@@ -77,8 +78,6 @@ const app=new Vue({
                 }
                 this.objects=tmpObjects;
             }
-            // if(this.room!="")
-            //     this.objects=this.objects.filter(x=>x.functionality.toLowerCase().includes(this.functionality.toLowerCase()));
         },
         addTag:function(){
             this.tags.push(this.tag);
@@ -121,6 +120,61 @@ const app=new Vue({
             this.userShared="";
             this.usersShared=[];
             this.room="";
+        },
+        makeReport:async function(){
+            try{
+                this.waitingResponse=true;
+                let result=await axios.post("/report/object",{
+                    filters:[
+                        {
+                            name:"Nombre",
+                            filter: this.name
+                        },
+                        {
+                            name:"Descripción",
+                            filter: this.description
+                        },
+                        {
+                            name:"Funcionalidad",
+                            filter: this.functionality
+                        },
+                        {
+                            name:"Precio mínimo",
+                            filter: this.priceMin
+                        },
+                        {
+                            name:"Precio máximo",
+                            filter: this.priceMax
+                        },
+                        {
+                            name:"Tags",
+                            filter: this.tags
+                        },
+                        {
+                            name:"Compartido con",
+                            filter: this.usersShared
+                        },
+                        {
+                            name:"Espacio actual",
+                            filter: this.room
+                        },
+                    ],
+                    data:[
+                        {
+                            objects:this.objects
+                        },
+                        {
+                            rooms:this.rooms
+                        }
+                    ]
+                });
+                this.waitingResponse=false;
+                if(result.data.status!=200)
+                    throw Error(result.data.msg);
+                window.open(result.data.url);
+            }catch(ex){
+                console.log(ex);
+            }
         }
     }
 });

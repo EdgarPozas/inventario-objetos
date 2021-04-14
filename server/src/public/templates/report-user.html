@@ -25,6 +25,9 @@
         .w-18{width: 18%;}
         .w-10{width: 10%;}
         .t-center{text-align: center;}
+        table{width: 100%;}
+        table, th, td {border: 1px solid black;}
+        .fw-bold{font-weight: bold;}
     </style>
 </head>
 <body>
@@ -32,7 +35,7 @@
         <div >
             <div class="w-80 d-inline">
                 <img src="http://localhost:3000/images/ic_logo.png" height="50" class="d-inline">
-                <h1 class="w-80 d-inline">Reporte de #NAME#</h1>
+                <h1 class="w-80 d-inline">#NAME#</h1>
             </div>
             <div class="w-18 d-inline">
                 <label for="">Hora del reporte</label>
@@ -43,15 +46,32 @@
         <hr>
         <div>
             <h2>Filtros aplicados</h1>
-            #FILTERS#
+            <table>
+                <thead>
+                    <tr>
+                        <td class='fw-bold'>Nombre del filtro</td>
+                        <td class='fw-bold'>Valor del filtro</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    #FILTERSTABLEBODY#
+                </tbody>
+            </table>
         </div>
         <hr>
         <div>
             <h2>Información</h2>
+            <p>#LEYEND#</p>
             <table>
                 <thead>
                     <tr>
-                        #TABLEHEAD#
+                        <td class='fw-bold'>#</td>
+                        <td class='fw-bold'>Nombre</td>
+                        <td class='fw-bold'>Apellido</td>
+                        <td class='fw-bold'>Correo</td>
+                        <td class='fw-bold'>Activo</td>
+                        <td class='fw-bold'>Verificado</td>
+                        <td class='fw-bold'>Fecha de registro</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,7 +79,6 @@
                 </tbody>
             </table>
         </div>
-        <div id="pageFooter">Pdf generado por inventario - objetos, Edgar Pozas</div>
     </div>
 </body>
 </html>

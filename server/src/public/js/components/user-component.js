@@ -53,7 +53,7 @@ const app=new Vue({
         makeReport:async function(){
             try{
                 this.waitingResponse=true;
-                let result=await axios.post("/report",{
+                let result=await axios.post("/report/user",{
                     filters:[
                         {
                             name:"Nombre",
@@ -76,7 +76,11 @@ const app=new Vue({
                             filter: this.verified
                         }
                     ],
-                    data:this.users
+                    data:[
+                        {
+                            users:this.users
+                        }
+                    ]
                 });
                 this.waitingResponse=false;
                 if(result.data.status!=200)
