@@ -416,7 +416,7 @@ router.post("/report/:type",async (req,res)=>{
         values=[
             {
                 key:"#NAME#",
-                value:"Reporte de todos los objectos"
+                value:"Reporte de todos los objetos"
             },
             {
                 key:"#HOUR#",
@@ -453,11 +453,9 @@ router.post("/report/:type",async (req,res)=>{
             tableBody+="<td>"+data[0].objects[i].price+"</td>";
             tableBody+="<td>"+data[0].objects[i].tags+"</td>";
             tableBody+="<td>"+data[0].objects[i].sharedBy.map(x=>x.firstName+" "+x.lastName)+"</td>";
-            let position= data[0].objects[i].positions.reverse()[0].room;
             let room=data[0].objects[i].positions.reverse()[0].room;
             let roomAux=data[1].rooms.filter(x=>x._id==room+"")[0];
             tableBody+="<td>"+(roomAux?roomAux.name:"N/A")+"</td>";
-            tableBody+="<td>"+data[1].rooms.room+"</td>";
             tableBody+="<td>"+data[0].objects[i].createdAt+"</td>";
             tableBody+="</tr>"
         }
