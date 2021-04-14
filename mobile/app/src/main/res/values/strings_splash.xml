@@ -1,0 +1,4 @@
+<resources>
+    <string name="sincronizing">Sincronizando la información, esto puede tomar un par de minutos</string>
+    <string name="sincronizing_completed">Sincronizando completado</string>
+</resources>
