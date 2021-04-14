@@ -10,7 +10,8 @@ const app=new Vue({
         verified:true,
         tableMode:false,
         usersOriginal:[],
-        users:[]
+        users:[],
+        waitingResponse:false,
     },
     mounted(){
         // console.log($("#user-data").attr("data"));
@@ -48,6 +49,43 @@ const app=new Vue({
             this.email="";
             this.active=true;
             this.verified=true;
+        },
+        makeReport:async function(){
+            try{
+                this.waitingResponse=true;
+                let result=await axios.post("/report",{
+                    filters:[
+                        {
+                            name:"",
+                            filter: this.firstName
+                        },
+                        {
+                            name:"",
+                            filter: this.lastName
+                        },
+                        {
+                            name:"",
+                            filter: this.email
+                        },
+                        {
+                            name:"",
+                            filter: this.active
+                        },
+                        {
+                            name:"",
+                            filter: this.verified
+                        }
+                    ],
+                    data:this.users
+                });
+                this.waitingResponse=false;
+                if(result.data.status!=200)
+                    throw Error(result.data.msg);
+                console.log(result.data);
+                window.open(result.data.url);
+            }catch(ex){
+                console.log(ex);
+            }
         }
     }
 });

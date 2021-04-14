@@ -2,6 +2,8 @@
 const express=require("express");
 const app=express();
 const bcrypt=require("bcrypt");
+const fs = require('fs');
+const pdf = require('html-pdf');
 /// Defining a router
 const router=express.Router();
 /// Models
@@ -11,7 +13,6 @@ const Room=require("../models/room");
 const Position=require("../models/position");
 /// Functions
 const userFunctions=require("../functions/user-functions");
-const user = require("../models/user");
 
 /// Route GET /
 router.get("/",async (req,res)=>{
@@ -183,6 +184,25 @@ router.post("/users/recovery/:id",async (req,res)=>{
     }
 });
 
+/// Route POST /report
+router.post("/report",async (req,res)=>{
+    var html = fs.readFileSync('src/public/templates/report.html', 'utf8');
+    let fileName="report_"+Date.now()+".pdf";
+    const options = { format: 'Letter' };
+    pdf.create(html, options).toFile(`src/public/pdfs/${fileName}`, function(err, result) {
+        if (err) {
+            return res.json({
+                status:400,
+                msg:err
+            });
+        }
+        return res.json({
+            status:200,
+            msg:"Report created",
+            url:"http://localhost:3000/pdfs/"+fileName
+        });
+    });
+});
 
 /// Route GET /about
 router.use((req,res,next)=>{
