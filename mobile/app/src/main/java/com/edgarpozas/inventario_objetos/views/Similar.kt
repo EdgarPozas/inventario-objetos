@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.edgarpozas.inventario_objetos.R
+import com.edgarpozas.inventario_objetos.models.DataBaseSQL
 
-class Similar : Fragment() {
+class Similar(val db: DataBaseSQL) : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

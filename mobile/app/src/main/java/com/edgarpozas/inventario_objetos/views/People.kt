@@ -16,16 +16,15 @@ import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.ObjectsController
 import com.edgarpozas.inventario_objetos.controllers.PeopleController
 import com.edgarpozas.inventario_objetos.controllers.RoomController
+import com.edgarpozas.inventario_objetos.models.*
 import com.edgarpozas.inventario_objetos.models.Objects
 import com.edgarpozas.inventario_objetos.models.Room
-import com.edgarpozas.inventario_objetos.models.Storage
-import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.views.components.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
-class People : Fragment(), SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
+class People(val db:DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var swipeRefresh:SwipeRefreshLayout?=null
@@ -64,7 +63,7 @@ class People : Fragment(), SwipeRefreshLayout.OnRefreshListener, AdapterView.OnI
         val people=this
         scope.async {
 
-            peopleController.getAll()
+            peopleController.getAll(db.readableDatabase)
 
             adapter= PeopleListAdapter(people,Storage.getInstance().users.filter { x->x.active })
             listView?.adapter=adapter

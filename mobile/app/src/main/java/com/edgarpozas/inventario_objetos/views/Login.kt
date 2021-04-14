@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.LoginController
+import com.edgarpozas.inventario_objetos.models.DataBaseSQL
 import com.edgarpozas.inventario_objetos.models.User
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +20,7 @@ class Login : AppCompatActivity() {
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var loginController:LoginController=LoginController(this)
     private var user: User=User()
+    private val db=DataBaseSQL(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +50,7 @@ class Login : AppCompatActivity() {
 
         val login=this
         scope.async {
-            if(!loginController.login(user)){
+            if(!loginController.login(user,db.readableDatabase)){
                 Toast.makeText(login, R.string.error_login, Toast.LENGTH_SHORT).show()
                 return@async
             }

@@ -87,7 +87,7 @@ class ObjectsIndividual : AppCompatActivity(), OnMapReadyCallback,
     private var users=ArrayList<User>()
     private var markers=ArrayList<MarkerOptions>()
 
-    private var dbHelper=DataBaseSQL(this)
+    private var db=DataBaseSQL(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,9 +121,9 @@ class ObjectsIndividual : AppCompatActivity(), OnMapReadyCallback,
                 if(Utils.isNetworkAvailable(objectsIndividual))R.string.object_downloading else R.string.object_loading,
                 Toast.LENGTH_LONG).show()
 
-            objectsController.getAllUsers(dbHelper.readableDatabase)
-            objectsController.getAllRooms(dbHelper.readableDatabase)
-            objectsController.getAllPositions(dbHelper.readableDatabase)
+            objectsController.getAllUsers(db.readableDatabase)
+            objectsController.getAllRooms(db.readableDatabase)
+            objectsController.getAllPositions(db.readableDatabase)
 
             title = getString(R.string.object_individual_title)
             name?.text = objectAux?.name

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.ProfileController
+import com.edgarpozas.inventario_objetos.models.DataBaseSQL
 import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.utils.Utils
@@ -22,7 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 
-class Profile : Fragment(), View.OnClickListener {
+class Profile(val db:DataBaseSQL) : Fragment(), View.OnClickListener {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private val profileController:ProfileController= ProfileController(this)

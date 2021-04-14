@@ -19,7 +19,7 @@ class ObjectsIndividualController(val objectsIndividual: ObjectsIndividual ) {
 
     suspend fun getAllUsers(db: SQLiteDatabase) {
         Storage.getInstance().users.clear()
-        val users= User.getAll(objectsIndividual)
+        val users= User.getAll(objectsIndividual,db)
         if(users!=null){
             for(user in users){
                 Storage.getInstance().users.add(user)
@@ -29,7 +29,7 @@ class ObjectsIndividualController(val objectsIndividual: ObjectsIndividual ) {
 
     suspend fun getAllRooms(db: SQLiteDatabase) {
         Storage.getInstance().rooms.clear()
-        val rooms= Room.getAll(objectsIndividual)
+        val rooms= Room.getAll(objectsIndividual,db)
         if(rooms!=null){
             for(room in rooms){
                 Storage.getInstance().rooms.add(room)

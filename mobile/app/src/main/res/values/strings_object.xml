@@ -41,4 +41,5 @@
 
     <string name="object_downloading">Descargando información</string>
     <string name="object_uploading">Subiendo información</string>
+    <string name="object_loading">Cargando información</string>
 </resources>

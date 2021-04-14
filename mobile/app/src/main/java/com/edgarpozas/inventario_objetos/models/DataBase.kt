@@ -56,10 +56,6 @@ class DataBase {
         return response
     }
 
-    fun getQueryLocal(){
-
-    }
-
     suspend fun getQueryHttp(context: Context,path:String) : JSONObject{
         val client = HttpClient(CIO) {
             expectSuccess = false

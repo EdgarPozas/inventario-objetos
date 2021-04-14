@@ -3,6 +3,7 @@ package com.edgarpozas.inventario_objetos.controllers
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.database.sqlite.SQLiteDatabase
 import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.utils.ID
@@ -52,8 +53,8 @@ class LoginController(val login: Login) {
         login.finish()
     }
 
-    suspend fun login(user: User):Boolean{
-        val userLogged=User.login(login,user)
+    suspend fun login(user: User,db: SQLiteDatabase):Boolean{
+        val userLogged=User.login(login,user,db)
         if(userLogged!=null)
             Storage.getInstance().user=userLogged
         return userLogged!=null

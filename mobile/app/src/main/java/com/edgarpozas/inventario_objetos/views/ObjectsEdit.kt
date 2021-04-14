@@ -91,6 +91,8 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
     private var googleMap:GoogleMap?=null
 
+    private val db=DataBaseSQL(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.objects_create)
@@ -122,9 +124,9 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
             Toast.makeText(objectsEdit,R.string.object_downloading,Toast.LENGTH_LONG).show()
 
-            objectsController.getAllUsers()
-            objectsController.getAllRooms()
-            objectsController.getAllPositions()
+            objectsController.getAllUsers(db.readableDatabase)
+            objectsController.getAllRooms(db.readableDatabase)
+            objectsController.getAllPositions(db.readableDatabase)
 
             var ls=ArrayList<String>()
             for (room in Storage.getInstance().rooms.filter { x->x.active }){
@@ -481,7 +483,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
     fun addShared(view: View){
         val objectsEdit=this
         scope.async {
-            objectsController.getAllUsers()
+            objectsController.getAllUsers(db.readableDatabase)
             val alertDialog=addSharedAlertDialog.createAlertDialog(
                 getString(R.string.add_objects_shared_title),
                 DialogInterface.OnClickListener { dialog, i ->

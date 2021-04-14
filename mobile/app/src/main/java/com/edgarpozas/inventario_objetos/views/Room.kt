@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.RoomController
+import com.edgarpozas.inventario_objetos.models.DataBaseSQL
 import com.edgarpozas.inventario_objetos.models.Room
 import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.utils.Utils
@@ -19,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
-class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AdapterView.OnItemClickListener {
+class Room(val db: DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var swipeRefresh:SwipeRefreshLayout?=null
@@ -67,7 +68,7 @@ class Room : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListe
         swipeRefresh?.isRefreshing=true
         val room=this
         scope.async {
-            roomController.getAll()
+            roomController.getAll(db.readableDatabase)
             adapter= RoomListAdapter(room,Storage.getInstance().rooms.filter { x->x.active });
             listView?.adapter=adapter;
             swipeRefresh?.isRefreshing=false

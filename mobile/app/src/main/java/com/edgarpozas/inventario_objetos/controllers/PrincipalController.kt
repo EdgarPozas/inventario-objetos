@@ -36,7 +36,9 @@ class PrincipalController(val principal: Principal) {
         Storage.getInstance().user.reset()
         Storage.getInstance().rooms.clear()
         Storage.getInstance().objects.clear()
-
+        Storage.getInstance().positions.clear()
+        Storage.getInstance().users.clear()
+        
         val destiny = Intent(
             principal.baseContext,
             Login::class.java

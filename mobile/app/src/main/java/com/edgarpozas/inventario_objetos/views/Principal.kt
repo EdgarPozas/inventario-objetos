@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.PrincipalController
+import com.edgarpozas.inventario_objetos.models.DataBaseSQL
 import com.edgarpozas.inventario_objetos.views.components.GenericAlertDialog
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +23,8 @@ class Principal : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
     private val principalController:PrincipalController= PrincipalController(this)
     private val closeSessionAlertDialog:GenericAlertDialog= GenericAlertDialog()
 
+    private val db=DataBaseSQL(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.principal)
@@ -30,7 +33,7 @@ class Principal : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
         drawer=findViewById(R.id.drawer)
         navigationView=findViewById(R.id.navigation)
 
-        supportFragmentManager.beginTransaction().add(R.id.content, Objects()).commit()
+        supportFragmentManager.beginTransaction().add(R.id.content, Objects(db)).commit()
         toolbar?.title=getString(R.string.menu_objects)
 
         toggle=ActionBarDrawerToggle(
@@ -55,22 +58,22 @@ class Principal : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
         val ft=supportFragmentManager.beginTransaction()
         when (item.itemId) {
             R.id.navigation_profile -> {
-                ft.replace(R.id.content, Profile()).commit()
+                ft.replace(R.id.content, Profile(db)).commit()
             }
             R.id.navigation_people -> {
-                ft.replace(R.id.content, People()).commit()
+                ft.replace(R.id.content, People(db)).commit()
             }
             R.id.navigation_objects -> {
-                ft.replace(R.id.content, Objects()).commit()
+                ft.replace(R.id.content, Objects(db)).commit()
             }
             R.id.navigation_room -> {
-                ft.replace(R.id.content, Room()).commit()
+                ft.replace(R.id.content, Room(db)).commit()
             }
             R.id.navigation_list -> {
-                ft.replace(R.id.content, SubList()).commit()
+                ft.replace(R.id.content, SubList(db)).commit()
             }
             R.id.navigation_similar -> {
-                ft.replace(R.id.content, Similar()).commit()
+                ft.replace(R.id.content, Similar(db)).commit()
             }
             R.id.navigation_close_session -> {
                 closeSessionAlertDialog.createAlertDialog(

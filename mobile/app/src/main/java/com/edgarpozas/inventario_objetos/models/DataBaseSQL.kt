@@ -5,17 +5,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.edgarpozas.inventario_objetos.utils.DATABASE_NAME
 import com.edgarpozas.inventario_objetos.utils.DATABASE_VERSION
-import com.edgarpozas.inventario_objetos.utils.SERVER
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.client.statement.*
-import io.ktor.content.*
-import io.ktor.content.TextContent
-import io.ktor.http.*
-import io.ktor.http.content.*
-import org.json.JSONObject
 
 class DataBaseSQL(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {

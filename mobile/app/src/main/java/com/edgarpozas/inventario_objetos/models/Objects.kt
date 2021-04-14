@@ -1,36 +1,40 @@
 package com.edgarpozas.inventario_objetos.models
 
 import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import com.edgarpozas.inventario_objetos.utils.Utils
 import io.ktor.http.*
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.jvm.internal.Intrinsics
+
 
 data class Objects(
-    var id:String="",
-    var name:String="",
-    var description:String="",
-    var functionality:String="",
-    var tags:ArrayList<String>?=null,
-    var urlImage:String="",
-    var urlSound:String="",
-    var price:Double= 0.0,
-    var sharedBy:ArrayList<String>?=null,
-    var positions:ArrayList<String>?=null,
-    var position:Position?=null,
-    var createdBy:String="",
-    var active:Boolean=true
-    ){
+        var id: String = "",
+        var name: String = "",
+        var description: String = "",
+        var functionality: String = "",
+        var tags: ArrayList<String>? = null,
+        var urlImage: String = "",
+        var urlSound: String = "",
+        var price: Double = 0.0,
+        var sharedBy: ArrayList<String>? = null,
+        var positions: ArrayList<String>? = null,
+        var position: Position? = null,
+        var createdBy: String = "",
+        var active: Boolean = true
+){
 
     private val dataBase=DataBase.getInstance()
 
     companion object{
-        suspend fun getById(context: Context,id: String): Objects? {
+        suspend fun getById(context: Context, id: String, db: SQLiteDatabase): Objects? {
             if(!Utils.isNetworkAvailable(context)){
                 return null
             }
             val dataBase=DataBase.getInstance()
-            val res=dataBase.getQueryHttp(context,"/api/object/id/$id")
+            val res=dataBase.getQueryHttp(context, "/api/object/id/$id")
             val status:Int=res["status"].toString().toInt()
             if(status==200){
                 val room: JSONObject =res.getJSONObject("object")
@@ -39,12 +43,12 @@ data class Objects(
             return null
         }
 
-        suspend fun getAll(context: Context): ArrayList<Objects>? {
+        suspend fun getAll(context: Context, db: SQLiteDatabase): ArrayList<Objects>? {
             if(!Utils.isNetworkAvailable(context)){
                 return null
             }
             val dataBase=DataBase.getInstance()
-            val res=dataBase.getQueryHttp(context,"/api/object")
+            val res=dataBase.getQueryHttp(context, "/api/object")
             val status:Int=res["status"].toString().toInt()
             if(status==200){
                 val list =ArrayList<Objects>()
@@ -58,7 +62,7 @@ data class Objects(
             return null
         }
 
-        fun createFromJSON(json:JSONObject):Objects{
+        fun createFromJSON(json: JSONObject):Objects{
             val objects=Objects()
             objects.id=json.getString("_id")
             objects.name=json.getString("name")
@@ -89,13 +93,79 @@ data class Objects(
             objects.active=json.getBoolean("active")
             return objects
         }
+
+        fun resetSQL(db: SQLiteDatabase): Boolean {
+            db.execSQL("delete from objects")
+            db.execSQL("delete from objects_tags")
+            db.execSQL("delete from objects_shared")
+            db.execSQL("delete from objects_positions")
+            return true
+        }
+
+        fun createFromCursors(cursorMain: Cursor, cursorTags: Cursor, cursorShared: Cursor, cursorPosition: Cursor): Objects? {
+            if (!cursorMain.moveToFirst()) {
+                return null
+            }
+            val objects_ = Objects()
+            do {
+                objects_.id=cursorMain.getString(0)
+                objects_.name=cursorMain.getString(1)
+                objects_.description=cursorMain.getString(2)
+                objects_.functionality=cursorMain.getString(3)
+                objects_.urlImage=cursorMain.getString(4)
+                objects_.urlSound=cursorMain.getString(5)
+                objects_.price=cursorMain.getInt(6).toDouble()
+                objects_.active=cursorMain.getInt(7)==1
+                objects_.createdBy=cursorMain.getString(8)
+            } while (cursorMain.moveToNext())
+            if (cursorTags.moveToFirst()) {
+                objects_.tags=ArrayList()
+                do {
+                    objects_.tags!!.add(cursorTags.getString(1))
+                } while (cursorTags.moveToNext())
+            }
+            if (cursorShared.moveToFirst()) {
+                objects_.sharedBy=ArrayList()
+                do {
+                    objects_.sharedBy!!.add(cursorShared.getString(1))
+                } while (cursorShared.moveToNext())
+            }
+            if (cursorPosition.moveToFirst()) {
+                objects_.positions=ArrayList()
+                do {
+                    objects_.positions!!.add(cursorPosition.getString(1))
+                } while (cursorPosition.moveToNext())
+            }
+            return objects_
+        }
+    }
+
+    fun createSQL(db: SQLiteDatabase): Boolean {
+        db.execSQL("insert into objects(_id,name,description,functionality,urlImage,urlSound,price,createdBy,active)" +
+                " values('${this.id}','${this.name}','${this.description}','${this.functionality}','${this.urlImage}','${this.urlSound}',${this.price},'${this.createdBy}',${(if (this.active) 1 else 0)})")
+        if(tags!=null){
+            for (tag in tags!!){
+                db.execSQL("insert into objects_tags(_id,tag)" + " values('${this.id}','${tag}')")
+            }
+        }
+        if(sharedBy!=null) {
+            for (shared in sharedBy!!){
+                db.execSQL("insert into objects_shared(_id,_id_user)" + " values('${this.id}','${shared}')")
+            }
+        }
+        if(positions!=null) {
+            for (position in positions!!){
+                db.execSQL("insert into objects_positions(_id,_id_position)" + " values('${this.id}','${position}')")
+            }
+        }
+        return true
     }
 
     suspend fun create(context: Context): Boolean{
         if(!Utils.isNetworkAvailable(context)){
             return false
         }
-        val res=dataBase.sendQueryHttp(context,"/api/object", HttpMethod.Post,toJSON())
+        val res=dataBase.sendQueryHttp(context, "/api/object", HttpMethod.Post, toJSON())
         val status:Int=res["status"].toString().toInt()
         return status==200
     }
@@ -104,7 +174,7 @@ data class Objects(
         if(!Utils.isNetworkAvailable(context)){
             return false
         }
-        val res=dataBase.sendQueryHttp(context,"/api/object/$id", HttpMethod.Put,toJSON())
+        val res=dataBase.sendQueryHttp(context, "/api/object/$id", HttpMethod.Put, toJSON())
         val status:Int=res["status"].toString().toInt()
         return status==200
     }
@@ -113,7 +183,7 @@ data class Objects(
         if(!Utils.isNetworkAvailable(context)){
             return false
         }
-        val res=dataBase.sendQueryHttp(context,"/api/object/$id", HttpMethod.Delete,toJSON())
+        val res=dataBase.sendQueryHttp(context, "/api/object/$id", HttpMethod.Delete, toJSON())
         val status:Int=res["status"].toString().toInt()
         return status==200
     }
@@ -138,20 +208,20 @@ data class Objects(
 
     fun toJSON(): JSONObject {
         var json= JSONObject()
-        json.put("name",name)
-        json.put("description",description)
-        json.put("functionality",functionality)
+        json.put("name", name)
+        json.put("description", description)
+        json.put("functionality", functionality)
         var tagsArray=JSONArray()
         tags?.forEach { x-> tagsArray.put(x) }
-        json.put("tags",tagsArray)
-        json.put("urlImage",urlImage)
-        json.put("urlSound",urlSound)
-        json.put("price",price)
+        json.put("tags", tagsArray)
+        json.put("urlImage", urlImage)
+        json.put("urlSound", urlSound)
+        json.put("price", price)
         val listSharedBy=JSONArray()
         sharedBy?.forEach { x-> listSharedBy.put(x) }
-        json.put("sharedBy",listSharedBy)
-        json.put("position",position?.toJSON())
-        json.put("createdBy",createdBy)
+        json.put("sharedBy", listSharedBy)
+        json.put("position", position?.toJSON())
+        json.put("createdBy", createdBy)
         return json
     }
 }

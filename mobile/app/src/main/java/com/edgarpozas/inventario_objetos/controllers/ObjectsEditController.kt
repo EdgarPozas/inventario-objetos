@@ -3,6 +3,7 @@ package com.edgarpozas.inventario_objetos.controllers
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import androidx.fragment.app.Fragment
 import com.edgarpozas.inventario_objetos.models.*
 import com.edgarpozas.inventario_objetos.models.Room
@@ -16,9 +17,9 @@ import org.json.JSONObject
 
 class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
 
-    suspend fun getAllUsers() {
+    suspend fun getAllUsers(db: SQLiteDatabase) {
         Storage.getInstance().users.clear()
-        val users= User.getAll(objectsEdit)
+        val users= User.getAll(objectsEdit,db)
         if(users!=null){
             for(user in users){
                 Storage.getInstance().users.add(user)
@@ -26,9 +27,9 @@ class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
         }
     }
 
-    suspend fun getAllRooms() {
+    suspend fun getAllRooms(db:SQLiteDatabase) {
         Storage.getInstance().rooms.clear()
-        val rooms= Room.getAll(objectsEdit)
+        val rooms= Room.getAll(objectsEdit,db)
         if(rooms!=null){
             for(room in rooms){
                 Storage.getInstance().rooms.add(room)
@@ -36,9 +37,9 @@ class ObjectsEditController(val objectsEdit: ObjectsEdit ) {
         }
     }
 
-    suspend fun getAllPositions() {
+    suspend fun getAllPositions(db:SQLiteDatabase) {
         Storage.getInstance().positions.clear()
-        val positions= Position.getAll(objectsEdit)
+        val positions= Position.getAll(objectsEdit,db)
         if(positions!=null){
             for(position in positions){
                 Storage.getInstance().positions.add(position)

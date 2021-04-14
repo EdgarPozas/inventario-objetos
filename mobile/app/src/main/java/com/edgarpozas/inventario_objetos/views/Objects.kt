@@ -2,6 +2,7 @@ package com.edgarpozas.inventario_objetos.views
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.edgarpozas.inventario_objetos.R
 import com.edgarpozas.inventario_objetos.controllers.ObjectsController
 import com.edgarpozas.inventario_objetos.controllers.RoomController
+import com.edgarpozas.inventario_objetos.models.DataBaseSQL
 import com.edgarpozas.inventario_objetos.models.Objects
 import com.edgarpozas.inventario_objetos.models.Room
 import com.edgarpozas.inventario_objetos.models.Storage
@@ -21,7 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*
 
-class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AdapterView.OnItemClickListener {
+class Objects(val db:DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var swipeRefresh:SwipeRefreshLayout?=null
@@ -69,7 +71,7 @@ class Objects : Fragment(), SwipeRefreshLayout.OnRefreshListener, View.OnClickLi
         val objects=this
         scope.async {
 
-            objectsController.getAll()
+            objectsController.getAll(db.readableDatabase)
 
             adapter= ObjectsListAdapter(objects,Storage.getInstance().objects.filter { x->x.active });
             listView?.adapter=adapter;
