@@ -12,11 +12,11 @@ module.exports={
     upload:async function(file){
 
         const fileCredentials=await readFile(path.join(__dirname,"../../credentials.txt"),"utf8");
-        const lines=fileCredentials.split("\r\n");
+        const lines=fileCredentials.split("\n");
 
         const s3 = new AWS.S3({
-            accessKeyId: lines[3],
-            secretAccessKey: lines[4]
+            accessKeyId: lines[3].replace("\r",""),
+            secretAccessKey: lines[4].replace("\r","")
         });
 
         const params = {

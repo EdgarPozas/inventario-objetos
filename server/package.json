@@ -1,11 +1,11 @@
 {
     "name": "inventario-objetos",
     "version": "1.0.0",
-    "description": "inventario-objetos server",
+    "description": "inventario-objetos",
     "main": "index.js",
     "scripts": {
         "test": "mocha ./test/user.test.js --timeout 10000",
-        "start": "nodemon index.js --ignore './public/*.js'"
+        "start": "node index.js"
     },
     "author": "Edgar Pozas",
     "license": "ISC",

@@ -81,9 +81,9 @@ html
                                                 li(v-for="user in object.sharedBy") {{user.firstName}} {{user.lastName}}
                                         td {{dateToString(new Date(object.createdAt))}}
                                         td 
-                                            a(:href="'http://localhost:3000/objects/'+object._id") Ver
+                                            a(:href="'https://inventario-objetos.herokuapp.com/objects/'+object._id") Ver
                         div(v-else v-for="object in objects").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
-                            a(:href="'http://localhost:3000/objects/'+object._id").text-decoration-none.text-dark
+                            a(:href="'https://inventario-objetos.herokuapp.com/objects/'+object._id").text-decoration-none.text-dark
                                 .card-header
                                     h5.card-title.fw-bold {{object.name}}
                                 .card-body 

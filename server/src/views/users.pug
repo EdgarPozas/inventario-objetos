@@ -72,9 +72,9 @@ html
                                 td {{user.verified? "Sí":"No"}}
                                 td {{dateToString(new Date(user.createdAt))}}
                                 td 
-                                    a(:href="'http://localhost:3000/users/'+user._id") Ver
+                                    a(:href="'https://inventario-objetos.herokuapp.com/users/'+user._id") Ver
                 div(v-else v-for="user in users").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
-                    a(:href="'http://localhost:3000/users/'+user._id").text-decoration-none.text-dark
+                    a(:href="'https://inventario-objetos.herokuapp.com/users/'+user._id").text-decoration-none.text-dark
                         .card-header
                             h5.card-title.fw-bold {{user.firstName}} {{user.lastName}}
                         .card-body

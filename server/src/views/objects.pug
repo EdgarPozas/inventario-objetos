@@ -105,13 +105,13 @@ html
                                         li(v-for="user in object.sharedBy") {{user.firstName}} {{user.lastName}}
                                 td 
                                     div(v-if="!object.positions[object.positions.length-1].room")
-                                    a(v-else :href="'http://localhost:3000/rooms/'+object.positions[object.positions.length-1].room") {{rooms.filter(x=>x._id==object.positions[object.positions.length-1].room)[0].name}}
+                                    a(v-else :href="'https://inventario-objetos.herokuapp.com/rooms/'+object.positions[object.positions.length-1].room") {{rooms.filter(x=>x._id==object.positions[object.positions.length-1].room)[0].name}}
                                 td 
-                                    a(:href="'http://localhost:3000/users/'+object.createdBy._id") {{object.createdBy.firstName}} {{object.createdBy.lastName}}
+                                    a(:href="'https://inventario-objetos.herokuapp.com/users/'+object.createdBy._id") {{object.createdBy.firstName}} {{object.createdBy.lastName}}
                                 td 
-                                    a(:href="'http://localhost:3000/objects/'+object._id") Ver
+                                    a(:href="'https://inventario-objetos.herokuapp.com/objects/'+object._id") Ver
                 div(v-else v-for="object in objects" style="").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child
-                     a(:href="'http://localhost:3000/objects/'+object._id").text-decoration-none.text-dark
+                     a(:href="'https://inventario-objetos.herokuapp.com/objects/'+object._id").text-decoration-none.text-dark
                         .card-header
                             h5.card-title.fw-bold {{object.name}}
                         .card-body 

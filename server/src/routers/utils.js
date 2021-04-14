@@ -12,11 +12,11 @@ module.exports={
         var html = fs.readFileSync('src/public/templates/'+template, 'utf8');
 
         for(let i=0;i<values.length;i++){
-            html=html.replaceAll(values[i].key,values[i].value);
+            html=html.replace(values[i].key,values[i].value);
         }
 
         
-        const options = { format: 'Letter' };
+        const options = { format: 'Letter'};
     
         pdf.create(html, options).toBuffer(async function(err, buffer) {
             if (err) {

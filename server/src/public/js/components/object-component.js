@@ -35,7 +35,7 @@ const app=new Vue({
             if(this.description!="")
                 this.objects=this.objects.filter(x=>x.description.toLowerCase().includes(this.description.toLowerCase()));
             if(this.functionality!="")
-                this.objects=this.objects.filter(x=>x.functionality.toLowerCase().includes(this.functionality.toLowerCase()));
+                this.objects=this.objects.filter(x=>x.functionality?x.functionality.toLowerCase().includes(this.functionality.toLowerCase()):false);
             if(this.priceMin!=0){
                 this.objects=this.objects.filter(x=> x.price>=this.priceMin);
             }
@@ -55,7 +55,7 @@ const app=new Vue({
                             }
                         }    
                     }
-                    if(counter>=myTags.length)
+                    if(tagsSelected.length>=myTags.length)
                         tmpObjects.push(this.objects[i]);
                 }
                 this.objects=tmpObjects;
@@ -71,10 +71,24 @@ const app=new Vue({
                             if(myUsers[e]==usersShared[k] && !usersSelected.includes(myUsers[e])){
                                 usersSelected.push(myUsers[e]);
                             }
-                        }    
+                        }
                     }
                     if(usersSelected.length>=myUsers.length)
                         tmpObjects.push(this.objects[i]);
+                }
+                this.objects=tmpObjects;
+            }
+            if(this.room!=""){
+                let tmpObjects=[];
+                for(let i=0;i<this.objects.length;i++){
+                    let lastPosition=this.objects[i].positions[this.objects[i].positions.length-1];
+                    let room=this.rooms.filter(x=>x._id==lastPosition.room)[0];
+                    if(!room)
+                        continue;
+                    
+                    if(room.name.toLowerCase().includes(this.room)){
+                        tmpObjects.push(this.objects[i]);
+                    }
                 }
                 this.objects=tmpObjects;
             }
@@ -152,7 +166,7 @@ const app=new Vue({
                         },
                         {
                             name:"Compartido con",
-                            filter: this.usersShared
+                            filter: this.usersShared.map(x=>x.firstName+" "+x.lastName)
                         },
                         {
                             name:"Espacio actual",

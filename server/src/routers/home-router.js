@@ -210,7 +210,7 @@ router.post("/report/:type",async (req,res)=>{
             },
             {
                 key:"#LEYEND#",
-                leyend:"Cantidad de registros: <strong>"+data[0].length+"</strong>"
+                value:"Cantidad de registros: <strong>"+data[0].users.length+"</strong>"
             },
         ];
 
@@ -327,7 +327,7 @@ router.post("/report/:type",async (req,res)=>{
             },
             {
                 key:"#LEYEND#",
-                leyend:"Cantidad de registros: <strong>"+data[0].length+"</strong>"
+                value:"Cantidad de registros: <strong>"+data[0].rooms.length+"</strong>"
             },
         ];
 
@@ -424,7 +424,7 @@ router.post("/report/:type",async (req,res)=>{
             },
             {
                 key:"#LEYEND#",
-                leyend:"Cantidad de registros: <strong>"+data[0].length+"</strong>"
+                value:"Cantidad de registros: <strong>"+data[0].objects.length+"</strong>"
             },
         ];
 
@@ -526,7 +526,6 @@ router.post("/report/:type",async (req,res)=>{
             amounts.push(amount);
         }
        
-
         let tableBodyMoved="";
         tableBodyMoved+="<tr>"
         tableBodyMoved+="<td>Día</td>";

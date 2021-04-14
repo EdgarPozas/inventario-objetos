@@ -8,9 +8,9 @@ const readFile = util.promisify(fs.readFile);
 /// Read credentials file and connect to the database
 async function initDataBase(){
     const data=await readFile(path.join(__dirname,"../../credentials.txt"),"utf8");
-    const lines=data.split("\r\n");
-    const password=lines[0];
-    const dataBaseName=lines[1];
+    const lines=data.split("\n");
+    const password=lines[0].replace("\r","");
+    const dataBaseName=lines[1].replace("\r","");
     mongoose.connect(`mongodb+srv://edgar:${password}@cluster0.uldfg.mongodb.net/${dataBaseName}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true});
 }
 
