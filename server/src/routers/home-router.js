@@ -187,6 +187,12 @@ router.post("/users/recovery/:id",async (req,res)=>{
 /// Route POST /report
 router.post("/report",async (req,res)=>{
     var html = fs.readFileSync('src/public/templates/report.html', 'utf8');
+    html=html.replace("#NAME#","usuarios");
+    html=html.replace("#HOUR#",new Date());
+    html=html.replace("#FILTERS#","filtros");
+    html=html.replace("#TABLEHEAD#","filtros");
+    html=html.replace("#TABLEBODY#","filtros");
+
     let fileName="report_"+Date.now()+".pdf";
     const options = { format: 'Letter' };
     pdf.create(html, options).toFile(`src/public/pdfs/${fileName}`, function(err, result) {

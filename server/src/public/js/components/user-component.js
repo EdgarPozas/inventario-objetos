@@ -56,23 +56,23 @@ const app=new Vue({
                 let result=await axios.post("/report",{
                     filters:[
                         {
-                            name:"",
+                            name:"Nombre",
                             filter: this.firstName
                         },
                         {
-                            name:"",
+                            name:"Apellido",
                             filter: this.lastName
                         },
                         {
-                            name:"",
+                            name:"Correo",
                             filter: this.email
                         },
                         {
-                            name:"",
+                            name:"Activo",
                             filter: this.active
                         },
                         {
-                            name:"",
+                            name:"Verificado",
                             filter: this.verified
                         }
                     ],
@@ -81,7 +81,6 @@ const app=new Vue({
                 this.waitingResponse=false;
                 if(result.data.status!=200)
                     throw Error(result.data.msg);
-                console.log(result.data);
                 window.open(result.data.url);
             }catch(ex){
                 console.log(ex);
