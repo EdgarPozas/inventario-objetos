@@ -58,13 +58,17 @@ html
                             for user in object.sharedBy
                                 li.form-label
                                     a(href=server+"/users/"+user._id) #{user.firstName} #{user.lastName}
-                    .col-12
+                    .col-6
                         label.form-label.fw-bold Espacio actual
                         br
                         -let room=object.positions[object.positions.length-1].room+""
                         if room
                             label.form-label 
-                                a(href=server+"/room/"+room) #{rooms.filter(x=>x._id==room)[0].name}
+                                a(href=server+"/rooms/"+room) #{rooms.filter(x=>x._id==room)[0].name}
+                    .col-6
+                        .form-check
+                            input(type="checkbox" disabled checked=object.active).form-check-input#inputActive
+                            label(for="inputActive").form-check-label.fw-bold Activo
                     .col-12
                         label.form-label.fw-bold Mapa
                         br

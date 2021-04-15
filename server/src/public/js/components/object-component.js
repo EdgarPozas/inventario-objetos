@@ -10,6 +10,7 @@ const app=new Vue({
         tags:[],
         userShared:"",
         room:"",
+        active:true,
         usersAvailable:[],
         usersShared:[],
         tableMode:true,
@@ -30,6 +31,7 @@ const app=new Vue({
             Object.assign(this.objects,this.objectsOriginal);
             if(!this.useFilter)
                 return;
+            this.objects=this.objects.filter(x=>x.active==this.active);
             if(this.name!="")
                 this.objects=this.objects.filter(x=>x.name.toLowerCase().includes(this.name.toLowerCase()));
             if(this.description!="")

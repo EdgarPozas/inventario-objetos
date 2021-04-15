@@ -44,7 +44,6 @@ import io.ktor.utils.io.streams.*
 import kotlinx.coroutines.*
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileDescriptor
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -122,7 +121,8 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
         val objectsEdit=this
         scope.async {
 
-            Toast.makeText(objectsEdit,R.string.object_downloading,Toast.LENGTH_LONG).show()
+            if(objectAux!=null)
+                Toast.makeText(objectsEdit,R.string.object_downloading,Toast.LENGTH_LONG).show()
 
             objectsController.getAllUsers(db.readableDatabase)
             objectsController.getAllRooms(db.readableDatabase)
@@ -168,7 +168,7 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
                 }
                 if(objectAux?.urlSound!!.isNotEmpty()){
                     val byteArraySound=objectsController.downloadFile(objectAux?.urlSound!!)
-                    fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.3gp")
+                    fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.mp3")
                     fileAudio?.appendBytes(byteArraySound)
                     showAudio(true)
                 }
@@ -231,41 +231,6 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
                 tags.add(tag)
                 Toast.makeText(this, R.string.object_add_tag, Toast.LENGTH_SHORT).show()
-                refreshTags()
-            })
-        alertDialog?.setButton(
-            AlertDialog.BUTTON_NEGATIVE, getString(R.string.button_cancel),
-            DialogInterface.OnClickListener { item, it ->
-                item.dismiss()
-            })
-
-        alertDialog?.show()
-    }
-
-    fun editTag(view: View, position: Int){
-        addTagAlertDialog.tag=tags[position]
-        val alertDialog=addTagAlertDialog.createAlertDialog(
-            getString(R.string.add_objects_tags_title)
-        )
-
-        alertDialog?.setButton(
-            AlertDialog.BUTTON_POSITIVE, getString(R.string.button_update),
-            DialogInterface.OnClickListener { item, it ->
-
-                val tag = alertDialog.findViewById<EditText>(R.id.editTagName).text.toString()
-
-                if (tag.isEmpty()) {
-                    Toast.makeText(this, R.string.fields_empty, Toast.LENGTH_SHORT).show()
-                    return@OnClickListener
-                }
-
-                if (tags.find { x -> x.equals(tag) } != null) {
-                    Toast.makeText(this, R.string.error_tag_repeated, Toast.LENGTH_SHORT).show()
-                    return@OnClickListener
-                }
-
-                tags.add(tag)
-                Toast.makeText(this, R.string.object_update_tag, Toast.LENGTH_SHORT).show()
                 refreshTags()
             })
         alertDialog?.setButton(
@@ -411,14 +376,14 @@ class ObjectsEdit : AppCompatActivity(), OnMapReadyCallback {
 
     @SuppressLint("NewApi")
     fun startRecording() {
-        fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.3gp")
+        fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.mp3")
 
         recorder = MediaRecorder()
 
         recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-        recorder?.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+        recorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
         recorder?.setOutputFile(fileAudio)
-        recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+        recorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
         recorder?.prepare()
 
 

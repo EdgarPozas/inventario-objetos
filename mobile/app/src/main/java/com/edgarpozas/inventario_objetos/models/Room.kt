@@ -25,7 +25,8 @@ data class Room(
         suspend fun getById(context: Context, id: String, db: SQLiteDatabase): Room? {
 
             if(!Utils.isNetworkAvailable(context)){
-                return null
+                val cursor=db.rawQuery("select * from rooms where _id='${id}'",null)
+                return createFromCursor(cursor)
             }
             val dataBase=DataBase.getInstance()
             val res=dataBase.getQueryHttp(context, "/api/room/id/$id")
@@ -40,7 +41,17 @@ data class Room(
         suspend fun getAll(context: Context, db: SQLiteDatabase): ArrayList<Room>? {
 
             if(!Utils.isNetworkAvailable(context)){
-                return null
+                val cursor=db.rawQuery("select _id from rooms",null)
+                val arr=ArrayList<Room>()
+                if(!cursor.moveToFirst()){
+                    return arr;
+                }
+                do{
+                    val id=cursor.getString(0)
+                    val cursorLocal=db.rawQuery("select * from rooms where _id='${id}'",null)
+                    arr.add(createFromCursor(cursorLocal)!!)
+                }while(cursor.moveToNext())
+                return arr
             }
             val dataBase=DataBase.getInstance()
             val res=dataBase.getQueryHttp(context, "/api/room")
@@ -72,7 +83,6 @@ data class Room(
         }
 
         fun createFromCursor(cursor: Cursor): Room? {
-            Intrinsics.checkNotNullParameter(cursor, "cursor")
             if (!cursor.moveToFirst()) {
                 return null
             }
@@ -90,7 +100,7 @@ data class Room(
 
     fun createSQL(db: SQLiteDatabase): Boolean {
         db.execSQL("insert into rooms(_id,name,description,createdBy,active)" +
-                " values('${id}','${name}','${description}','${createdBy}',${(if (active) 1 else 0)}')")
+                " values('${id}','${name}','${description}','${createdBy}',${(if (active) 1 else 0)})")
         return true
     }
 

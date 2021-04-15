@@ -35,12 +35,8 @@ class ObjectsTagsListAdapter(
         val tag=tags[position]
 
         v.findViewById<TextView>(R.id.name).text = tag
-        val btnEdit: ImageButton?=v.findViewById(R.id.btnEdit)
         val btnDelete: ImageButton?=v.findViewById(R.id.btnDelete)
 
-        btnEdit?.setOnClickListener(View.OnClickListener {
-            objectsView.editTag(it,position)
-        })
         btnDelete?.setOnClickListener(View.OnClickListener {
             objectsView.deleteTag(it,position)
         })

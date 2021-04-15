@@ -46,8 +46,7 @@ class Objects(val db:DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshList
         swipeRefresh?.setOnRefreshListener(this)
         listView?.onItemClickListener = this
 
-        adapter= ObjectsListAdapter(this,Storage.getInstance().objects);
-
+        adapter= ObjectsListAdapter(this,Storage.getInstance().objects.filter { x->x.active })
         refresh()
 
         return view
@@ -59,7 +58,7 @@ class Objects(val db:DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshList
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        //selectRoom(requireView(),Storage.getInstance().rooms[position])
+        objectsController.goToIndividual(Storage.getInstance().objects.filter { x->x.active }[position])
     }
 
     override fun onRefresh() {

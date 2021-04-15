@@ -9,11 +9,9 @@ import com.edgarpozas.inventario_objetos.models.Position
 import com.edgarpozas.inventario_objetos.models.Room
 import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.models.User
-import com.edgarpozas.inventario_objetos.models.User.Companion.resetSQL
 import com.edgarpozas.inventario_objetos.utils.ID
 import com.edgarpozas.inventario_objetos.utils.USERID
 import com.edgarpozas.inventario_objetos.views.*
-import kotlin.jvm.internal.Intrinsics
 
 
 class SplashController(val splash: Splash) {
@@ -83,22 +81,31 @@ class SplashController(val splash: Splash) {
     }
 
     fun sync(db: SQLiteDatabase) {
-        resetSQL(db)
+        println(1)
+        User.resetSQL(db)
+        println(2)
         for (v in Storage.getInstance().users) {
             v.createSQL(db)
         }
+        println(3)
         Room.resetSQL(db)
+        println(4)
         for (v2 in Storage.getInstance().rooms) {
             v2.createSQL(db)
         }
+        println(5)
         Position.resetSQL(db)
+        println(6)
         for (v3 in Storage.getInstance().positions) {
             v3.createSQL(db)
         }
+        println(7)
         Objects.resetSQL(db)
+        println(8)
         for (v4 in Storage.getInstance().objects) {
             v4.createSQL(db)
         }
+
     }
 
 

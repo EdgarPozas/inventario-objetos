@@ -31,7 +31,11 @@ data class Objects(
     companion object{
         suspend fun getById(context: Context, id: String, db: SQLiteDatabase): Objects? {
             if(!Utils.isNetworkAvailable(context)){
-                return null
+                val cursorMain=db.rawQuery("select * from objects where _id='${id}'",null)
+                val cursorTags=db.rawQuery("select * from objects_tags where _id='${id}'",null)
+                val cursorShared=db.rawQuery("select * from objects_shared where _id='${id}'",null)
+                val cursorPosition=db.rawQuery("select * from objects_position where _id='${id}'",null)
+                return createFromCursors(cursorMain,cursorTags,cursorShared,cursorPosition)
             }
             val dataBase=DataBase.getInstance()
             val res=dataBase.getQueryHttp(context, "/api/object/id/$id")
@@ -45,7 +49,20 @@ data class Objects(
 
         suspend fun getAll(context: Context, db: SQLiteDatabase): ArrayList<Objects>? {
             if(!Utils.isNetworkAvailable(context)){
-                return null
+                val cursor=db.rawQuery("select _id from objects",null)
+                val arr= ArrayList<Objects>()
+                if(!cursor.moveToFirst()){
+                    return arr;
+                }
+                do{
+                    val id=cursor.getString(0)
+                    val cursorMain=db.rawQuery("select * from objects where _id='${id}'",null)
+                    val cursorTags=db.rawQuery("select * from objects_tags where _id='${id}'",null)
+                    val cursorShared=db.rawQuery("select * from objects_shared where _id='${id}'",null)
+                    val cursorPosition=db.rawQuery("select * from objects_position where _id='${id}'",null)
+                    arr.add(createFromCursors(cursorMain,cursorTags,cursorShared,cursorPosition)!!)
+                }while(cursor.moveToNext())
+                return arr
             }
             val dataBase=DataBase.getInstance()
             val res=dataBase.getQueryHttp(context, "/api/object")

@@ -1,5 +1,7 @@
 /// Initialize dependencies
 const mongoose = require('mongoose');
+const moment = require('moment-timezone');
+const dateMexico = moment.tz(Date.now(), "America/Mazatlan");
 
 /// Create schema
 const schema=new mongoose.Schema({
@@ -7,7 +9,7 @@ const schema=new mongoose.Schema({
     description:String,
     active:{type:Boolean,default:true},
     createdBy:{ type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    createdAt:{ type:Date, default:Date.now }
+    createdAt:{ type:Date, default:dateMexico }
 });
 
 /// Export model

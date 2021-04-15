@@ -121,7 +121,7 @@ router.get("/rooms/:id",async (req,res)=>{
 });
 
 /// Route GET /user/verify/:id
-router.get("/users/verify/:id",async (req,res)=>{
+router.get("/user/verify/:id",async (req,res)=>{
     try{
         let values=await userFunctions.verify(req.params.id);
         if(values.status!=200)
@@ -136,8 +136,8 @@ router.get("/users/verify/:id",async (req,res)=>{
     }
 });
 
-/// Route GET /users/verify/:id
-router.get("/users/recovery/:id",async (req,res)=>{
+/// Route GET /users/recovery/:id
+router.get("/user/recovery/:id",async (req,res)=>{
     try{
         let user=await User.findById(req.params.id);
         res.render("recovery",{user});
@@ -151,8 +151,8 @@ router.get("/users/recovery/:id",async (req,res)=>{
     
 });
 
-/// Route POST /users/recovery/:id
-router.post("/users/recovery/:id",async (req,res)=>{
+/// Route POST /user/recovery/:id
+router.post("/user/recovery/:id",async (req,res)=>{
     try{
         let {
             email,
@@ -554,11 +554,6 @@ router.post("/report/:type",async (req,res)=>{
     createPDF(res,values,template);
 });
 
-
-/// Route GET /about
-router.use((req,res,next)=>{
-    res.render("notfound");
-});
 
 
 /// Export module

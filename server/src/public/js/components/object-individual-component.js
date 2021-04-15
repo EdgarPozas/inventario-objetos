@@ -13,7 +13,7 @@ const app=new Vue({
         this.rooms=JSON.parse($("#object-rooms").attr("data"));
         this.object=JSON.parse($("#object-object").attr("data"));
         this.users=JSON.parse($("#object-users").attr("data"));
-        this.loadChart("timesMovedDay",1,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por día");
+        this.loadChart("timesMovedDay",3,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por día");
         this.loadChart("timesMovedWeek",7,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por semana");
         this.loadChart("timesMovedMonth",30,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por mes");
         this.loadChart("timesMovedYear",365,"Veces que se ha movido","Gráfica de las veces que se ha movido el objeto por año");

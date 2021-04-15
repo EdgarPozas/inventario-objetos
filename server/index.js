@@ -39,6 +39,11 @@ app.use("/api/email",emailApi);
 app.use("/api/position",positionApi);
 app.use("/api/file",fileApi);
 
+/// Route GET /about
+app.use((req,res,next)=>{
+    res.render("notfound");
+});
+
 /// Starting the server
 app.listen(port);
 console.log(`Server started at port ${port}`);

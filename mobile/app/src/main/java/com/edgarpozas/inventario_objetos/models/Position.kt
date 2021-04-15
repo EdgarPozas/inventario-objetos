@@ -24,7 +24,8 @@ data class Position(
     companion object{
         suspend fun getById(context: Context, id: String, db: SQLiteDatabase): Position? {
             if(!Utils.isNetworkAvailable(context)){
-                return null
+                val cursor=db.rawQuery("select * from positions where _id='${id}'",null)
+                return createFromCursor(cursor)
             }
             val dataBase=DataBase.getInstance()
             val res=dataBase.getQueryHttp(context, "/api/position/id/$id")
@@ -38,7 +39,17 @@ data class Position(
 
         suspend fun getAll(context: Context, db: SQLiteDatabase): ArrayList<Position>? {
             if(!Utils.isNetworkAvailable(context)){
-                return null
+                val cursor=db.rawQuery("select _id from positions",null)
+                val arr=ArrayList<Position>()
+                if(!cursor.moveToFirst()){
+                    return arr;
+                }
+                do{
+                    val id=cursor.getString(0)
+                    val cursorLocal=db.rawQuery("select * from positions where _id='${id}'",null)
+                    arr.add(createFromCursor(cursorLocal)!!)
+                }while(cursor.moveToNext())
+                return arr
             }
             val dataBase=DataBase.getInstance()
             val res=dataBase.getQueryHttp(context, "/api/position")

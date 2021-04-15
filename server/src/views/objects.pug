@@ -63,6 +63,10 @@ html
                         label.form-label.fw-bold Espacio
                         input(type="text" placeholder="Ej. Sala" v-model="room" @keyup="filter").form-control
                     .col-12.mt-3
+                        .form-check
+                            input(type="checkbox" v-model="active" @change="filter" ).form-check-input#inputActive
+                            label(for="inputActive").form-check-label.fw-bold Activo
+                    .col-12.mt-3
                         label.form-label.fw-bold Cantidad de registros 
                         p.form-label {{objects.length}}
 
@@ -89,6 +93,7 @@ html
                                 td.fw-bold Compartido con
                                 td.fw-bold Espacio actual
                                 td.fw-bold Registrado por
+                                td.fw-bold Activo
                                 td.fw-bold Consultar
                         tbody
                             tr(v-for="object,i in objects")
@@ -108,6 +113,9 @@ html
                                     a(v-else :href="'https://inventario-objetos.herokuapp.com/rooms/'+object.positions[object.positions.length-1].room") {{rooms.filter(x=>x._id==object.positions[object.positions.length-1].room)[0].name}}
                                 td 
                                     a(:href="'https://inventario-objetos.herokuapp.com/users/'+object.createdBy._id") {{object.createdBy.firstName}} {{object.createdBy.lastName}}
+                                td
+                                    input(type="checkbox" disabled :checked="object.active").form-check-input#inputActive
+                                    label(for="inputActive").form-check-label.fw-bold Activo
                                 td 
                                     a(:href="'https://inventario-objetos.herokuapp.com/objects/'+object._id") Ver
                 div(v-else v-for="object in objects" style="").card.m-2.shadow.me-card-hover.me-a-no-style.me-container-items-child

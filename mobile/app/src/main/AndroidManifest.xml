@@ -34,6 +34,7 @@
             android:name=".views.Principal"
             android:theme="@style/Theme.Inventarioobjetos.NoActionBar" />
         <activity android:name=".views.RoomIndividual" />
+        <activity android:name=".views.ObjectsIndividual" />
         <activity android:name=".views.RecoveryPassword" />
         <activity android:name=".views.Register" />
         <activity android:name=".views.Login" />

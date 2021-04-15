@@ -11,8 +11,8 @@ module.exports={
     /// Send email
     send:async function(data){
         const file=await readFile(path.join(__dirname,"../../credentials.txt"),"utf8");
-        const lines=file.split("\r\n");
-        const api=lines[2];
+        const lines=file.split("\n");
+        const api=lines[2].replace("\r","");
 
         sgMail.setApiKey(api);
 

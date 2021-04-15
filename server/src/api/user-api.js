@@ -81,7 +81,7 @@ router.post("/",async (req,res)=>{
                 to:values.user.email,
                 subject:"Verificación de correo | Inventario - Objetos",
                 html:`
-                <h1>Hola!, ${values.user.name}</h1>
+                <h1>Hola!, ${values.user.firstName} ${values.user.lastName}</h1>
                 <p>Hemos bienvenido a la App, para poder iniciar sesión es necesario validar tu correo accediendo al siguiente enlace <a href="${url}">${url}</p>
                 `
             });
@@ -117,7 +117,7 @@ router.put("/:id",async (req,res)=>{
                 to:values.user.email,
                 subject:"Verificación de correo | Inventario - Objetos",
                 html:`
-                <h1>Hola!, ${values.user.name}</h1>
+                <h1>Hola!, ${values.user.firstName} ${values.user.lastName}</h1>
                 <p>Hemos recibido tu actualización de correo, para poder iniciar sesión la siguiente vez es necesario validar tu correo accediendo al siguiente enlace <a href="${url}">${url}</p>
                 `
             });

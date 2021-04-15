@@ -24,12 +24,12 @@ class Splash : AppCompatActivity() {
 
             if(Utils.isNetworkAvailable(splash)){
 
-                Toast.makeText(splash, R.string.sincronizing,Toast.LENGTH_SHORT).show()
+                Toast.makeText(splash, R.string.sincronizing,Toast.LENGTH_LONG).show()
 
                 splashController.getAll(db.readableDatabase)
                 splashController.sync(db.writableDatabase)
 
-                Toast.makeText(splash, R.string.sincronizing_completed,Toast.LENGTH_SHORT).show()
+                Toast.makeText(splash, R.string.sincronizing_completed,Toast.LENGTH_LONG).show()
                 delay(500)
             }
 

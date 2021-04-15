@@ -26,15 +26,6 @@
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_baseline_edit_24"
-            android:tint="@color/white"
-            android:backgroundTint="@color/secondary"
-            android:layout_weight="1"
-            android:id="@+id/btnEdit"
-            />
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_delete_24"
             android:tint="@color/white"
             android:backgroundTint="@color/deleteColor"

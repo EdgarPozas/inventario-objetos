@@ -133,11 +133,7 @@ class ObjectsIndividual : AppCompatActivity(), OnMapReadyCallback,
             val lastPositionId= objectAux?.positions!!.last()
             val lastPosition=Storage.getInstance().positions.find { x->x.id== lastPositionId }
             val roomSelected=Storage.getInstance().rooms.find { x->x.id== lastPosition?.room }
-            println(lastPositionId)
-            println(Storage.getInstance().positions)
-            println(lastPosition)
-            println(Storage.getInstance().rooms)
-            println(roomSelected)
+
             room?.text=roomSelected?.name
 
             for (tag in objectAux!!.tags!!){
@@ -157,7 +153,7 @@ class ObjectsIndividual : AppCompatActivity(), OnMapReadyCallback,
             }
             if(objectAux?.urlSound!!.isNotEmpty()&& Utils.isNetworkAvailable(objectsIndividual)){
                 val byteArraySound=objectsController.downloadFile(objectAux?.urlSound!!)
-                fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.3gp")
+                fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.mp3")
                 fileAudio?.appendBytes(byteArraySound)
                 showAudio(true)
             }
