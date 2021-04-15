@@ -5,5 +5,5 @@
     <string name="last_name">Apellidos</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="register">Registrar</string>
-    <string name="registered">Usuario registrado</string>
+    <string name="registered">Usuario registrado, verifica tu correo para entrar en la aplicación</string>
 </resources>

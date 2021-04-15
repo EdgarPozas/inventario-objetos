@@ -154,6 +154,9 @@ class ObjectsIndividual : AppCompatActivity(), OnMapReadyCallback,
             if(objectAux?.urlSound!!.isNotEmpty()&& Utils.isNetworkAvailable(objectsIndividual)){
                 val byteArraySound=objectsController.downloadFile(objectAux?.urlSound!!)
                 fileAudio=File(externalCacheDir!!.absolutePath + "/tmpAudio.mp3")
+                if(fileAudio!!.exists()){
+                    fileAudio!!.delete();
+                }
                 fileAudio?.appendBytes(byteArraySound)
                 showAudio(true)
             }

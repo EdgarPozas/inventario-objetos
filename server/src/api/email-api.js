@@ -25,7 +25,7 @@ router.post("/recovery",async (req,res)=>{
             to:email,
             subject:"Recuperar contraseña | Inventario - Objetos",
             html:`
-            <h1>Hola!, ${userValues.user.firstName} ${userValues.user.lastName}</h1>
+            <h1>¡Hola ${userValues.user.firstName} ${userValues.user.lastName}!</h1>
             <p>Hemos recibido la solicitud de recuperar tu contraseña, si tu fuiste quien lo solicitó da selecciona el siguiente enlace para ir a restablecer tu contraseña <a href="${url}">${url}</p>
             `
         });

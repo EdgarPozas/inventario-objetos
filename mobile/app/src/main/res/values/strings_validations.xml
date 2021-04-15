@@ -3,8 +3,8 @@
     <string name="passwords_no_match">Las contraseñas no coinciden</string>
     <string name="fields_empty">Hay campos vacios</string>
     <string name="email_format">Ingresa una dirección de correo válida</string>
-    <string name="error_register">Error al registrar tu usuario, revisa los campos</string>
-    <string name="error_login">Error al ingresar sesión, revisa los campos</string>
+    <string name="error_register">Error al registrar tu usuario, revisa los campos o intente con otro correo</string>
+    <string name="error_login">Error al ingresar sesión, revisa los campos, recuerda haber verificado tu cuenta</string>
     <string name="error_recovery">Error al recuperar tu contraseña, revisa el correo proporcionado</string>
     <string name="error_update_user">Error al actualizar el usuario, revisa los campos</string>
     <string name="error_delete_user">Error al borrar al usuario</string>
@@ -23,7 +23,7 @@
     <string name="error_no_location_permission">Recuerda que para obtener la ubicación necesitas aceptar los permisos</string>
 
     <string name="error_no_shared">Seleccione quienes comparten el objeto</string>
-    <string name="error_no_location">Ingrese su ubicación actual</string>
+    <string name="error_no_location">Ingrese su ubicación actual, activando la ubicación</string>
     <string name="error_no_room">Debes de seleccionar un espacio</string>
 
     <string name="error_upload_files">Error al subir los archivos</string>
