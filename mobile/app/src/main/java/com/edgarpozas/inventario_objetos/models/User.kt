@@ -139,7 +139,7 @@ data class User(
                 user.id=cursor.getString(0)
                 user.firstName=cursor.getString(1)
                 user.lastName=cursor.getString(2)
-                user.email=cursor.getString(4)
+                user.email=cursor.getString(3)
                 user.password=cursor.getString(4)
                 user.active=cursor.getInt(5)==1
                 user.verified=cursor.getInt(6)==1

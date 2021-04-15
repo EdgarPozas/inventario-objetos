@@ -120,8 +120,8 @@ router.get("/rooms/:id",async (req,res)=>{
     }
 });
 
-/// Route GET /user/verify/:id
-router.get("/user/verify/:id",async (req,res)=>{
+/// Route GET /users/verify/:id
+router.get("/users/verify/:id",async (req,res)=>{
     try{
         let values=await userFunctions.verify(req.params.id);
         if(values.status!=200)
@@ -137,7 +137,7 @@ router.get("/user/verify/:id",async (req,res)=>{
 });
 
 /// Route GET /users/recovery/:id
-router.get("/user/recovery/:id",async (req,res)=>{
+router.get("/users/recovery/:id",async (req,res)=>{
     try{
         let user=await User.findById(req.params.id);
         res.render("recovery",{user});
@@ -152,7 +152,7 @@ router.get("/user/recovery/:id",async (req,res)=>{
 });
 
 /// Route POST /user/recovery/:id
-router.post("/user/recovery/:id",async (req,res)=>{
+router.post("/users/recovery/:id",async (req,res)=>{
     try{
         let {
             email,
@@ -456,6 +456,7 @@ router.post("/report/:type",async (req,res)=>{
             let room=data[0].objects[i].positions.reverse()[0].room;
             let roomAux=data[1].rooms.filter(x=>x._id==room+"")[0];
             tableBody+="<td>"+(roomAux?roomAux.name:"N/A")+"</td>";
+            tableBody+="<td>"+data[0].objects[i].active+"</td>";
             tableBody+="<td>"+data[0].objects[i].createdAt+"</td>";
             tableBody+="</tr>"
         }
@@ -490,6 +491,7 @@ router.post("/report/:type",async (req,res)=>{
         let room=data[0].object.positions.reverse()[0].room;
         let roomAux=data[1].rooms.filter(x=>x._id==room+"")[0];
         tableBody+="<td>"+(roomAux?roomAux.name:"N/A")+"</td>";
+        tableBody+="<td>"+data[0].object.active+"</td>";
         tableBody+="<td>"+data[0].object.createdAt+"</td>";
         tableBody+="</tr>"
        

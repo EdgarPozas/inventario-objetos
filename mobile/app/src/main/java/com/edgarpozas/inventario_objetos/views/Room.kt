@@ -119,6 +119,10 @@ class Room(val db: DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     fun editRoom(view:View,room:Room){
+        if(!Utils.isNetworkAvailable(view.context)){
+            Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
+            return
+        }
         roomAlertDialog.room=room
         val alertDialog=roomAlertDialog.createAlertDialog(
             getString(R.string.update_room_title)
@@ -154,6 +158,10 @@ class Room(val db: DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshListen
     }
 
     fun deleteRoom(view:View,room:Room){
+        if(!Utils.isNetworkAvailable(view.context)){
+            Toast.makeText(requireContext(),R.string.error_no_internet,Toast.LENGTH_SHORT).show()
+            return
+        }
         deleteAlertDialog.createAlertDialog(
             view.context,
             getString(R.string.delete_room_title),

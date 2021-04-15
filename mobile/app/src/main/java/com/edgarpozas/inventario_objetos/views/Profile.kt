@@ -67,15 +67,17 @@ class Profile(val db:DataBaseSQL) : Fragment(), View.OnClickListener {
     }
 
     fun update(view:View){
+        if(!Utils.isNetworkAvailable(context)){
+            Toast.makeText(requireContext(), R.string.error_no_internet, Toast.LENGTH_SHORT).show()
+            return
+        }
+
         userAux=Storage.getInstance().user
 
         val password=editPassword?.text.toString()
         val confirmPassword= editConfirmPassword?.text.toString()
 
-        if(!Utils.isNetworkAvailable(context)){
-            Toast.makeText(requireContext(), R.string.error_no_internet, Toast.LENGTH_SHORT).show()
-            return
-        }
+
 
         if(password!=confirmPassword){
             Toast.makeText(requireContext(), R.string.passwords_no_match, Toast.LENGTH_SHORT).show()
@@ -124,6 +126,11 @@ class Profile(val db:DataBaseSQL) : Fragment(), View.OnClickListener {
     }
 
     fun delete(view:View){
+        if(!Utils.isNetworkAvailable(context)){
+            Toast.makeText(requireContext(), R.string.error_no_internet, Toast.LENGTH_SHORT).show()
+            return
+        }
+
         profileAlertDialog.createAlertDialog(
             view.context,
             getString(R.string.delete_user_title),

@@ -112,21 +112,21 @@ html
                                 -const dates=(date)=> new Date(new Date()-new Date(date))
                                 tr
                                     td Día
-                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<1).length}
+                                    td #{object.positions.map(x=>(dates(x.createdAt)/(1000*60*60*24))).filter(x=>x<=1).length}    
                                 tr
                                     td Semana
-                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<7).length} 
+                                    td #{object.positions.map(x=>(dates(x.createdAt)/(1000*60*60*24*7))).filter(x=>x<=1).length} 
                                 tr
                                     td Mes
-                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<30).length} 
+                                    td #{object.positions.map(x=>(dates(x.createdAt)/(1000*60*60*24*30))).filter(x=>x<=1).length} 
                                 tr
                                     td Año
-                                    td #{object.positions.filter(x=>dates(x.createdAt).getDate()<365).length}
+                                    td #{object.positions.map(x=>(dates(x.createdAt)/(1000*60*60*24*365))).filter(x=>x<=1).length}
                         p.form-label.fw-bold Gráfica de veces que se ha movido el objeto
-                        canvas(width="400" height="300")#timesMovedDay
-                        canvas(width="400" height="300")#timesMovedWeek
-                        canvas(width="400" height="300")#timesMovedMonth
-                        canvas(width="400" height="300")#timesMovedYear
+                        canvas(width="400" height="100")#timesMovedDay
+                        canvas(width="400" height="100")#timesMovedWeek
+                        canvas(width="400" height="100")#timesMovedMonth
+                        canvas(width="400" height="100")#timesMovedYear
                 .card-footer.text-end 
                     button(@click="makeReport").btn.btn-outline-success Generar reporte
                     label(v-if="waitingResponse").form-check-label.fw-bold.ms-3 Generando reporte.....

@@ -76,7 +76,7 @@ router.post("/",async (req,res)=>{
             throw Error(userValues.msg)
         let values=await userFunctions.create(req.body);
         if(values.status==200){
-            let url=`https://inventario-objetos.herokuapp.com/user/verify/${values.user._id}`
+            let url=`https://inventario-objetos.herokuapp.com/users/verify/${values.user._id}`
             let valuesEmail=await emailFunctions.send({
                 to:values.user.email,
                 subject:"Verificación de correo | Inventario - Objetos",
@@ -112,7 +112,7 @@ router.put("/:id",async (req,res)=>{
         
         let values=await userFunctions.update(req.params.id,req.body);
         if(values.status==200 && values.user.email!=req.body.email){
-            let url=`https://inventario-objetos.herokuapp.com/user/verify/${values.user._id}`
+            let url=`https://inventario-objetos.herokuapp.com/users/verify/${values.user._id}`
             let valuesEmail=await emailFunctions.send({
                 to:values.user.email,
                 subject:"Verificación de correo | Inventario - Objetos",

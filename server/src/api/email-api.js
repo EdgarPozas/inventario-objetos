@@ -20,12 +20,12 @@ router.post("/recovery",async (req,res)=>{
         if(userValues.status!=200)
             throw Error(userValues.msg)
 
-        let url=`https://inventario-objetos.herokuapp.com/user/recovery/${userValues.user._id}`
+        let url=`https://inventario-objetos.herokuapp.com/users/recovery/${userValues.user._id}`
         let values=await emailFunctions.send({
             to:email,
             subject:"Recuperar contraseña | Inventario - Objetos",
             html:`
-            <h1>Hola!, ${values.user.firstName} ${values.user.lastName}</h1>
+            <h1>Hola!, ${userValues.user.firstName} ${userValues.user.lastName}</h1>
             <p>Hemos recibido la solicitud de recuperar tu contraseña, si tu fuiste quien lo solicitó da selecciona el siguiente enlace para ir a restablecer tu contraseña <a href="${url}">${url}</p>
             `
         });
