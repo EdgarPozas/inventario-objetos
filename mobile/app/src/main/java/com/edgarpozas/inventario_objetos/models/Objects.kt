@@ -59,7 +59,7 @@ data class Objects(
                     val cursorMain=db.rawQuery("select * from objects where _id='${id}'",null)
                     val cursorTags=db.rawQuery("select * from objects_tags where _id='${id}'",null)
                     val cursorShared=db.rawQuery("select * from objects_shared where _id='${id}'",null)
-                    val cursorPosition=db.rawQuery("select * from objects_position where _id='${id}'",null)
+                    val cursorPosition=db.rawQuery("select * from objects_positions where _id='${id}'",null)
                     arr.add(createFromCursors(cursorMain,cursorTags,cursorShared,cursorPosition)!!)
                 }while(cursor.moveToNext())
                 return arr

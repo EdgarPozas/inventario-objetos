@@ -186,13 +186,13 @@ class ObjectsIndividual : AppCompatActivity(), OnMapReadyCallback,
             return
         }
         this.googleMap?.clear()
-        var i=1
+        var i=0
         for(id in objectAux?.positions!!){
             val position=Storage.getInstance().positions.find { x->x.id==id }
             if(position==null)
                 continue
             val latLng=LatLng(position.latitude, position.longitude)
-            val marker=MarkerOptions().position(latLng).title(i.toString())
+            val marker=MarkerOptions().position(latLng).title((i+1).toString())
             if(i==objectAux?.positions!!.size-1){
                 marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                 marker.visible(true)
