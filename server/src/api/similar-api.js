@@ -34,10 +34,12 @@ router.post("/",fieldUpload,async (req,res)=>{
                 url:objects[i].urlImage
             });
 
+            let distance=Jimp.distance(img1, img2);
             let percentage=Jimp.diff(img1, img2).percent;
             percentages.push({
                 object:objects[i],
-                percentage:percentage
+                percentage:percentage,
+                distance:distance
             });
         }
 

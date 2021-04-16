@@ -152,7 +152,7 @@ La base de datos a utilizar en la nube es es [**S3 de AWS**](https://aws.amazon.
 #### Búsqueda de objeto
 
 Dada una petición del sistema y si el usuario se encuentra conectado a internet se realizará una busqueda del objeto que se pide.
-Esta búsqueda se realizará con la librería de [JIMP](https://www.npmjs.com/package/jimp) un paquete para node js que permite realizar la manipulación y comparación de imágenes a través de sus pixeles.
+Esta búsqueda se realizará con la librería de [JIMP](https://www.npmjs.com/package/jimp) un paquete para node js que permite realizar la manipulación y comparación de imágenes a través de sus pixeles y la distancia de Hamming.
 
 
 #### Gestor de correos
