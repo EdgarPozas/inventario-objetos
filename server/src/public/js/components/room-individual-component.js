@@ -29,7 +29,7 @@ const app=new Vue({
             let backgroundColor=[];
             let borderColor=[];
 
-            for(let i=0;i<days;i++){
+            for(let i=0;i<=days;i++){
                 let newDate=startDate.addDays(i);
                 labels.push(dateToString(newDate));
                 backgroundColor.push('rgba(54, 162, 235, 0.2)');
@@ -67,9 +67,11 @@ const app=new Vue({
                         text: title
                     },
                     scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
                     }
                 }
             });

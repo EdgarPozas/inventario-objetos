@@ -1,90 +1,6 @@
 import random
-# if len(dataSet)==0:
-#     # print("->",path,originalTarget-sum(path))
-#     k=abs(originalTarget-sum(path))
-#     if not k in ends.keys():
-#         ends[k]=[]
-#     ls=list(path)
-#     ls.sort()
-#     if not ls in ends[k]:
-#         ends[k].append(ls)
-#     return
-
-# for i in range(0,len(dataSet)):
-#     value=dataSet[i]
-#     arr=dataSet[0:i]+dataSet[i+1:]
-#     t=target-value
-#     arrF=list(filter(lambda it:it<=t,arr))
-#     path=path+[value]
-#     # print(target,"-",value,"=",t,"\t",arr,"<="+str(t),arrF,path)
-    
-#     listSub(originalTarget,t,arrF,path)
-#     p=path.pop()
-#     # print("pop",p)
-#     # print(path)
-
-
-
-    # stack=[]
-    # stackDs=[]
-    # end=False
-    # i=0
-    # ds=dataSet 
-    # p=[]
-    # paths={}
-
-    # # target=153
-    # # ds=[160,120,100,80,70,70,50,20]
-    # while not end:
-    #     pivot=ds[i]                                
-    #     t=target-pivot                              
-    #     if t<0:                                     
-    #         i+=1                                    
-    #         continue    
-    #     p+=[pivot]
-    #     nextV=i+1
-    #     if len(ds)>nextV:
-    #         if not t in paths.keys():
-    #             paths[t]=[]
-    #         paths[t].append(p)
-    #         i=stack.pop()+1
-    #         ds=stackDs.pop()
-    #         continue
-    #     arr=ds[i+1:]
-    #     ops=list(filter(lambda it:it<=t,arr))
-    #     stack.append(i)
-    #     stackDs.append(arr)
-    #     i=0
-    #     ds=ops
-    #     target=t
-
 
 ends={}
-
-# def listSubNoOptimal(originalTarget,target,dataSet,path):
-#     if len(dataSet)==0:
-#         print("->",path,originalTarget-sum(path))
-#         k=abs(originalTarget-sum(path))
-#         if not k in ends.keys():
-#             ends[k]=[]
-#         ls=list(path)
-#         ls.sort()
-#         if not ls in ends[k]:
-#             ends[k].append(ls)
-#         return
-
-#     for i in range(0,len(dataSet)):
-#         value=dataSet[i]
-#         arr=dataSet[0:i]+dataSet[i+1:]
-#         t=target-value
-#         arrF=list(filter(lambda it:it<=t,arr))
-#         path=path+[value]
-#         # print(target,"-",value,"=",t,"\t",arr,"<="+str(t),arrF,path)
-        
-#         listSub(originalTarget,t,arrF,path)
-#         # p=path.pop()
-#         # print("pop",p)
-#         # print(path)
 
 def listSub(originalTarget,target,dataSet,path):
     if dataSet==[]:
@@ -99,23 +15,79 @@ def listSub(originalTarget,target,dataSet,path):
     
     for i in range(0,len(dataSet)):
         t=target-dataSet[i]
-        if t<0:
-            continue
         arr=dataSet[i+1:]
         ops=list(filter(lambda it:it<=t,arr))
-        listSub(originalTarget,t,ops,path+[dataSet[i]])
+        p=path+[dataSet[i]]
+        listSub(originalTarget,t,ops,p)
+
+dic={}
+minR=-1
+
+def listSubDynamic(target,dataSet,path):
+    if dataSet==[]:
+        print("t",target)
+        return True
+    for i,v in enumerate(dataSet):
+        if target in dic.keys():
+            print("in",dic[target],v)
+        else:
+            res=target-v
+            ops=list(filter(lambda it:it<=res,dataSet))
+            # print(res)
+            r=listSubDynamic(res,ops,path+[res])
+            # if not r:
+            #     continue
+            # print(target,v,res)
+
+            # if not target in dic.keys():
+            #     dic[target]={
+            #         "target":target,
+            #         "next":v,
+            #         "res":res
+            #     }
+            #     print("add",dic[target])
+    return False
+
+
+
+        # # print("value",v)
+        # if v in dic.keys():
+        #     print("Found","->",v,dic[v])
+        #     pass
+        # else:
+        #     # print("Not found","->",v)
+        #     ops=list(filter(lambda it:it<=v,dataSet))
+        #     print(dataSet,"<=",v,ops)
+        #     listSubDynamic(v,ops)
+
+        #     if not target in dic.keys():
+        #         print("Add value","->",target,v)
+        #         dic[target]=[v]
+        #     else:
+        #         dic[target]+=[v]
+
+    #     print(target,"-",dataSet[i],"=",v,"\t",ops)
+    #     if p:
+    #         print(p)
+    #         # if not v in dic.keys():
+    #         #     dic[target]=v
+    #         # print("->",path,target,v)
+    #         # print(target,p)
+
 
 
 
 if __name__ == "__main__":
-    size=10
+    # size=100
     limitMin=0
     limitMax=40
 
     target=153
     # dataSet=[random.randint(limitMin,limitMax) for x in range(size)]
-    dataSet=[70,100,20,70,50,120,80,160]
+    dataSet=[70,100,20,50,120,80]
+    dataSet=list(filter(lambda x:x<=target,dataSet))
     dataSet.sort(reverse=True)
-    listSub(target,target,dataSet,[])
-    # listSubNoOptimal(target,target,dataSet,[])
-    print(ends.keys())
+    # listSub(target,target,dataSet,[])
+    listSubDynamic(target,dataSet,[])
+    # listSubWhile(target,dataSet)
+    # print(ends.keys())

@@ -101,7 +101,7 @@ html
                         .card-header
                             h5.card-title.fw-bold.m-0 Gráficas
                         .card-body
-                            canvas(width="400" height="300")#roomsChart
+                            canvas(width="400" height="100")#roomsChart
                         .card-footer.text-end
                             button(@click="makeReport").btn.btn-outline-success Generar reporte
                             label(v-if="waitingResponse").form-check-label.fw-bold.ms-3 Generando reporte.....

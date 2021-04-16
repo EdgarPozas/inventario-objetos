@@ -529,10 +529,10 @@ router.post("/report/:type",async (req,res)=>{
         }
        
         let tableBodyMoved="";
-        tableBodyMoved+="<tr>"
-        tableBodyMoved+="<td>Día</td>";
-        tableBodyMoved+="<td>"+amounts[0]+"</td>";
-        tableBodyMoved+="</tr>"
+        // tableBodyMoved+="<tr>"
+        // tableBodyMoved+="<td>Día</td>";
+        // tableBodyMoved+="<td>"+amounts[0]+"</td>";
+        // tableBodyMoved+="</tr>"
         tableBodyMoved+="<tr>"
         tableBodyMoved+="<td>Semana</td>";
         tableBodyMoved+="<td>"+amounts[1]+"</td>";
