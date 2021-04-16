@@ -91,6 +91,7 @@ class SubList(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
                 cad+="${it2.name} -> ${it2.price}\n"
             }
             arr.add(cad)
+            i++
         }
 
         adapter= SubListListAdapter(this, arr)

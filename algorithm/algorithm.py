@@ -61,30 +61,30 @@ import random
 
 ends={}
 
-def listSubNoOptimal(originalTarget,target,dataSet,path):
-    if len(dataSet)==0:
-        # print("->",path,originalTarget-sum(path))
-        k=abs(originalTarget-sum(path))
-        if not k in ends.keys():
-            ends[k]=[]
-        ls=list(path)
-        ls.sort()
-        if not ls in ends[k]:
-            ends[k].append(ls)
-        return
+# def listSubNoOptimal(originalTarget,target,dataSet,path):
+#     if len(dataSet)==0:
+#         print("->",path,originalTarget-sum(path))
+#         k=abs(originalTarget-sum(path))
+#         if not k in ends.keys():
+#             ends[k]=[]
+#         ls=list(path)
+#         ls.sort()
+#         if not ls in ends[k]:
+#             ends[k].append(ls)
+#         return
 
-    for i in range(0,len(dataSet)):
-        value=dataSet[i]
-        arr=dataSet[0:i]+dataSet[i+1:]
-        t=target-value
-        arrF=list(filter(lambda it:it<=t,arr))
-        path=path+[value]
-        print(target,"-",value,"=",t,"\t",arr,"<="+str(t),arrF,path)
+#     for i in range(0,len(dataSet)):
+#         value=dataSet[i]
+#         arr=dataSet[0:i]+dataSet[i+1:]
+#         t=target-value
+#         arrF=list(filter(lambda it:it<=t,arr))
+#         path=path+[value]
+#         # print(target,"-",value,"=",t,"\t",arr,"<="+str(t),arrF,path)
         
-        listSub(originalTarget,t,arrF,path)
-        # p=path.pop()
-        # print("pop",p)
-        # print(path)
+#         listSub(originalTarget,t,arrF,path)
+#         # p=path.pop()
+#         # print("pop",p)
+#         # print(path)
 
 def listSub(originalTarget,target,dataSet,path):
     if dataSet==[]:
@@ -116,6 +116,6 @@ if __name__ == "__main__":
     # dataSet=[random.randint(limitMin,limitMax) for x in range(size)]
     dataSet=[70,100,20,70,50,120,80,160]
     dataSet.sort(reverse=True)
-    # listSub(target,target,dataSet,[])
-    listSubNoOptimal(target,target,dataSet,[])
-    # print(ends)
+    listSub(target,target,dataSet,[])
+    # listSubNoOptimal(target,target,dataSet,[])
+    print(ends.keys())

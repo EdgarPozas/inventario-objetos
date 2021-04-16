@@ -12,6 +12,7 @@ import com.edgarpozas.inventario_objetos.models.User
 import com.edgarpozas.inventario_objetos.utils.ID
 import com.edgarpozas.inventario_objetos.utils.USERID
 import com.edgarpozas.inventario_objetos.views.*
+import kotlin.math.abs
 
 
 class SubListController(val subList: SubList) {
@@ -21,20 +22,25 @@ class SubListController(val subList: SubList) {
     fun listSub(originalTarget: Int,target:Int,dataSet:ArrayList<Objects>,path:ArrayList<Objects>){
         if(dataSet.size==0){
             val prices=path.map {x->x.price.toInt()}
-            val k=Math.abs(originalTarget-prices.sum())
+            val k= abs(originalTarget-prices.sum())
+
             if(!end.keys.contains(k)){
-                end.put(k,ArrayList())
+                end[k] = ArrayList()
             }
-            end[k]?.add(path)
+
+            val aux=ArrayList(path)
+            aux.sortBy { x->x.price }
+
+            if(!end[k]!!.contains(aux))
+                end[k]?.add(aux)
             return
         }
         for (i in 0 until dataSet.size){
             val value=dataSet[i]
-            var arr=dataSet.subList(0,i)
-            val arr2=dataSet.subList(i+1,dataSet.size)
-            arr.addAll(arr2)
-            println(arr.map { x->x.price })
             val t= target-value.price.toInt()
+            if(t<0)
+                continue
+            var arr=dataSet.subList(i+1,dataSet.size)
             val arrF=arr.filter { x->x.price<=t }
             path.add(value)
             listSub(originalTarget,t, arrF as ArrayList<Objects>,path)
@@ -45,16 +51,22 @@ class SubListController(val subList: SubList) {
 
     fun runSearch(price:Int,objects:MutableList<Objects>): ArrayList<ArrayList<Objects>>? {
 
-        var objects=ArrayList<Objects>()
+        /*var objects=ArrayList<Objects>()
 
-        var values= arrayOf(70.0,100.0,20.0,50.0,120.0,80.0)
+        var values= arrayOf(70,100,20,70,50,120,80,160)
+        values.sortDescending()
 
         for (it in values)
-            objects.add(Objects(price = it))
-        listSub(price,price,objects,ArrayList())
-        println(end)
+            objects.add(Objects(price = it.toDouble()))*/
+
+        listSub(price,price, objects as ArrayList<Objects>,ArrayList())
+        val minK=end.keys.minByOrNull { x->x }
 
         var vals=ArrayList<ArrayList<Objects>>()
+
+        for(it in end[minK]!!){
+            vals.add(it)
+        }
 
         return vals
     }
