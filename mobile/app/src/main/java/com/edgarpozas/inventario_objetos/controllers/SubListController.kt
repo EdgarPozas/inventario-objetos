@@ -59,6 +59,8 @@ class SubListController(val subList: SubList) {
         for (it in values)
             objects.add(Objects(price = it.toDouble()))*/
 
+        end=HashMap()
+
         listSub(price,price, objects as ArrayList<Objects>,ArrayList())
         val minK=end.keys.minByOrNull { x->x }
 
