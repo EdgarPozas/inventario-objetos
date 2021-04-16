@@ -11,7 +11,7 @@
     <string name="object_tags">Tags</string>
     <string name="object_image">Imagen</string>
     <string name="object_sound">Audio</string>
-    <string name="object_price">Precio</string>
+    <string name="object_price">Valor económico</string>
     <string name="object_shared">Compartido con</string>
     <string name="object_position">Posición</string>
     <string name="object_room">Espacio de la casa</string>

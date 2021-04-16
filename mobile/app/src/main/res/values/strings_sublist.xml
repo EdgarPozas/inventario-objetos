@@ -1,0 +1,9 @@
+<resources>
+    <string name="sublist_title">Buscar por valor económico</string>
+    <string name="sublist_content">Ingrese valor económico</string>
+    <string name="sublist_search">Buscar</string>
+
+    <string name="sublist_search_started">Busqueda iniciada, puede tardar unos segundos</string>
+    <string name="sublist_search_completed">Busqueda terminada</string>
+    <string name="sublist_search_completed_not_found">Busqueda terminada no se encontraron sub conjuntos </string>
+</resources>

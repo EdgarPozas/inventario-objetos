@@ -43,7 +43,7 @@ class Room(val db: DataBaseSQL) : Fragment(), SwipeRefreshLayout.OnRefreshListen
         view.findViewById<FloatingActionButton>(R.id.btnAdd).setOnClickListener(this)
         swipeRefresh?.setOnRefreshListener(this)
 
-        adapter= RoomListAdapter(this,Storage.getInstance().rooms);
+        adapter= RoomListAdapter(this,Storage.getInstance().rooms)
         listView?.onItemClickListener = this
 
         refresh()
