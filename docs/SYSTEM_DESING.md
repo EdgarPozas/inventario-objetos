@@ -49,18 +49,17 @@ AMRNF-011 | La aplicación móvil debe ser fácil, intuitiva y agradable a la vi
 
 Requerimiento | Descripción
 ----------|---------
-AWRF-001 | Los usuarios podrán registrarse al sistema.
-AWRF-002 | Los usuarios podrán ingresar al sistema.
-AWRF-003 | Los usuarios podrán agregar/visualizar/editar/eliminar espacios comunes.
-AWRF-004 | Los usuarios podrán agregar/visualizar/editar/eliminar objetos.
-AWRF-005 | Los usuarios podrán filtrar los objetos agregados.
-AWRF-006 | Los usuarios podrán visualizar los objetos agregados en un mapa.
-AWRF-007 | Los usuarios podrán visualizar los objetos que tiene cada miembro del grupo.
-AWRF-008 | Los usuarios podrán visualizar estadísticas de los objetos como la cantidad de objetos por tipo y las veces que se ha movido por mes.
-AWRF-009 | Los usuarios podrán visualizar gráficas de las estadísticas generadas.
-AWRF-010 | Los usuarios podrán exportar los resultados de las estadísticas a un PDF.
-AWRF-011 | Los usuarios podrán hacer búsquedas de objetos por palabras clave, función, valor económico, persona que comparte el objeto y la ubicación.
-AWRNF-012 | La aplicación web debe ser fácil, intuitiva y agradable a la vista.
+AWRF-001 | Los usuarios podrán ingresar al sistema.
+AWRF-002 | Los usuarios podrán agregar/visualizar/editar/eliminar espacios comunes.
+AWRF-003 | Los usuarios podrán agregar/visualizar/editar/eliminar objetos.
+AWRF-004 | Los usuarios podrán filtrar los objetos agregados.
+AWRF-005 | Los usuarios podrán visualizar los objetos agregados en un mapa.
+AWRF-006 | Los usuarios podrán visualizar los objetos que tiene cada miembro del grupo.
+AWRF-007 | Los usuarios podrán visualizar estadísticas de los objetos como la cantidad de objetos por tipo y las veces que se ha movido por mes.
+AWRF-008 | Los usuarios podrán visualizar gráficas de las estadísticas generadas.
+AWRF-009 | Los usuarios podrán exportar los resultados de las estadísticas a un PDF.
+AWRF-010 | Los usuarios podrán hacer búsquedas de objetos por palabras clave, función, valor económico, persona que comparte el objeto y la ubicación.
+AWRNF-011 | La aplicación web debe ser fácil, intuitiva y agradable a la vista.
 
 ## Arquitectura planteada
 

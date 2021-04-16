@@ -25,29 +25,34 @@ minR=-1
 
 def listSubDynamic(target,dataSet,path):
     if dataSet==[]:
-        print("t",target)
-        return True
-    for i,v in enumerate(dataSet):
-        if target in dic.keys():
-            print("in",dic[target],v)
+        if not path[0] in dic.keys():
+            dic[path[0]]=[path]
         else:
-            res=target-v
+            dic[path[0]].append(path)
+            
+        return 
+    for i,v in enumerate(dataSet):
+        res=target-v
+        if res in dic.keys():
+            s=path+dic[res][0]
+            dic[res].append(s)
+        else:
             ops=list(filter(lambda it:it<=res,dataSet))
-            # print(res)
-            r=listSubDynamic(res,ops,path+[res])
-            # if not r:
-            #     continue
-            # print(target,v,res)
+            p=path+[res]
+            
+            listSubDynamic(res,ops,p)
+        
 
-            # if not target in dic.keys():
-            #     dic[target]={
-            #         "target":target,
-            #         "next":v,
-            #         "res":res
-            #     }
-            #     print("add",dic[target])
-    return False
+      
 
+
+        # if target in dic.keys():
+        #     print("in",dic[target],v)
+        # else:
+
+            # print(sum__)
+            
+           
 
 
         # # print("value",v)
@@ -78,16 +83,17 @@ def listSubDynamic(target,dataSet,path):
 
 
 if __name__ == "__main__":
-    # size=100
+    size=10
     limitMin=0
     limitMax=40
 
     target=153
     # dataSet=[random.randint(limitMin,limitMax) for x in range(size)]
-    dataSet=[70,100,20,50,120,80]
+    # dataSet=[70,100,20,50,120,80]
     dataSet=list(filter(lambda x:x<=target,dataSet))
     dataSet.sort(reverse=True)
     # listSub(target,target,dataSet,[])
     listSubDynamic(target,dataSet,[])
+    # print(dic)
     # listSubWhile(target,dataSet)
     # print(ends.keys())

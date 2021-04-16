@@ -11,7 +11,7 @@ El proyecto cumple con las siguientes características:
 
 ### Aplicación móvil
 
-1. Manejo de múltiples usuarios (familias).
+1. Manejo de múltiples usuarios.
 2. Manejo de las sesiones de los usuarios.
 3. CRUD de los espacios de la casa y sus funciones.
 4. CRUD de los objetos de la casa.
@@ -21,12 +21,11 @@ El proyecto cumple con las siguientes características:
 
 ### Aplicación web
 
-1. Gestión de usuarios (familias).
-2. Visualización de los objetos que tiene cada usuario.
-3. Visualización de información de cada objeto además de sus estadisticas.
-4. Generación de reportes PDF.
-5. Búsquedas de objetos por palabras clave, función, valor económico, usuario que comparte y ubicación.
-6. Visualizar en un mapa la ubicación de estos objetos.
+1. Visualización de los objetos que tiene cada usuario.
+2. Visualización de información de cada objeto además de sus estadisticas.
+3. Generación de reportes PDF.
+4. Búsquedas de objetos por palabras clave, función, valor económico, usuario que comparte y ubicación.
+5. Visualizar en un mapa la ubicación de estos objetos.
 
 Para mayor información sobre la toma de desiciones en la elaboración de estos producto
 consultar el [diseño del sistema](https://github.com/EdgarPozas/inventario-objetos/blob/master/docs/SYSTEM_DESING.md)
