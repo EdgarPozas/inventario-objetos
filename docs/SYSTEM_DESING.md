@@ -2,14 +2,14 @@
 
 ## Definición
 
-Las personas tendemos a poseer cientos o miles de objetos en nuestras casas. Unos son artículos personales y otros son compartidos con otros miembros de un grupo (familia).  
+Las personas tendemos a poseer cientos o miles de objetos en nuestras casas. Unos son artículos personales y otros son compartidos con otros miembros de la familia.  
 Encontrar algunas de ellas cuando se necesitan puede ser una tarea costosa en términos del tiempo requerido. En este contexto, un sistema computacional nos podría ayudar a encontrar en menos tiempo un objeto a partir de información sobre el mismo, como su descripción textual, su función, una foto del mismo, el sonido que emite, quienes comparten el objeto, el uso de los espacios en la casa y las últimas ubicaciones conocidas del mismo, en entre otros.  
 
 ## Objetivo del sistema y requerimientos
 
 ### Objetivo
 
-Desarrollar un sistema que permita realizar la gestión de usuarios y grupos (familias), espacios comunes y de los objetos que posee así como las relaciones que tiene el mismo objeto con otros usuarios. Además, facilitar la consulta de los objetos a través de diferentes medios como textos, imágenes, sonidos, quienes comparten el objeto y espacios compartidos.  
+Desarrollar un sistema que permita realizar la gestión de usuarios, espacios comunes y de los objetos que posee así como las relaciones que tiene el mismo objeto con otros usuarios. Además, facilitar la consulta de los objetos a través de diferentes medios como textos, imágenes, sonidos, quienes comparten el objeto y espacios compartidos.  
 
 Este sistema se encuentra acotado para funcionar en una aplicación móvil y una aplicación web.
 
@@ -35,22 +35,15 @@ Requerimiento | Descripción
 ----------|---------
 AMRF-001 | Los usuarios podrán registrarse al sistema.
 AMRF-002 | Los usuarios podrán ingresar al sistema.
-AMRF-003 | Los usuarios podrán recuperar su contraseña con el correo registrado en caso de olvidarla.
-AMRF-004 | El sistema enviará correos de validación de cuenta, invitación a grupo (familia) y notificaciones generales.
-AMRF-004 | Los usuarios podrán crear nuevos grupos (familias).
-AMRF-005 | Los usuarios podrán visualizar sus grupos (familias).
-AMRF-006 | Los usuarios podrán editar/eliminar los grupos (familias) que el haya creado.
-AMRF-007 | Los usuarios podrán invitar a otros usuarios a unirse a su grupo (familia) mediante su correo.
-AMRF-008 | Los usuarios podrán aceptar/declinar el ingresar al grupo (familia).
-AMRF-009 | Los usuarios podrán salirse del grupo (familia).
-AMRF-010 | Los usuarios podrán agregar/visualizar/editar/eliminar espacios comunes.
-AMRF-011 | Los usuarios podrán agregar/visualizar/editar/eliminar objetos.
-AMRF-012 | Los usuarios podrán filtrar los objetos agregados.
-AMRF-013 | Los usuarios podrán visualizar los objetos agregados en un mapa.
-AMRF-014 | Los usuarios podrán encontrar y listar el subconjunto de objetos tal que la suma de sus valores económicos se aproxime más a un valor introducido.
-AMRF-015 | La sesión de los usuarios perdurará hasta que se cierre la sesión.
-AMRF-016 | Los usuarios podrán cerrar sesión.
-AMRNF-001 | La aplicación móvil debe ser fácil, intuitiva y agradable a la vista.
+AMRF-003 | Los usuarios podrán cambiar su contraseña con el correo registrado en caso de olvidarla.
+AMRF-004 | El sistema enviará correos de validación de cuenta.
+AMRF-005 | Los usuarios podrán agregar/visualizar/editar/eliminar espacios comunes.
+AMRF-006 | Los usuarios podrán agregar/visualizar/editar/eliminar objetos.
+AMRF-007 | Los usuarios podrán visualizar los objetos agregados en un mapa.
+AMRF-008 | Los usuarios podrán encontrar y listar el subconjunto de objetos tal que la suma de sus valores económicos se aproxime más a un valor introducido.
+AMRF-009 | La sesión de los usuarios perdurará hasta que se cierre la sesión.
+AMRF-010 | Los usuarios podrán cerrar sesión.
+AMRNF-011 | La aplicación móvil debe ser fácil, intuitiva y agradable a la vista.
 
 #### Aplicación web
 
@@ -58,26 +51,16 @@ Requerimiento | Descripción
 ----------|---------
 AWRF-001 | Los usuarios podrán registrarse al sistema.
 AWRF-002 | Los usuarios podrán ingresar al sistema.
-AWRF-003 | Los usuarios podrán recuperar su contraseña con el correo registrado en caso de olvidarla.
-AWRF-004 | El sistema enviará correos de validación de cuenta, invitación a grupo (familia) y notificaciones generales.
-AWRF-004 | Los usuarios podrán crear nuevos grupos (familias).
-AWRF-005 | Los usuarios podrán visualizar sus grupos (familias).
-AWRF-006 | Los usuarios podrán editar/eliminar los grupos (familias) que el haya creado.
-AWRF-007 | Los usuarios podrán invitar a otros usuarios a unirse a su grupo (familia) mediante su correo.
-AWRF-008 | Los usuarios podrán aceptar/declinar el ingresar al grupo (familia).
-AWRF-009 | Los usuarios podrán salirse del grupo (familia).
-AWRF-010 | Los usuarios podrán agregar/visualizar/editar/eliminar espacios comunes.
-AWRF-011 | Los usuarios podrán agregar/visualizar/editar/eliminar objetos.
-AWRF-012 | Los usuarios podrán filtrar los objetos agregados.
-AWRF-013 | Los usuarios podrán visualizar los objetos agregados en un mapa.
-AWRF-014 | Los usuarios podrán visualizar los objetos que tiene cada miembro del grupo.
-AWRF-015 | Los usuarios podrán visualizar estadísticas de los objetos como la cantidad de objetos por tipo y las veces que se ha movido por mes.
-AWRF-016 | Los usuarios podrán visualizar gráficas de las estadísticas generadas.
-AWRF-017 | Los usuarios podrán exportar los resultados de las estadísticas a un PDF.
-AWRF-018 | Los usuarios podrán hacer búsquedas de objetos por palabras clave, función, valor económico, persona que comparte el objeto y la ubicación.
-AWRF-019 | La sesión de los usuarios perdurará hasta que se cierre la sesión.
-AWRF-020 | Los usuarios podrán cerrar sesión.
-AWRNF-001 | La aplicación web debe ser fácil, intuitiva y agradable a la vista.
+AWRF-003 | Los usuarios podrán agregar/visualizar/editar/eliminar espacios comunes.
+AWRF-004 | Los usuarios podrán agregar/visualizar/editar/eliminar objetos.
+AWRF-005 | Los usuarios podrán filtrar los objetos agregados.
+AWRF-006 | Los usuarios podrán visualizar los objetos agregados en un mapa.
+AWRF-007 | Los usuarios podrán visualizar los objetos que tiene cada miembro del grupo.
+AWRF-008 | Los usuarios podrán visualizar estadísticas de los objetos como la cantidad de objetos por tipo y las veces que se ha movido por mes.
+AWRF-009 | Los usuarios podrán visualizar gráficas de las estadísticas generadas.
+AWRF-010 | Los usuarios podrán exportar los resultados de las estadísticas a un PDF.
+AWRF-011 | Los usuarios podrán hacer búsquedas de objetos por palabras clave, función, valor económico, persona que comparte el objeto y la ubicación.
+AWRNF-012 | La aplicación web debe ser fácil, intuitiva y agradable a la vista.
 
 ## Arquitectura planteada
 
@@ -135,8 +118,8 @@ Tomando en cuenta el tiempo disponible de desarrollo, la necesidad de generar AP
 
 #### Página web
 
-Tomando en cuenta que el desarrollo back-end del proyecto que será Node JS, se decide utilizar una tecnología que permita la rápida maquetación y alta creabilidad de componentes como lo es [Pug JS](https://pugjs.org/api/getting-started.html).  
-Para manejar los estilos de la aplicación se utilizará el preprocesador de [SASS](https://sass-lang.com/) con la librería de [Boostrap](https://getbootstrap.com/), también se hace uso de CSS3 para complementar y adecuar la página web.  
+Partiendo en que el desarrollo back-end del proyecto que será Node JS, se decide utilizar una tecnología que permita la rápida maquetación y alta creabilidad de componentes como lo es [Pug JS](https://pugjs.org/api/getting-started.html).  
+Para manejar los estilos de la aplicación se utilizará la librería de [Boostrap](https://getbootstrap.com/), también se hace uso de CSS3 para complementar y adecuar la página web.  
 Para manejar toda la parte dinámica de las vistas se utilizará: [VueJS](https://vuejs.org/), [JQuery](https://jquery.com/), [axios](https://github.com/axios/axios) y [chartJS](https://www.chartjs.org/).
 
 #### Bases de datos
@@ -163,12 +146,14 @@ SQL | Simplicidad de representación de información, puesta en producción senc
 #### Conclusión
 
 La base de datos a utilizar de modo online es la **NoSQL** y como en el servidor se utilizará Node JS, una de las bases de datos que más se adapta a este flujo de datos es [MongoDB](https://www.mongodb.com/es) una base de datos basada en colecciones y documentos.  
-La base de datos a utilizar de modo offline es la **SQL** la base de datos que se encuentra presente por default en los sistemas operativos móviles es [SQLite](https://www.sqlite.org/index.html).
+La base de datos a utilizar de modo offline es la **SQL** la base de datos que se encuentra presente de manera nativa en los sistemas operativos móviles es [SQLite](https://www.sqlite.org/index.html).
 La base de datos a utilizar en la nube es es [**S3 de AWS**](https://aws.amazon.com/es/s3/?c=s&sec=srv)
 
 #### Búsqueda de objeto
 
 Dada una petición del sistema y si el usuario se encuentra conectado a internet se realizará una busqueda del objeto que se pide.
+Esta búsqueda se realizará con la librería de [JIMP](https://www.npmjs.com/package/jimp) un paquete para node js que permite realizar la manipulación y comparación de imágenes a través de sus pixeles.
+
 
 #### Gestor de correos
 

@@ -1,6 +1,6 @@
 # inventario-objetos
 
-![badge](https://img.shields.io/badge/inventario-v0.0.1-blue)
+![badge](https://img.shields.io/badge/inventario-v1.0.0-blue)
 
 Aplicación móvil y web enfocada a gestionar un inventario de objetos que poseen
 y comparten los miembros de una familia.
@@ -11,7 +11,7 @@ El proyecto cumple con las siguientes características:
 
 ### Aplicación móvil
 
-1. Manejo de múltiples usuarios y grupos (familias).
+1. Manejo de múltiples usuarios (familias).
 2. Manejo de las sesiones de los usuarios.
 3. CRUD de los espacios de la casa y sus funciones.
 4. CRUD de los objetos de la casa.
@@ -21,7 +21,7 @@ El proyecto cumple con las siguientes características:
 
 ### Aplicación web
 
-1. Gestión de usuarios y grupos (familias).
+1. Gestión de usuarios (familias).
 2. Visualización de los objetos que tiene cada usuario.
 3. Visualización de información de cada objeto además de sus estadisticas.
 4. Generación de reportes PDF.
@@ -43,13 +43,13 @@ Lugar |Tecnologías
 -----|------
 Aplicación móvil | Android con Kotlin
 Servidor web | Node JS con express JS
-Página web | Pug JS con SASS, Boostrap, Vue JS, JQuery, axios y Chart JS
+Página web | Pug JS, Boostrap, Vue JS, JQuery, axios y Chart JS
 Base de datos online | MongoDB através del servicio MongoDB Atlas
 Base de datos offline | SQLite
 Base de datos de archivos | Servicio S3 de AWS
 Gestor de correos | Servicio de SendGrid
 Algoritmo subconjuntos | Android con Kotlin
-Búsqueda de objeto | Node JS
+Búsqueda de objeto | Paquete JIMP
 
 ## Estructura de las carpetas
 
@@ -58,6 +58,8 @@ Carpeta | Descripción
 [/mobile](https://github.com/EdgarPozas/inventario-objetos/tree/master/mobile)| Proyecto móvil en Android utilizando Kotlin
 [/server](https://github.com/EdgarPozas/inventario-objetos/tree/master/server)| Servidor web en NodeJS
 [/docs](https://github.com/EdgarPozas/inventario-objetos/tree/master/docs)| Documentación
+[/algoritm](https://github.com/EdgarPozas/inventario-objetos/tree/master/algorithm)| Prueba del algoritmo para listar subconjuntos
+[/compare](https://github.com/EdgarPozas/inventario-objetos/tree/master/docs)| Prueba del algoritmo para comparar imágenes
 
 
 Desarrollado por Edgar Pozas.
