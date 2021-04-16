@@ -19,6 +19,7 @@ import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.views.components.RoomListAdapter
 import com.edgarpozas.inventario_objetos.views.components.SubListAlertDialog
 import com.edgarpozas.inventario_objetos.views.components.SubListListAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,7 +43,7 @@ class SubList(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
     ): View? {
         val view=inflater.inflate(R.layout.sub_list, container, false)
 
-        val btnSearch:Button=view.findViewById(R.id.btnSearch)
+        val btnSearch:FloatingActionButton=view.findViewById(R.id.btnSearch)
         btnSearch.setOnClickListener(this)
 
         listView=view.findViewById(R.id.listView)
@@ -66,7 +67,7 @@ class SubList(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
                         price=txtPrice.toInt()
 
                     scope.async {
-                        val items=subListController.runSearch(price)
+                        val items=subListController.runSearch(price,Storage.getInstance().objects)
                         if (items != null) {
                             createItems(items)
                             Toast.makeText(requireContext(),R.string.sublist_search_completed,Toast.LENGTH_SHORT).show()
@@ -84,12 +85,12 @@ class SubList(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
         alertDialog?.show()
     }
 
-    fun createItems(items:Map<Int,ArrayList<Objects>>){
+    fun createItems(items:ArrayList<ArrayList<Objects>>){
         val arr=ArrayList<String>()
         var i=1
         for (it in items){
             var cad="$i;"
-            for (it2 in it.value){
+            for (it2 in it){
                 cad+="${it2.name} -> ${it2.price}\n"
             }
             arr.add(cad)

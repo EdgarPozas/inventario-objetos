@@ -1,2 +1,5 @@
 <resources>
+    <string name="similar_search_started">Busqueda iniciada, esto puede durar un par de minutos</string>
+    <string name="similar_search_completed">Busqueda completada</string>
+    <string name="similar_search_not_found">No se encontraron objetos similares</string>
 </resources>

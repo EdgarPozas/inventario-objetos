@@ -18,7 +18,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_name_room"
+            android:hint="@string/hint_price_object"
             style="@style/InputStyle"
             android:inputType="number"
             android:textSize="15dp"
