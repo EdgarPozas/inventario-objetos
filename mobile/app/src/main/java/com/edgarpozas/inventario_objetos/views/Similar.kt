@@ -21,7 +21,9 @@ import com.edgarpozas.inventario_objetos.controllers.SimilarController
 import com.edgarpozas.inventario_objetos.controllers.SubListController
 import com.edgarpozas.inventario_objetos.models.DataBaseSQL
 import com.edgarpozas.inventario_objetos.models.Objects
+import com.edgarpozas.inventario_objetos.models.Storage
 import com.edgarpozas.inventario_objetos.utils.*
+import com.edgarpozas.inventario_objetos.views.components.ObjectsListAdapter
 import com.edgarpozas.inventario_objetos.views.components.SimilarListAdapter
 import com.edgarpozas.inventario_objetos.views.components.SubListAlertDialog
 import com.edgarpozas.inventario_objetos.views.components.SubListListAdapter
@@ -33,16 +35,19 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
-class Similar(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
+class Similar(val db: DataBaseSQL) : Fragment(), View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
-    private val similarController= SimilarController(this)
+    val scope = CoroutineScope(Job() + Dispatchers.Main)
+    val similarController= SimilarController(this)
     private var listView: ListView?=null
     private var adapter: SimilarListAdapter? = null;
 
     private var imageView:ImageView?=null
     private var imageButton:ImageButton?=null
+
+    private var objects=ArrayList<Objects>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,8 @@ class Similar(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
         imageView=view.findViewById(R.id.imageView)
         imageButton=view.findViewById(R.id.btnTakePhoto)
         imageButton?.setOnClickListener(this)
+
+        listView?.onItemClickListener = this
 
         return view
     }
@@ -135,13 +142,19 @@ class Similar(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
             if(data==null){
                 Toast.makeText(similar.requireContext(),R.string.similar_search_not_found,Toast.LENGTH_SHORT).show()
             }else{
-                refreshList(data)
+                similar.objects=data
+                refreshList()
                 Toast.makeText(similar.requireContext(),R.string.similar_search_completed,Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun refreshList(arrayList: ArrayList<Objects>){
+    fun refreshList(){
+        adapter= SimilarListAdapter(this, objects);
+        listView?.adapter=adapter;
+    }
 
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        similarController.goToIndividual(objects[position])
     }
 }

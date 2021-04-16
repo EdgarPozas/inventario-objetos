@@ -65,15 +65,12 @@ class SubList(val db: DataBaseSQL) : Fragment(), View.OnClickListener {
                     var price=0
                     if(txtPrice.isNotEmpty())
                         price=txtPrice.toInt()
-
-                    scope.async {
-                        val items=subListController.runSearch(price,Storage.getInstance().objects)
-                        if (items != null) {
-                            createItems(items)
-                            Toast.makeText(requireContext(),R.string.sublist_search_completed,Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(requireContext(),R.string.sublist_search_completed_not_found,Toast.LENGTH_SHORT).show()
-                        }
+                    val items=subListController.runSearch(price,Storage.getInstance().objects)
+                    if (items != null) {
+                        createItems(items)
+                        Toast.makeText(requireContext(),R.string.sublist_search_completed,Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(requireContext(),R.string.sublist_search_completed_not_found,Toast.LENGTH_SHORT).show()
                     }
                 })
         alertDialog?.setButton(

@@ -23,7 +23,8 @@ data class Objects(
         var positions: ArrayList<String>? = null,
         var position: Position? = null,
         var createdBy: String = "",
-        var active: Boolean = true
+        var active: Boolean = true,
+        var _percentage:Double=0.0
 ){
 
     private val dataBase=DataBase.getInstance()

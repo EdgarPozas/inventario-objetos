@@ -37,7 +37,6 @@ class ObjectsController(val fragment: Fragment) {
     }
 
     fun goToIndividual(objects: Objects) {
-        Intrinsics.checkNotNullParameter(objects, "objects")
         val destiny = Intent(fragment.requireContext(), ObjectsIndividual::class.java)
         destiny.putExtra("id", objects.id)
         fragment.requireContext().startActivity(destiny)

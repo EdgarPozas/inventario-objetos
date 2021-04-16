@@ -81,32 +81,21 @@ class SplashController(val splash: Splash) {
     }
 
     fun sync(db: SQLiteDatabase) {
-        println(1)
         User.resetSQL(db)
-        println(2)
         for (v in Storage.getInstance().users) {
             v.createSQL(db)
         }
-        println(3)
         Room.resetSQL(db)
-        println(4)
         for (v2 in Storage.getInstance().rooms) {
             v2.createSQL(db)
         }
-        println(5)
         Position.resetSQL(db)
-        println(6)
         for (v3 in Storage.getInstance().positions) {
             v3.createSQL(db)
         }
-        println(7)
         Objects.resetSQL(db)
-        println(8)
         for (v4 in Storage.getInstance().objects) {
             v4.createSQL(db)
         }
-
     }
-
-
 }

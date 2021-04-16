@@ -28,11 +28,12 @@ class SubListController(val subList: SubList) {
             end[k]?.add(path)
             return
         }
-        for (i in 0..dataSet.size){
+        for (i in 0 until dataSet.size){
             val value=dataSet[i]
             var arr=dataSet.subList(0,i)
             val arr2=dataSet.subList(i+1,dataSet.size)
             arr.addAll(arr2)
+            println(arr.map { x->x.price })
             val t= target-value.price.toInt()
             val arrF=arr.filter { x->x.price<=t }
             path.add(value)
@@ -42,17 +43,16 @@ class SubListController(val subList: SubList) {
     }
 
 
-    suspend fun runSearch(price:Int,objects:MutableList<Objects>): ArrayList<ArrayList<Objects>>? {
+    fun runSearch(price:Int,objects:MutableList<Objects>): ArrayList<ArrayList<Objects>>? {
 
-        var price=10
         var objects=ArrayList<Objects>()
 
         var values= arrayOf(70.0,100.0,20.0,50.0,120.0,80.0)
 
         for (it in values)
             objects.add(Objects(price = it))
-
         listSub(price,price,objects,ArrayList())
+        println(end)
 
         var vals=ArrayList<ArrayList<Objects>>()
 

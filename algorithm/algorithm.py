@@ -25,19 +25,6 @@ import random
 
 
 
-# def getIndex(target,dataSet):
-#     print(target,dataSet)
-#     mid=len(dataSet)
-#     while mid!=0:
-#         mid=len(dataSet)//2
-#         print(dataSet,mid,target,dataSet[mid])
-#         if target<dataSet[mid]:
-#             dataSet=dataSet[mid+1:]
-#         else:
-#             dataSet=dataSet[0:mid]
-        
-
-
     # stack=[]
     # stackDs=[]
     # end=False
@@ -92,10 +79,10 @@ def listSubNoOptimal(originalTarget,target,dataSet,path):
         t=target-value
         arrF=list(filter(lambda it:it<=t,arr))
         path=path+[value]
-        # print(target,"-",value,"=",t,"\t",arr,"<="+str(t),arrF,path)
+        print(target,"-",value,"=",t,"\t",arr,"<="+str(t),arrF,path)
         
         listSub(originalTarget,t,arrF,path)
-        p=path.pop()
+        # p=path.pop()
         # print("pop",p)
         # print(path)
 
@@ -126,9 +113,9 @@ if __name__ == "__main__":
     limitMax=40
 
     target=153
-    dataSet=[random.randint(limitMin,limitMax) for x in range(size)]
-    # dataSet=[70,100,20,70,50,120,80,160]
+    # dataSet=[random.randint(limitMin,limitMax) for x in range(size)]
+    dataSet=[70,100,20,70,50,120,80,160]
     dataSet.sort(reverse=True)
     # listSub(target,target,dataSet,[])
     listSubNoOptimal(target,target,dataSet,[])
-    print(ends)
+    # print(ends)
